@@ -1206,9 +1206,9 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   }
 
   async function fetchProductByHandle(handle) {
-    const q = `query($handle:String!){productByHandle(handle:$handle){id title featuredImage{url altText} variants(first:5){edges{node{id title availableForSale priceV2{amount currencyCode}}}}}}`;
+    const q = `query($handle:String!){product(handle:$handle){id title featuredImage{url altText} images(first:4){edges{node{url altText}}} variants(first:5){edges{node{id title availableForSale priceV2{amount currencyCode}}}}}}`;
     const d = await gql(q, { handle });
-    return d && d.data && d.data.productByHandle;
+    return d && d.data && d.data.product;
   }
 
   async function hydrate() {
@@ -1218,12 +1218,34 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       try {
         const p = await fetchProductByHandle(c.getAttribute('data-handle'));
         if (!p) continue;
+
+        // Update price
         const priceEl = c.querySelector('[data-price]');
         const v = p.variants && p.variants.edges[0] && p.variants.edges[0].node;
         if (priceEl && v) priceEl.textContent = '$' + parseFloat(v.priceV2.amount).toFixed(2);
+
+        // Update variant ID on Add to Cart button
         const qa = c.querySelector('.product-quickadd');
         if (qa && v) qa.setAttribute('data-variant-id', v.id);
-      } catch (_) {}
+
+        // Update product images — replace placeholder slides with Shopify images
+        const slides = c.querySelectorAll('.product-slide');
+        const shopifyImages = p.images && p.images.edges;
+        if (shopifyImages && shopifyImages.length > 0) {
+          slides.forEach((slide, i) => {
+            const img = shopifyImages[i] || shopifyImages[0];
+            if (img && img.node && img.node.url) {
+              slide.style.backgroundImage = `url('${img.node.url}')`;
+            }
+          });
+        } else if (p.featuredImage) {
+          slides.forEach(slide => {
+            slide.style.backgroundImage = `url('${p.featuredImage.url}')`;
+          });
+        }
+      } catch (err) {
+        console.error('[P&P] Hydration error for', c.getAttribute('data-handle'), err);
+      }
     }
   }
 
