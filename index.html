@@ -1172,24 +1172,29 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
    ========================================================================== */
 (function () {
   'use strict';
-  const SHOPIFY_DOMAIN = 'petalsandpods.myshopify.com';
+
+  // ── CONFIG ──────────────────────────────────────────────────────────────────
+  const SHOPIFY_DOMAIN   = 'petalsandpods.myshopify.com';
   const STOREFRONT_TOKEN = 'ce505ca3842d26ea4023c53169225868';
-  const API_VERSION = '2024-01';
-  const ENDPOINT = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
-  const STORAGE_KEY = 'pp_cart_id';
-  const LIVE = STOREFRONT_TOKEN !== 'PLACEHOLDER_STOREFRONT_PUBLIC_TOKEN';
+  const API_VERSION      = '2024-01';
+  const ENDPOINT         = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
+  const STORAGE_KEY      = 'pp_cart_id';
+  const LIVE             = STOREFRONT_TOKEN !== 'PLACEHOLDER_STOREFRONT_PUBLIC_TOKEN';
+
   let cartId = localStorage.getItem(STORAGE_KEY);
-  let localCount = 0;
   const countEl = document.getElementById('cartCount');
 
-  const setCount = (n) => {
+  // ── CART BADGE ───────────────────────────────────────────────────────────────
+  function setCount(n) {
     if (!countEl) return;
-    countEl.textContent = String(n);
+    countEl.textContent = n > 99 ? '99+' : String(n);
+    countEl.style.display = n > 0 ? 'inline-block' : 'none';
     countEl.classList.remove('pulse');
     void countEl.offsetWidth;
     countEl.classList.add('pulse');
-  };
+  }
 
+  // ── GQL FETCH ────────────────────────────────────────────────────────────────
   async function gql(query, variables) {
     if (!LIVE) throw new Error('Storefront token not configured');
     const r = await fetch(ENDPOINT, {
@@ -1201,108 +1206,185 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       },
       body: JSON.stringify({ query, variables })
     });
-    if (!r.ok) throw new Error('Storefront API request failed');
-    return r.json();
+    if (!r.ok) throw new Error(`API ${r.status}`);
+    const json = await r.json();
+    if (json.errors && json.errors.length) throw new Error(json.errors[0].message);
+    return json;
   }
 
-  async function fetchProductByHandle(handle) {
-    const q = `query($handle:String!){product(handle:$handle){id title featuredImage{url altText} images(first:4){edges{node{url altText}}} variants(first:5){edges{node{id title availableForSale priceV2{amount currencyCode}}}}}}`;
+  // ── FETCH PRODUCT ────────────────────────────────────────────────────────────
+  async function fetchProduct(handle) {
+    const q = `query($handle:String!){
+      product(handle:$handle){
+        id title onlineStoreUrl
+        featuredImage{url altText}
+        images(first:4){edges{node{url altText}}}
+        variants(first:5){edges{node{
+          id title availableForSale
+          priceV2{amount currencyCode}
+        }}}
+      }
+    }`;
     const d = await gql(q, { handle });
     return d && d.data && d.data.product;
   }
 
+  // ── RESTORE CART COUNT ON LOAD ────────────────────────────────────────────────
+  async function restoreCartCount() {
+    if (!LIVE || !cartId) return;
+    try {
+      const d = await gql(`query($id:ID!){cart(id:$id){totalQuantity}}`, { id: cartId });
+      const count = d && d.data && d.data.cart && d.data.cart.totalQuantity;
+      if (count != null) setCount(count);
+      else { localStorage.removeItem(STORAGE_KEY); cartId = null; }
+    } catch (_) {}
+  }
+
+  // ── HYDRATE PRODUCT CARDS ─────────────────────────────────────────────────────
   async function hydrate() {
     if (!LIVE) return;
     const cards = document.querySelectorAll('[data-handle]');
-    for (const c of cards) {
+    for (const card of cards) {
+      const handle = card.getAttribute('data-handle');
       try {
-        const p = await fetchProductByHandle(c.getAttribute('data-handle'));
-        if (!p) continue;
+        const p = await fetchProduct(handle);
+        if (!p) { console.warn('[P&P] No product found for handle:', handle); continue; }
 
-        // Update price
-        const priceEl = c.querySelector('[data-price]');
         const v = p.variants && p.variants.edges[0] && p.variants.edges[0].node;
+
+        // 1. Price
+        const priceEl = card.querySelector('[data-price]');
         if (priceEl && v) priceEl.textContent = '$' + parseFloat(v.priceV2.amount).toFixed(2);
 
-        // Update variant ID on Add to Cart button
-        const qa = c.querySelector('.product-quickadd');
-        if (qa && v) qa.setAttribute('data-variant-id', v.id);
+        // 2. Variant ID on Quick Add button
+        const qa = card.querySelector('.product-quickadd');
+        if (qa && v) {
+          qa.setAttribute('data-variant-id', v.id);
+          if (!v.availableForSale) {
+            qa.textContent = 'Sold Out';
+            qa.disabled = true;
+          }
+        }
 
-        // Update product images — replace placeholder slides with Shopify images
-        const slides = c.querySelectorAll('.product-slide');
-        const shopifyImages = p.images && p.images.edges;
-        if (shopifyImages && shopifyImages.length > 0) {
+        // 3. Product images — replace all placeholder slides
+        const slides = card.querySelectorAll('.product-slide');
+        const imgs = p.images && p.images.edges;
+        if (imgs && imgs.length > 0) {
           slides.forEach((slide, i) => {
-            const img = shopifyImages[i] || shopifyImages[0];
-            if (img && img.node && img.node.url) {
-              slide.style.backgroundImage = `url('${img.node.url}')`;
-            }
+            const src = (imgs[i] || imgs[0]).node.url;
+            slide.style.backgroundImage = `url('${src}')`;
           });
         } else if (p.featuredImage) {
-          slides.forEach(slide => {
-            slide.style.backgroundImage = `url('${p.featuredImage.url}')`;
-          });
+          slides.forEach(s => { s.style.backgroundImage = `url('${p.featuredImage.url}')`; });
         }
+
+        // 4. Product page link — clicking the card body navigates to Shopify product page
+        const productUrl = `https://${SHOPIFY_DOMAIN}/products/${handle}`;
+        const body = card.querySelector('.product-body');
+        if (body) {
+          body.style.cursor = 'pointer';
+          body.addEventListener('click', () => { window.location.href = productUrl; });
+        }
+        // Also make product name a link
+        const nameEl = card.querySelector('.product-name');
+        if (nameEl) {
+          nameEl.style.cursor = 'pointer';
+          nameEl.title = 'View product';
+        }
+
       } catch (err) {
-        console.error('[P&P] Hydration error for', c.getAttribute('data-handle'), err);
+        console.error('[P&P] Hydration error for', handle, err.message);
       }
     }
   }
 
-  async function addLine(variantId) {
-    if (!cartId) {
-      const q = `mutation($lines:[CartLineInput!]!){cartCreate(input:{lines:$lines}){cart{id checkoutUrl totalQuantity} userErrors{message}}}`;
-      const d = await gql(q, { lines: [{ merchandiseId: variantId, quantity: 1 }] });
-      const c = d && d.data && d.data.cartCreate && d.data.cartCreate.cart;
-      if (c) { cartId = c.id; localStorage.setItem(STORAGE_KEY, c.id); }
-      return c;
-    } else {
-      const q = `mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{id checkoutUrl totalQuantity} userErrors{message}}}`;
-      const d = await gql(q, { cartId, lines: [{ merchandiseId: variantId, quantity: 1 }] });
-      return d && d.data && d.data.cartLinesAdd && d.data.cartLinesAdd.cart;
-    }
+  // ── ADD TO CART ───────────────────────────────────────────────────────────────
+  async function createCart(variantId) {
+    const q = `mutation($lines:[CartLineInput!]!){
+      cartCreate(input:{lines:$lines}){
+        cart{id checkoutUrl totalQuantity}
+        userErrors{message}
+      }
+    }`;
+    const d = await gql(q, { lines: [{ merchandiseId: variantId, quantity: 1 }] });
+    const userErrors = d && d.data && d.data.cartCreate && d.data.cartCreate.userErrors;
+    if (userErrors && userErrors.length) throw new Error(userErrors[0].message);
+    return d && d.data && d.data.cartCreate && d.data.cartCreate.cart;
   }
 
+  async function addToCart(variantId) {
+    if (!cartId) {
+      const cart = await createCart(variantId);
+      if (cart) { cartId = cart.id; localStorage.setItem(STORAGE_KEY, cart.id); }
+      return cart;
+    }
+    const q = `mutation($cartId:ID!,$lines:[CartLineInput!]!){
+      cartLinesAdd(cartId:$cartId,lines:$lines){
+        cart{id checkoutUrl totalQuantity}
+        userErrors{message}
+      }
+    }`;
+    const d = await gql(q, { cartId, lines: [{ merchandiseId: variantId, quantity: 1 }] });
+    const userErrors = d && d.data && d.data.cartLinesAdd && d.data.cartLinesAdd.userErrors;
+    if (userErrors && userErrors.length) throw new Error(userErrors[0].message);
+    return d && d.data && d.data.cartLinesAdd && d.data.cartLinesAdd.cart;
+  }
+
+  // ── QUICK ADD BUTTONS ─────────────────────────────────────────────────────────
   document.querySelectorAll('.product-quickadd').forEach((btn) => {
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
+      const variantId = btn.getAttribute('data-variant-id');
+      if (!variantId || variantId.startsWith('PLACEHOLDER')) return;
+
       const original = btn.textContent;
       btn.textContent = 'Adding…';
-      localCount += 1;
-      setCount(localCount);
-      if (!LIVE) {
-        setTimeout(() => {
-          btn.textContent = 'Added ✓';
-          setTimeout(() => (btn.textContent = original), 1400);
-        }, 400);
-        return;
-      }
+      btn.disabled = true;
+
       try {
-        const result = await addLine(btn.getAttribute('data-variant-id'));
-        if (result) {
-          setCount(result.totalQuantity);
+        const cart = await addToCart(variantId);
+        if (cart) {
+          setCount(cart.totalQuantity);
           btn.textContent = 'Added ✓';
+          // Redirect to Shopify checkout
+          setTimeout(() => { window.location.href = cart.checkoutUrl; }, 600);
         } else {
           btn.textContent = 'Try again';
+          btn.disabled = false;
         }
-      } catch (_) {
+      } catch (err) {
+        console.error('[P&P] Add to cart failed:', err.message);
         btn.textContent = 'Try again';
+        btn.disabled = false;
+        setTimeout(() => { btn.textContent = original; }, 2000);
       }
-      setTimeout(() => (btn.textContent = original), 1400);
     });
   });
 
+  // ── CART BUTTON (BAG) → CHECKOUT ──────────────────────────────────────────────
   const cartBtn = document.getElementById('cartBtn');
-  cartBtn && cartBtn.addEventListener('click', async (e) => {
-    if (!LIVE || !cartId) return;
-    e.preventDefault();
-    try {
-      const d = await gql(`query($id:ID!){cart(id:$id){checkoutUrl}}`, { id: cartId });
-      const url = d && d.data && d.data.cart && d.data.cart.checkoutUrl;
-      if (url) window.location.href = url;
-    } catch (_) {}
-  });
+  if (cartBtn) {
+    cartBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!LIVE) return;
+      if (!cartId) return;
+      try {
+        const d = await gql(`query($id:ID!){cart(id:$id){checkoutUrl totalQuantity}}`, { id: cartId });
+        const cart = d && d.data && d.data.cart;
+        if (cart && cart.totalQuantity > 0) {
+          window.location.href = cart.checkoutUrl;
+        } else {
+          // Cart empty or expired
+          localStorage.removeItem(STORAGE_KEY);
+          cartId = null;
+          setCount(0);
+        }
+      } catch (_) {}
+    });
+  }
 
+  // ── INIT ──────────────────────────────────────────────────────────────────────
+  restoreCartCount();
   hydrate();
 })();
 </script>
