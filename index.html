@@ -125,6 +125,8 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .hero-content{position:relative;z-index:2;max-width:1100px;width:100%;perspective:1000px}
 .hero-eyebrow{color:var(--copper-sand);margin-bottom:2rem}
 .hero-eyebrow::before{background:var(--copper-sand)}
+.hero-tagline{font-family:var(--font-display);font-size:clamp(1.1rem,2vw,1.5rem);font-weight:300;letter-spacing:.12em;color:var(--white);margin-bottom:1.8rem;text-shadow:0 2px 12px rgba(0,0,0,.7);display:inline-block;padding:.5rem 1.2rem;border:1px solid rgba(255,255,255,.35);border-radius:99px;background:rgba(0,0,0,.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero-tagline em{font-style:italic;color:var(--copper-sand);font-weight:400}
 .hero-title{font-size:clamp(3.5rem,10vw,9rem);font-weight:300;line-height:.96;letter-spacing:-.025em;color:var(--white);margin-bottom:2rem;max-width:14ch;transform-style:preserve-3d;text-shadow:0 4px 24px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.5),0 30px 60px rgba(0,0,0,.4)}
 .hero-title em{font-style:italic;color:var(--copper-sand);font-weight:400}
 .hero-title .t-line{display:block;transform-style:preserve-3d;will-change:transform;transition:transform 400ms var(--ease)}
@@ -575,7 +577,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     </a>
   </div>
   <div class="container hero-content" id="heroContent">
-    <div class="eyebrow hero-eyebrow reveal">Beauty with Conscious Living</div>
+    <div class="hero-tagline reveal">Beauty with <em>Conscious Living</em></div>
     <h1 class="hero-title reveal delay-1">
       <span class="t-line" data-depth="0.5">An older</span>
       <span class="t-line" data-depth="0.8">way to <em>glow.</em></span>
