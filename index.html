@@ -248,6 +248,9 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .pinned-sticky{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:stretch;overflow:hidden}
 .pinned-media{position:relative;height:100%;overflow:hidden}
 .pinned-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.15);transition:opacity 900ms var(--ease),transform 1600ms var(--ease)}
+.pinned-img--multi{background:none}
+.pinned-img-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 800ms var(--ease)}
+.pinned-img-slide.active{opacity:1}
 .pinned-img.active{opacity:1;transform:scale(1)}
 .pinned-img::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(61,35,20,.35),transparent 60%)}
 .pinned-text{padding:4rem clamp(2rem,5vw,6rem);position:relative;max-width:640px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
@@ -703,9 +706,13 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   <div class="pinned-scroll">
     <div class="pinned-sticky">
       <div class="pinned-media">
-        <div class="pinned-img active" style="background-image:url('https://images.unsplash.com/photo-1509326389898-1eef1ca43da5?auto=format&fit=crop&w=1600&q=80')"></div>
-        <div class="pinned-img" style="background-image:url('https://images.unsplash.com/photo-1607006483224-75c59ce9b68c?auto=format&fit=crop&w=1600&q=80')"></div>
-        <div class="pinned-img" style="background-image:url('https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="pinned-img active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114')"></div>
+        <div class="pinned-img pinned-img--multi" data-step="1">
+          <div class="pinned-img-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUK7O2QZj8X1jOeHj2A-AZ2oUK7Ov754pPSvVsO_Lg.jpg?v=1776647134')"></div>
+          <div class="pinned-img-slide" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oS6s4MhVDU3oU7g0kTw-AZ2oS6s4HvcTRl5pcNz_iw.jpg?v=1776647205')"></div>
+          <div class="pinned-img-slide" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUnPrQf3m1YPl3VCqZA-AZ2oUnPrCbZa8teYD26MiQ.jpg?v=1776647246')"></div>
+        </div>
+        <div class="pinned-img" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/PXL_20230513_165246228.PORTRAIT.jpg?v=1776647295')"></div>
       </div>
       <div class="pinned-text">
         <article class="pinned-step active">
@@ -741,49 +748,31 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   </div>
   <div class="ingredients-grid">
     <article class="ingredient-card reveal" data-tilt data-tilt-max="5">
-      <div class="ingredient-media" data-carousel data-auto="6500">
-        <div class="ing-slide active" style="background-image:url('https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1578393496891-b7068de24dfc?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1552276866-30a3ef2ab1cd?auto=format&fit=crop&w=1000&q=80')"></div>
-        <span class="ingredient-origin-tag">Tamil Nadu</span>
-        <div class="ing-thumbs" data-dots>
-          <button class="active" data-index="0"></button><button data-index="1"></button><button data-index="2"></button><button data-index="3"></button>
-        </div>
+      <div class="ingredient-media">
+        <div class="ing-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_iufixgiufixgiufi.png?v=1776647400')"></div>
+        <span class="ingredient-origin-tag">Rajasthan · India</span>
       </div>
-      <div class="ingredient-origin">Ancient · Golden · Revered</div>
-      <h3 class="ingredient-name">Turmeric</h3>
-      <p class="ingredient-desc">The golden root. Used for four thousand years to even tone, calm inflammation and clarify skin from the inside out.</p>
+      <div class="ingredient-origin">Adaptogenic · Calming · Ancient</div>
+      <h3 class="ingredient-name">Ashwagandha</h3>
+      <p class="ingredient-desc">A 3,000-year-old Ayurvedic root. Calms inflammation, strengthens the skin barrier and restores a quiet, balanced glow.</p>
     </article>
     <article class="ingredient-card reveal delay-1" data-tilt data-tilt-max="5">
-      <div class="ingredient-media" data-carousel data-auto="6500">
-        <div class="ing-slide active" style="background-image:url('https://images.unsplash.com/photo-1504455583697-3a9b04be6397?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1494972308805-463bc619d34e?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1455659817273-f96807779a8a?auto=format&fit=crop&w=1000&q=80')"></div>
-        <span class="ingredient-origin-tag">Isparta Valley</span>
-        <div class="ing-thumbs" data-dots>
-          <button class="active" data-index="0"></button><button data-index="1"></button><button data-index="2"></button><button data-index="3"></button>
-        </div>
-      </div>
-      <div class="ingredient-origin">Fermented · Humectant · Firming</div>
-      <h3 class="ingredient-name">Fermented Rose</h3>
-      <p class="ingredient-desc">Slow-fermented petals, concentrated into a humectant that firms, softens, and floods the skin with quiet moisture.</p>
-    </article>
-    <article class="ingredient-card reveal delay-2" data-tilt data-tilt-max="5">
-      <div class="ingredient-media" data-carousel data-auto="6500">
-        <div class="ing-slide active" style="background-image:url('https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1613578723472-c79544cab91e?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=1000&q=80')"></div>
-        <div class="ing-slide" style="background-image:url('https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=1000&q=80')"></div>
+      <div class="ingredient-media">
+        <div class="ing-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_t97zvdt97zvdt97z.png?v=1776647465')"></div>
         <span class="ingredient-origin-tag">Kashmir Valley</span>
-        <div class="ing-thumbs" data-dots>
-          <button class="active" data-index="0"></button><button data-index="1"></button><button data-index="2"></button><button data-index="3"></button>
-        </div>
       </div>
       <div class="ingredient-origin">Hand-picked · Brightening · Rare</div>
       <h3 class="ingredient-name">Saffron</h3>
-      <p class="ingredient-desc">Hand-picked threads. Revered in Ayurveda for restoring luminosity and gently lifting the appearance of dark spots.</p>
+      <p class="ingredient-desc">Hand-picked threads revered in Ayurveda for restoring luminosity and gently lifting the appearance of dark spots.</p>
+    </article>
+    <article class="ingredient-card reveal delay-2" data-tilt data-tilt-max="5">
+      <div class="ingredient-media">
+        <div class="ing-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_e23vnle23vnle23v.png?v=1776647468')"></div>
+        <span class="ingredient-origin-tag">Mediterranean · Kashmir</span>
+      </div>
+      <div class="ingredient-origin">Nourishing · Softening · Timeless</div>
+      <h3 class="ingredient-name">Almonds</h3>
+      <p class="ingredient-desc">Rich in Vitamin E and fatty acids. Used for centuries across Ayurvedic traditions to deeply nourish and soften skin.</p>
     </article>
   </div>
 </section>
@@ -1205,6 +1194,34 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   }
   window.addEventListener('scroll', updatePinned, { passive: true });
   updatePinned();
+
+  /* J2. PINNED STEP 2 SUB-SLIDE CYCLING */
+  const multiImg = document.querySelector('.pinned-img--multi');
+  if (multiImg) {
+    const subSlides = multiImg.querySelectorAll('.pinned-img-slide');
+    let subIdx = 0;
+    let subTimer = null;
+    function startSubCycle() {
+      if (subTimer) return;
+      subTimer = setInterval(() => {
+        subSlides[subIdx].classList.remove('active');
+        subIdx = (subIdx + 1) % subSlides.length;
+        subSlides[subIdx].classList.add('active');
+      }, 1800);
+    }
+    function stopSubCycle() {
+      clearInterval(subTimer);
+      subTimer = null;
+      subIdx = 0;
+      subSlides.forEach((s, i) => s.classList.toggle('active', i === 0));
+    }
+    // Watch when step 2 becomes active
+    const observer = new MutationObserver(() => {
+      if (multiImg.classList.contains('active')) startSubCycle();
+      else stopSubCycle();
+    });
+    observer.observe(multiImg, { attributes: true, attributeFilter: ['class'] });
+  }
 
   /* K. GALLERY CAROUSEL */
   const galleryTrack = document.getElementById('galleryTrack');
