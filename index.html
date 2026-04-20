@@ -165,6 +165,10 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:var(--max-w);margin:0 auto;perspective:1200px}
 .val-card{position:relative;padding:3rem 2rem;background:var(--white);border:1px solid var(--line-soft);border-radius:16px;cursor:default;transform-style:preserve-3d;transition:transform 400ms var(--ease),box-shadow 400ms var(--ease),border-color 400ms var(--ease);box-shadow:var(--shadow-1);overflow:hidden}
 .val-card:hover{box-shadow:var(--shadow-3);border-color:transparent}
+.val-card--bg{background-size:cover;background-position:center;border-color:transparent;position:relative}
+.val-card-overlay{position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,0.82) 0%,rgba(255,255,255,0.65) 100%);border-radius:16px;transition:background 400ms var(--ease)}
+.val-card--bg:hover .val-card-overlay{background:linear-gradient(160deg,rgba(255,255,255,0.72) 0%,rgba(255,255,255,0.5) 100%)}
+.val-card--bg .val-glyph,.val-card--bg .val-eyebrow,.val-card--bg h3,.val-card--bg p{position:relative;z-index:1}
 .val-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(181,110,69,.08),transparent 40%);opacity:0;transition:opacity 300ms var(--ease);border-radius:16px;pointer-events:none}
 .val-card:hover::before{opacity:1}
 .val-card .val-glyph{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;background:var(--cream-soft);margin-bottom:2rem;font-family:var(--font-display);font-style:italic;font-size:1.7rem;color:var(--copper-med);transform:translateZ(30px);transition:transform 400ms var(--ease),background 400ms var(--ease),color 400ms var(--ease)}
@@ -449,6 +453,26 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   .footer-bottom{justify-content:center;text-align:center}
   .product-nav{display:none}.insta-item{flex:0 0 180px}
 }
+/* === TESTIMONIAL VIDEO === */
+.testimonials-head{text-align:center;max-width:700px;margin:0 auto 3rem}
+.testimonials-head .eyebrow::before{display:none}
+.testimonials-head .eyebrow{margin-bottom:1.8rem}
+.testimonials-head h2{font-size:clamp(2.2rem,4vw,3.4rem);font-weight:300}
+.testimonials-head h2 em{font-style:italic;color:var(--copper-med)}
+.testimonial-video-wrap{max-width:480px;margin:0 auto 3rem;display:flex;flex-direction:column;align-items:center;gap:2rem}
+.testimonial-video-card{position:relative;width:100%;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--forest-deep);box-shadow:var(--shadow-3);cursor:pointer}
+.testimonial-video{width:100%;height:100%;object-fit:cover;display:block}
+.testimonial-video-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(30,38,33,0.5) 100%);pointer-events:none}
+.testimonial-video-play{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;z-index:3;transition:opacity 300ms var(--ease)}
+.testimonial-video-play svg{filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));transition:transform 300ms var(--ease-back)}
+.testimonial-video-play:hover svg{transform:scale(1.12)}
+.testimonial-video-play span{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.9);text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.testimonial-video-play.hidden{opacity:0;pointer-events:none}
+.testimonial-video-caption{text-align:center;max-width:420px}
+.testimonial-video-caption .stars{color:var(--copper-med);font-size:.9rem;letter-spacing:3px;margin-bottom:1rem}
+.testimonial-video-caption .testimonial-quote{font-family:var(--font-display);font-size:clamp(1.2rem,1.5vw,1.45rem);line-height:1.45;color:var(--forest);margin-bottom:1.5rem;font-style:italic}
+.testimonials-cta{text-align:center;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);margin-top:1rem}
+
 /* === CTA FORMS FIX === */
 #emailForm,#smsForm{border-bottom:none;padding-bottom:0;max-width:100%}
 #emailForm::after,#smsForm::after{display:none}
@@ -569,12 +593,14 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       <h3>In the old ways</h3>
       <p>Ancestral recipes, sourced from the hands and soils they've always grown in.</p>
     </article>
-    <article class="val-card reveal delay-1" data-tilt>
+    <article class="val-card val-card--bg reveal delay-1" data-tilt style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_397528386.jpg?v=1776643566')">
+      <div class="val-card-overlay"></div>
       <div class="val-glyph">P</div><span class="val-eyebrow">Pure</span>
       <h3>Nothing borrowed</h3>
       <p>No synthetics. No fillers. Nothing hidden behind a pretty label.</p>
     </article>
-    <article class="val-card reveal delay-2" data-tilt>
+    <article class="val-card val-card--bg reveal delay-2" data-tilt style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_618889243_Preview.jpg?v=1776643639')">
+      <div class="val-card-overlay"></div>
       <div class="val-glyph">R</div><span class="val-eyebrow">Radiant</span>
       <h3>By nature's design</h3>
       <p>Skin that remembers what it's meant to do — calm, balanced, quietly alive.</p>
@@ -791,36 +817,41 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     <div class="eyebrow">What Our Community Says</div>
     <h2>Skin, <em>remembered.</em></h2>
   </div>
-  <div class="testimonials-track-wrap"><div class="testimonials-track" id="testimonialsTrack">
-    <article class="testimonial">
+
+  <!-- Customer video review -->
+  <div class="testimonial-video-wrap reveal">
+    <div class="testimonial-video-card">
+      <video
+        id="customerVideo"
+        src="https://cdn.shopify.com/videos/c/o/v/8a42c12b38be46eab7fc6aea8bf9ed3b.mp4"
+        playsinline
+        preload="none"
+        poster=""
+        class="testimonial-video"
+      ></video>
+      <button class="testimonial-video-play" id="videoPlayBtn" aria-label="Play customer review">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="13" fill="rgba(255,255,255,0.95)"/>
+          <path d="M11 9.5L20 14L11 18.5V9.5Z" fill="#2F3A34"/>
+        </svg>
+        <span>Watch her review</span>
+      </button>
+      <div class="testimonial-video-overlay" id="videoOverlay"></div>
+    </div>
+    <div class="testimonial-video-caption">
       <div class="stars">★★★★★</div>
-      <p class="testimonial-quote">I thought I'd tried everything. Two weeks in and my skin looks like it did in my twenties — without pulling, tightening or the sting of something synthetic.</p>
-      <div class="testimonial-meta"><span class="testimonial-initial">N</span><div><div class="testimonial-name">Naomi R.</div><div class="testimonial-concern">Dry · Sensitive</div></div></div>
-    </article>
-    <article class="testimonial is-center">
-      <div class="stars">★★★★★</div>
-      <p class="testimonial-quote">The only cleanser that hasn't stripped my skin. It smells like a garden after rain — one of those you don't want to leave.</p>
-      <div class="testimonial-meta"><span class="testimonial-initial">P</span><div><div class="testimonial-name">Priya S.</div><div class="testimonial-concern">Combination</div></div></div>
-    </article>
-    <article class="testimonial">
-      <div class="stars">★★★★★</div>
-      <p class="testimonial-quote">I don't do routines. I do this one stick, morning and night — and my face has never looked quieter or more itself.</p>
-      <div class="testimonial-meta"><span class="testimonial-initial">E</span><div><div class="testimonial-name">Elizabeth M.</div><div class="testimonial-concern">Mature · Brightening</div></div></div>
-    </article>
-    <article class="testimonial">
-      <div class="stars">★★★★★</div>
-      <p class="testimonial-quote">After years of chasing the next serum, I stopped. The Brightening Glow is all I need, morning and evening. My skin is finally at peace.</p>
-      <div class="testimonial-meta"><span class="testimonial-initial">A</span><div><div class="testimonial-name">Amelia K.</div><div class="testimonial-concern">Hyperpigmentation</div></div></div>
-    </article>
-    <article class="testimonial">
-      <div class="stars">★★★★★</div>
-      <p class="testimonial-quote">I gifted this to my mother for her birthday. Within a month, she was ordering one for every woman she knew — and stopped using nine other things.</p>
-      <div class="testimonial-meta"><span class="testimonial-initial">J</span><div><div class="testimonial-name">Juhi V.</div><div class="testimonial-concern">Gifted</div></div></div>
-    </article>
-  </div></div>
-  <div class="testimonials-footer" id="testimonialDots">
-    <span class="t-dot"></span><span class="t-dot active"></span><span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span>
+      <p class="testimonial-quote">"It don't feel like I need a lot of other product on my face when I use it"</p>
+      <div class="testimonial-meta" style="justify-content:center;padding-top:1rem;border-top:1px solid var(--line-soft);">
+        <span class="testimonial-initial">C</span>
+        <div>
+          <div class="testimonial-name">Customer Review</div>
+          <div class="testimonial-concern">Sprouts Market · San Francisco</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <p class="testimonials-cta reveal">More reviews coming soon — follow us <a href="https://www.instagram.com/petalsandpods/" target="_blank" rel="noopener" style="color:var(--copper-med);text-decoration:underline;">@petalsandpods</a></p>
 </section>
 
 <!-- === JOURNAL === -->
@@ -1215,6 +1246,31 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   });
 
   /* N. SMS FORM */
+  // ── VIDEO PLAY BUTTON ─────────────────────────────────────────────────────
+  const video = document.getElementById('customerVideo');
+  const playBtn = document.getElementById('videoPlayBtn');
+  if (video && playBtn) {
+    playBtn.addEventListener('click', () => {
+      video.play();
+      playBtn.classList.add('hidden');
+    });
+    video.addEventListener('pause', () => {
+      playBtn.classList.remove('hidden');
+    });
+    video.addEventListener('ended', () => {
+      playBtn.classList.remove('hidden');
+    });
+    // Click on video to pause/play
+    video.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playBtn.classList.add('hidden');
+      } else {
+        video.pause();
+      }
+    });
+  }
+
   // Email form — 10% off
   const emailForm = document.getElementById('emailForm');
   const emailInput = document.getElementById('emailInput');
