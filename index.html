@@ -114,7 +114,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .hero-carousel{position:absolute;inset:0;z-index:-2;overflow:hidden}
 .hero-slide{position:absolute;inset:0;opacity:0;transform:scale(1.1);transition:opacity 1800ms var(--ease),transform 9000ms var(--ease);background-color:var(--forest);background-size:cover;background-position:center;will-change:opacity,transform}
 .hero-slide.active{opacity:1;transform:scale(1)}
-.hero-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,38,33,.4) 0%,rgba(30,38,33,.15) 45%,rgba(30,38,33,.5) 80%,rgba(30,38,33,.85) 100%),linear-gradient(135deg,rgba(114,51,29,.15),transparent 60%)}
+.hero-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,28,23,.5) 0%,rgba(20,28,23,.25) 40%,rgba(20,28,23,.55) 75%,rgba(20,28,23,.88) 100%),linear-gradient(135deg,rgba(80,35,10,.3),transparent 55%)}
 .hero-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55;pointer-events:none;mix-blend-mode:screen;will-change:transform}
 .hero-orb.a{top:20%;left:10%;width:480px;height:480px;background:#D6A07A;animation:float1 18s ease-in-out infinite}
 .hero-orb.b{top:50%;right:8%;width:380px;height:380px;background:#9CAF88;animation:float2 22s ease-in-out infinite}
@@ -125,11 +125,11 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .hero-content{position:relative;z-index:2;max-width:1100px;width:100%;perspective:1000px}
 .hero-eyebrow{color:var(--copper-sand);margin-bottom:2rem}
 .hero-eyebrow::before{background:var(--copper-sand)}
-.hero-title{font-size:clamp(3.5rem,10vw,9rem);font-weight:300;line-height:.96;letter-spacing:-.025em;color:var(--white);margin-bottom:2rem;max-width:14ch;transform-style:preserve-3d;text-shadow:0 30px 60px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.2)}
+.hero-title{font-size:clamp(3.5rem,10vw,9rem);font-weight:300;line-height:.96;letter-spacing:-.025em;color:var(--white);margin-bottom:2rem;max-width:14ch;transform-style:preserve-3d;text-shadow:0 4px 24px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.5),0 30px 60px rgba(0,0,0,.4)}
 .hero-title em{font-style:italic;color:var(--copper-sand);font-weight:400}
 .hero-title .t-line{display:block;transform-style:preserve-3d;will-change:transform;transition:transform 400ms var(--ease)}
-.hero-sub{max-width:44ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.6;color:rgba(255,255,255,.9);margin-bottom:2.5rem;text-shadow:0 2px 20px rgba(0,0,0,.3)}
-.hero-dots{position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column;gap:1rem}
+.hero-sub{max-width:44ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.6;color:rgba(255,255,255,.95);margin-bottom:2.5rem;text-shadow:0 2px 12px rgba(0,0,0,.7),0 1px 4px rgba(0,0,0,.5);background:rgba(0,0,0,.15);padding:.5rem .8rem;border-radius:6px;backdrop-filter:blur(4px)}
+.hero-dots{display:none}
 .hero-dot{width:6px;height:40px;background:rgba(255,255,255,.25);border-radius:99px;position:relative;overflow:hidden;cursor:pointer;transition:background 300ms var(--ease)}
 .hero-dot::after{content:"";position:absolute;left:0;top:0;width:100%;height:0%;background:var(--copper-sand);transition:height 100ms linear}
 .hero-dot.active::after{animation:dotFill 7s linear}
@@ -198,6 +198,17 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .story-tag.t3{top:40%;left:-2rem;animation-delay:3s}
 @keyframes tagFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .ornament{position:absolute;font-family:var(--font-display);font-style:italic;font-size:14rem;color:var(--copper-sand);opacity:.1;pointer-events:none;line-height:.8;user-select:none;z-index:0}
+
+/* === STORY FOUNDER === */
+.story--text-only{padding:8rem var(--gutter);background:var(--off-white);position:relative;overflow:hidden}
+.story--text-only::before{content:"";position:absolute;top:-200px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(214,160,122,.2),transparent 70%);pointer-events:none}
+.story-founder-wrap{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(3rem,6vw,8rem);align-items:start}
+.story-founder-body p{font-family:var(--font-display);font-size:clamp(1.15rem,1.5vw,1.35rem);line-height:1.6;color:var(--ink-muted);margin-bottom:1.8rem}
+.story-founder-body p em{font-style:italic;color:var(--copper-med)}
+.story-founder-lead{font-size:clamp(1.25rem,1.7vw,1.5rem)!important;color:var(--forest)!important;font-weight:400}
+.story-founder-tags{display:flex;flex-wrap:wrap;gap:.7rem;margin:2rem 0}
+.story-tag-inline{padding:.5rem 1.1rem;background:var(--white);border:1px solid var(--line);border-radius:99px;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-med)}
+@media(max-width:1024px){.story-founder-wrap{grid-template-columns:1fr}}
 
 /* === COLLECTION / PRODUCTS === */
 .collection{padding:7rem var(--gutter) 9rem;background:var(--white);position:relative;overflow:hidden}
@@ -499,7 +510,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 <nav class="nav over-hero" id="nav" aria-label="Primary">
   <div class="nav-inner">
     <a href="#top" class="nav-logo" aria-label="Petals &amp; Pods home">
-      <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/4th_Logo.ai_1.png?v=1776641344" alt="Petals &amp; Pods" class="nav-logo-img" />
+      <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/4th_Logo.ai_2.png?v=1776674992" alt="Petals &amp; Pods" class="nav-logo-img" />
     </a>
     <div class="nav-links">
       <a href="#products" class="nav-link">Shop</a>
@@ -620,22 +631,24 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 </section>
 
 <!-- === STORY === -->
-<section class="story" id="story" aria-label="Our story">
+<section class="story story--text-only" id="story" aria-label="Founder's story">
   <span class="ornament" aria-hidden="true" style="top:3rem;right:3rem;">&amp;</span>
-  <div class="story-grid">
+  <div class="story-founder-wrap">
     <div class="story-text reveal">
-      <div class="eyebrow">Our Story</div>
-      <h2>Your skin deserves what the <em>earth</em> already knows.</h2>
-      <p>Every stick we press by hand carries recipes remembered by generations. Slow botanical blends, traced back to the places they've always grown — from the turmeric fields of Tamil Nadu to the rose valleys of Isparta. Farm to skin, with nothing left to hide.</p>
-      <a href="https://petalsandpods.myshopify.com/pages/about-us" class="text-link"><span>Read our full story</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></a>
+      <div class="eyebrow">Founder's Story</div>
+      <h2>Business and conscious living are <em>two sides of the same coin.</em></h2>
     </div>
-    <div class="story-image-wrap reveal delay-2" data-parallax="0.15">
-      <div class="story-image" data-tilt data-tilt-max="8">
-        <img src="https://images.unsplash.com/photo-1617625802921-b3830a49f5a0?auto=format&fit=crop&w=1200&q=80" alt="Founder pressing botanical sticks by hand" loading="lazy" />
+    <div class="story-founder-body reveal delay-1">
+      <p class="story-founder-lead">A warm, loving gift received during the 2022 holidays — in the form of handmade bar soap — transformed into today's Petals &amp; Pods face wash sticks.</p>
+      <p>I have always been someone who has been a sincere explorer in the space of self-knowing. This business has become one of the ways my life expresses itself. This is also my quest to live and prove that business and conscious living are not extreme ends — but two sides of the same coin.</p>
+      <p>Founded on a 5,000-year-old skincare recipe, <em>Nalupu / Ubtan</em> from India — we are yet to explore more recipes.</p>
+      <div class="story-founder-tags">
+        <span class="story-tag-inline">Hand-pressed</span>
+        <span class="story-tag-inline">Cold-blended</span>
+        <span class="story-tag-inline">Small batch</span>
+        <span class="story-tag-inline">5,000-year-old recipe</span>
       </div>
-      <div class="story-tag t1">Hand-pressed</div>
-      <div class="story-tag t2">Cold-blended</div>
-      <div class="story-tag t3">Small batch</div>
+      <a href="https://petalsandpods.myshopify.com/pages/about-us" class="text-link" style="margin-top:2rem"><span>Read our full story</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></a>
     </div>
   </div>
 </section>
@@ -793,15 +806,15 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     </div>
   </div>
   <div class="gallery-track-wrap"><div class="gallery-track" id="galleryTrack">
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Rituals</span><h4>Morning stillness</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1617625802921-b3830a49f5a0?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Making</span><h4>By hand, by season</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Botanicals</span><h4>The unhurried harvest</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Texture</span><h4>Soft on arrival</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Craft</span><h4>Small batches only</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Origin</span><h4>The golden root</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504455583697-3a9b04be6397?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Origin</span><h4>The fermented petal</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1522335789203-aaa2d7d5f5b0?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Still</span><h4>Afternoon quiet</h4></div></div>
-    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Rituals</span><h4>Before the world wakes</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114" alt="Sourced botanicals" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Botanicals</span><h4>Sourced with patience</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUK7O2QZj8X1jOeHj2A-AZ2oUK7Ov754pPSvVsO_Lg.jpg?v=1776647134" alt="Mixing process" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Craft</span><h4>Mixed by hand</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oS6s4MhVDU3oU7g0kTw-AZ2oS6s4HvcTRl5pcNz_iw.jpg?v=1776647205" alt="Grinding process" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Process</span><h4>Ground slowly</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUnPrQf3m1YPl3VCqZA-AZ2oUnPrCbZa8teYD26MiQ.jpg?v=1776647246" alt="Making process" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Making</span><h4>The recipe in motion</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/PXL_20230513_165246228.PORTRAIT.jpg?v=1776647295" alt="Packaging" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Small batch</span><h4>Packaged by hand</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_iufixgiufixgiufi.png?v=1776647400" alt="Ashwagandha" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Origin</span><h4>Ashwagandha root</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_t97zvdt97zvdt97z.png?v=1776647465" alt="Saffron" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Origin</span><h4>Kashmir saffron</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_397528386.jpg?v=1776643566" alt="Pure ingredient" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Pure</span><h4>Nothing borrowed</h4></div></div>
+    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_618889243_Preview.jpg?v=1776643639" alt="Radiant" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Radiant</span><h4>By nature's design</h4></div></div>
   </div></div>
 </section>
 
@@ -958,7 +971,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 <footer class="footer" aria-label="Footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="#top" class="footer-wordmark"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/4th_Logo.ai_1.png?v=1776641344" alt="Petals &amp; Pods" style="height:32px;width:auto;object-fit:contain;" /></a>
+      <a href="#top" class="footer-wordmark"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/4th_Logo.ai_2.png?v=1776674992" alt="Petals &amp; Pods" style="height:32px;width:auto;object-fit:contain;" /></a>
       <p class="footer-belief">Purposefully-crafted functional blends inspired by ancient skincare secrets. Rooted. Pure. Radiant.</p>
     </div>
     <div class="footer-col"><h5>Shop</h5><nav class="footer-links">
@@ -1077,7 +1090,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     setHero(parseInt(e.currentTarget.getAttribute('data-index')));
     startHero();
   }));
-  startHero();
+  // startHero() disabled — single hero image, no auto-scroll
 
   if (hero && heroContent && window.matchMedia('(hover: hover)').matches) {
     hero.addEventListener('mousemove', (e) => {
