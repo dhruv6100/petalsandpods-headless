@@ -244,12 +244,12 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .pinned{background:linear-gradient(135deg,#3D2314 0%,#6B3520 25%,#934225 50%,#7A3B1E 75%,#2F1A0E 100%);color:var(--white);position:relative}
 .pinned::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;pointer-events:none;z-index:0}
 .pinned .pinned-scroll{position:relative;z-index:1}
-.pinned-scroll{height:300vh}
+.pinned-scroll{height:450vh}
 .pinned-sticky{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:stretch;overflow:hidden}
 .pinned-media{position:relative;height:100%;overflow:hidden}
 .pinned-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.15);transition:opacity 900ms var(--ease),transform 1600ms var(--ease)}
-.pinned-img--multi{background:none}
-.pinned-img-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 800ms var(--ease)}
+.pinned-img--multi{background:none;overflow:hidden}
+.pinned-img-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 800ms var(--ease);will-change:opacity}
 .pinned-img-slide.active{opacity:1}
 .pinned-img.active{opacity:1;transform:scale(1)}
 .pinned-img::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(61,35,20,.35),transparent 60%)}
@@ -1180,17 +1180,26 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   const pinnedImgs = document.querySelectorAll('.pinned-img');
   const pinnedBar = document.getElementById('pinnedBar');
   const pinnedCount = document.getElementById('pinnedCount');
+  let lastPinnedStep = -1;
   function updatePinned() {
     if (!pinned) return;
     const r = pinned.getBoundingClientRect();
     const total = pinned.offsetHeight - window.innerHeight;
+    // Only active when pinned section is in sticky state
     if (r.top > 0 || r.bottom < window.innerHeight) return;
     const progress = Math.min(Math.max(-r.top / total, 0), 1);
-    const step = Math.min(Math.floor(progress * pinnedSteps.length), pinnedSteps.length - 1);
+    // Use threshold zones with slight overlap to avoid jitter at boundaries
+    const n = pinnedSteps.length;
+    const zoneSize = 1 / n;
+    // Step changes at 15% into each zone (not at exact boundary) for smoothness
+    const adjusted = Math.max(0, progress - 0.04);
+    const step = Math.min(Math.floor(adjusted * n), n - 1);
+    if (step === lastPinnedStep) return; // No change, skip DOM update
+    lastPinnedStep = step;
     pinnedSteps.forEach((s, i) => s.classList.toggle('active', i === step));
     pinnedImgs.forEach((img, i) => img.classList.toggle('active', i === step));
-    if (pinnedBar) pinnedBar.style.width = (((step + 1) / pinnedSteps.length) * 100) + '%';
-    if (pinnedCount) pinnedCount.textContent = String(step + 1).padStart(2, '0') + ' / ' + String(pinnedSteps.length).padStart(2, '0');
+    if (pinnedBar) pinnedBar.style.width = (((step + 1) / n) * 100) + '%';
+    if (pinnedCount) pinnedCount.textContent = String(step + 1).padStart(2, '0') + ' / 03';
   }
   window.addEventListener('scroll', updatePinned, { passive: true });
   updatePinned();
@@ -1215,12 +1224,17 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       subIdx = 0;
       subSlides.forEach((s, i) => s.classList.toggle('active', i === 0));
     }
-    // Watch when step 2 becomes active
+    // Watch when step 2 becomes active via class toggle
     const observer = new MutationObserver(() => {
-      if (multiImg.classList.contains('active')) startSubCycle();
-      else stopSubCycle();
+      if (multiImg.classList.contains('active')) {
+        startSubCycle();
+      } else {
+        stopSubCycle();
+      }
     });
     observer.observe(multiImg, { attributes: true, attributeFilter: ['class'] });
+    // Also check immediately in case page loads on step 2
+    if (multiImg.classList.contains('active')) startSubCycle();
   }
 
   /* K. GALLERY CAROUSEL */
