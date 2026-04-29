@@ -256,10 +256,10 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .product-tag:hover{background:var(--forest);color:var(--white);border-color:var(--forest)}
 
 /* === PINNED === */
-.pinned{background:linear-gradient(135deg,#3D2314 0%,#6B3520 25%,#934225 50%,#7A3B1E 75%,#2F1A0E 100%);color:var(--white);position:relative}
+.pinned{scroll-margin-bottom:0;background:linear-gradient(135deg,#3D2314 0%,#6B3520 25%,#934225 50%,#7A3B1E 75%,#2F1A0E 100%);color:var(--white);position:relative}
 .pinned::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4;pointer-events:none;z-index:0}
 .pinned .pinned-scroll{position:relative;z-index:1}
-.pinned-scroll{height:450vh}
+.pinned-scroll{height:300vh}
 .pinned-sticky{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:stretch;overflow:hidden}
 .pinned-media{position:relative;height:100%;overflow:hidden}
 .pinned-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.15);transition:opacity 900ms var(--ease),transform 1600ms var(--ease)}
@@ -509,6 +509,17 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- === NAV === -->
+<!-- === MOTHERS DAY BAR === -->
+<div id="mothersBar" style="background:linear-gradient(90deg,#B5464A 0%,#8B3A3E 40%,#B5464A 100%);color:#fff;padding:.65rem var(--gutter);text-align:center;position:relative;z-index:101;">
+  <div style="display:flex;align-items:center;justify-content:center;gap:1.2rem;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;flex-wrap:wrap;">
+    <span>✿</span>
+    <span>Mother's Day — Gift Mum the ritual she deserves.</span>
+    <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="color:#E8B4B8;border-bottom:1px solid rgba(232,180,184,.5);padding-bottom:1px;">Shop the Wellness Bundle →</a>
+    <span>✿</span>
+  </div>
+  <button onclick="document.getElementById('mothersBar').style.display='none'" style="position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.6);font-size:1.1rem;line-height:1;" aria-label="Close">×</button>
+</div>
+
 <nav class="nav over-hero" id="nav" aria-label="Primary">
   <div class="nav-inner">
     <a href="#top" class="nav-logo" aria-label="Petals &amp; Pods home">
@@ -516,7 +527,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     </a>
     <div class="nav-links">
       <a href="#products" class="nav-link">Shop</a>
-      <a href="#story" class="nav-link">Our Story</a>
+      <a href="/about.html" class="nav-link">Our Story</a>
       <a href="#journal" class="nav-link">Journal</a>
       <a href="#ingredients" class="nav-link">Ingredients</a>
     </div>
@@ -537,7 +548,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   <button class="mobile-close" id="mobileClose" aria-label="Close menu">Close</button>
   <div class="mobile-links">
     <a href="#products">Shop</a>
-    <a href="#story">Our Story</a>
+    <a href="/about.html">Our Story</a>
     <a href="#journal">Journal</a>
     <a href="#ingredients">Ingredients</a>
   </div>
@@ -603,6 +614,32 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     <span class="marquee-item italic">Local Farmers Markets</span><span class="marquee-item">HANDMADE CRAFTS FAIRS</span>
     <span class="marquee-item italic">Jazba Collective Accelerator</span><span class="marquee-item">HANDMADE CRAFTS FAIRS</span>
   </div></div>
+</section>
+
+<!-- === MOTHERS DAY CAMPAIGN === -->
+<section style="position:relative;overflow:hidden;min-height:480px;display:flex;align-items:center;background:linear-gradient(135deg,#2A0E10 0%,#5C1E22 30%,#8B3A3E 60%,#B5464A 100%);">
+  <div style="position:absolute;inset:0;background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_397528386.jpg?v=1776643566');background-size:cover;background-position:center;opacity:.15;mix-blend-mode:luminosity"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(42,14,16,.88) 0%,rgba(92,30,34,.7) 50%,rgba(181,70,74,.45) 100%)"></div>
+  <div style="position:relative;z-index:2;max-width:var(--max-w);margin:0 auto;width:100%;padding:5rem var(--gutter);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
+    <div>
+      <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:#E8B4B8;margin-bottom:1.2rem;display:flex;align-items:center;gap:.7rem;"><span style="display:inline-block;width:24px;height:1px;background:#E8B4B8"></span>Mother's Day · May 11</div>
+      <h2 style="font-family:var(--font-display);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;line-height:.98;color:#fff;margin-bottom:1.2rem;">For the Mum<br/>who <em style="font-style:italic;color:#E8B4B8">glows</em><br/>from within.</h2>
+      <p style="font-family:var(--font-display);font-style:italic;font-size:1.05rem;color:rgba(255,255,255,.8);line-height:1.6;max-width:40ch;margin-bottom:2rem;">Gift Mum the ritual she deserves. Ancient skincare secrets pressed by hand — for skin that remembers what it was always meant to do.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:inline-flex;align-items:center;gap:.7rem;padding:1rem 2rem;background:#fff;color:#B5464A;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;">Gift the Wellness Bundle →</a>
+        <a href="/#products" style="display:inline-flex;align-items:center;gap:.7rem;padding:1rem 1.8rem;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;">All Products</a>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:2rem;text-align:center;">
+      <div style="aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.1);margin-bottom:1.5rem;">
+        <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114" alt="Wellness Gift Bundle" style="width:100%;height:100%;object-fit:cover;" />
+      </div>
+      <div style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:#E8B4B8;margin-bottom:.5rem;">Mother's Day · Limited Gift</div>
+      <div style="font-family:var(--font-display);font-size:1.3rem;color:#fff;margin-bottom:.3rem;">Wellness Gift Bundle</div>
+      <div style="font-family:var(--font-mono);font-size:.82rem;color:#E8B4B8;margin-bottom:1.2rem;">From $35.00 USD</div>
+      <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:block;padding:.9rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;">Gift This Ritual →</a>
+    </div>
+  </div>
 </section>
 
 <!-- === VALUES === -->
@@ -1213,16 +1250,27 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     if (!pinned) return;
     const r = pinned.getBoundingClientRect();
     const total = pinned.offsetHeight - window.innerHeight;
-    // Only active when pinned section is in sticky state
-    if (r.top > 0 || r.bottom < window.innerHeight) return;
+    // Not yet reached
+    if (r.top > 0) return;
+    // Already past — ensure last step is shown, don't lock scroll
+    if (r.bottom <= window.innerHeight) {
+      const n = pinnedSteps.length;
+      const lastStep = n - 1;
+      if (lastPinnedStep !== lastStep) {
+        lastPinnedStep = lastStep;
+        pinnedSteps.forEach((s, i) => s.classList.toggle('active', i === lastStep));
+        pinnedImgs.forEach((img, i) => img.classList.toggle('active', i === lastStep));
+        if (pinnedBar) pinnedBar.style.width = '100%';
+        if (pinnedCount) pinnedCount.textContent = String(n).padStart(2, '0') + ' / 03';
+      }
+      return;
+    }
     const progress = Math.min(Math.max(-r.top / total, 0), 1);
-    // Use threshold zones with slight overlap to avoid jitter at boundaries
     const n = pinnedSteps.length;
-    const zoneSize = 1 / n;
-    // Step changes at 15% into each zone (not at exact boundary) for smoothness
-    const adjusted = Math.max(0, progress - 0.04);
+    // Smooth step transitions — commit a step once 20% into its zone
+    const adjusted = Math.max(0, progress - 0.03);
     const step = Math.min(Math.floor(adjusted * n), n - 1);
-    if (step === lastPinnedStep) return; // No change, skip DOM update
+    if (step === lastPinnedStep) return;
     lastPinnedStep = step;
     pinnedSteps.forEach((s, i) => s.classList.toggle('active', i === step));
     pinnedImgs.forEach((img, i) => img.classList.toggle('active', i === step));
@@ -1473,7 +1521,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
         }
 
         // 4. Product page link — clicking the card body navigates to Shopify product page
-        const productUrl = `https://${SHOPIFY_DOMAIN}/products/${handle}`;
+        const productUrl = `/product.html?handle=${handle}`;
         const body = card.querySelector('.product-body');
         if (body) {
           body.style.cursor = 'pointer';
