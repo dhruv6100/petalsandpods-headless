@@ -550,18 +550,14 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 
 <!-- === NAV === -->
 <!-- === MOTHERS DAY BAR === -->
-<div id="mothersBar" style="background:linear-gradient(90deg,#6B1E22 0%,#B5464A 35%,#D4686B 50%,#B5464A 65%,#6B1E22 100%);color:#fff;padding:1rem var(--gutter);text-align:center;position:relative;z-index:102;box-shadow:0 4px 20px rgba(181,70,74,.5);">
-  <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
-    <span style="font-size:1.4rem;animation:pulse 2s ease-in-out infinite">🌸</span>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:.2rem;">
-      <span style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.7);">Mother's Day · May 11</span>
-      <span style="font-family:var(--font-display);font-size:clamp(1rem,2vw,1.2rem);font-weight:400;color:#fff;">Gift Mum the ritual she deserves</span>
-    </div>
-    <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.4rem;background:#fff;color:#B5464A;border-radius:99px;font-family:var(--font-mono);font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;transition:all 200ms;flex-shrink:0;">Shop the Bundle →</a>
-    <span style="font-size:1.4rem;animation:pulse 2s ease-in-out infinite;animation-delay:.5s">🌸</span>
+<div id="mothersBar" style="background:#F7E8EA;color:var(--forest);padding:.6rem var(--gutter);text-align:center;position:relative;z-index:102;border-bottom:1px solid rgba(181,70,74,.15);">
+  <div style="display:flex;align-items:center;justify-content:center;gap:1rem;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;flex-wrap:wrap;">
+    <span style="color:#B5464A">✿</span>
+    <span style="color:var(--ink)">Mother's Day — Gift Mum the ritual she deserves.</span>
+    <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="color:#B5464A;border-bottom:1px solid rgba(181,70,74,.4);padding-bottom:1px;">Shop the Wellness Bundle →</a>
+    <span style="color:#B5464A">✿</span>
   </div>
-  <button onclick="document.getElementById('mothersBar').style.display='none'" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;font-size:1rem;line-height:1;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;" aria-label="Close">×</button>
-  <style>@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}</style>
+  <button onclick="document.getElementById('mothersBar').style.display='none'" style="position:absolute;right:var(--gutter);top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(28,33,30,.4);font-size:1rem;line-height:1;" aria-label="Close">×</button>
 </div>
 
 <nav class="nav over-hero" id="nav" aria-label="Primary">
@@ -663,22 +659,56 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 <!-- === MOTHERS DAY CAMPAIGN === -->
 <section id="mothersDayCampaign" style="position:relative;overflow:hidden;min-height:600px;display:flex;align-items:center;background:linear-gradient(135deg,#1A060A 0%,#6B1E22 30%,#B5464A 55%,#D4686B 75%,#6B1E22 100%);cursor:default;">
   <style>
-    #mothersDayCampaign{transition:background 600ms ease}
-    .md-particle{position:absolute;pointer-events:none;font-size:1.2rem;opacity:0;animation:mdFloat 4s ease-in-out forwards}
-    @keyframes mdFloat{0%{opacity:0;transform:translateY(0) scale(0.5)}20%{opacity:.7}80%{opacity:.4}100%{opacity:0;transform:translateY(-120px) scale(1.2) rotate(20deg)}}
+    #mothersDayCampaign{transition:background 600ms ease;overflow:hidden}
+    /* Ambient floating flowers — always on, not just on hover */
+    .md-ambient{position:absolute;pointer-events:none;font-size:2.5rem;opacity:0;animation:mdAmbient 6s ease-in-out infinite}
+    @keyframes mdAmbient{
+      0%{opacity:0;transform:translateY(100px) rotate(-10deg) scale(0.6)}
+      15%{opacity:.55}
+      70%{opacity:.35}
+      100%{opacity:0;transform:translateY(-160px) rotate(25deg) scale(1.3)}
+    }
+    /* Cursor burst particles — bigger and more vivid */
+    .md-particle{position:absolute;pointer-events:none;font-size:2rem;opacity:0;animation:mdFloat 3s ease-out forwards}
+    @keyframes mdFloat{
+      0%{opacity:0;transform:translateY(0) scale(0.4) rotate(-15deg)}
+      15%{opacity:1}
+      60%{opacity:.8}
+      100%{opacity:0;transform:translateY(-180px) scale(1.5) rotate(30deg)}
+    }
+    /* Shimmer overlay on the whole section */
+    #mothersDayCampaign::after{
+      content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+      background:radial-gradient(ellipse at 30% 50%,rgba(232,180,184,.12) 0%,transparent 60%),
+                 radial-gradient(ellipse at 80% 30%,rgba(212,104,107,.1) 0%,transparent 50%);
+      animation:shimmerBg 8s ease-in-out infinite alternate;
+    }
+    @keyframes shimmerBg{
+      0%{opacity:.6;transform:scale(1)}
+      100%{opacity:1;transform:scale(1.05)}
+    }
     .md-bundle-card{transition:transform 400ms cubic-bezier(0.34,1.56,0.64,1),box-shadow 400ms ease}
-    .md-bundle-card:hover{transform:translateY(-8px) scale(1.02)!important;box-shadow:0 30px 60px rgba(0,0,0,.4)!important}
+    .md-bundle-card:hover{transform:translateY(-10px) scale(1.03)!important;box-shadow:0 40px 80px rgba(0,0,0,.5)!important}
     .md-gift-btn{position:relative;overflow:hidden;transition:all 300ms ease}
     .md-gift-btn::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-101%);transition:transform 400ms ease}
     .md-gift-btn:hover::after{transform:translateX(0)}
     .md-countdown{display:flex;gap:1rem;margin-bottom:1.5rem}
-    .md-count-unit{text-align:center;min-width:52px}
-    .md-count-num{font-family:var(--font-display);font-size:2rem;color:#E8B4B8;line-height:1;display:block}
+    .md-count-unit{text-align:center;min-width:52px;background:rgba(255,255,255,.08);border-radius:8px;padding:.5rem .3rem}
+    .md-count-num{font-family:var(--font-display);font-size:2.2rem;color:#E8B4B8;line-height:1;display:block;text-shadow:0 2px 12px rgba(232,180,184,.4)}
     .md-count-label{font-family:var(--font-mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)}
   </style>
+  <!-- Ambient always-on flowers -->
+  <div class="md-ambient" style="left:5%;animation-delay:0s;animation-duration:7s;font-size:3rem">🌸</div>
+  <div class="md-ambient" style="left:15%;animation-delay:1.5s;animation-duration:8s;font-size:2rem">✿</div>
+  <div class="md-ambient" style="left:25%;animation-delay:3s;animation-duration:6s;font-size:2.5rem">🌺</div>
+  <div class="md-ambient" style="left:50%;animation-delay:.8s;animation-duration:9s;font-size:1.8rem">❀</div>
+  <div class="md-ambient" style="left:60%;animation-delay:2.2s;animation-duration:7.5s;font-size:2.8rem">🌷</div>
+  <div class="md-ambient" style="left:72%;animation-delay:4s;animation-duration:6.5s;font-size:2.2rem">✾</div>
+  <div class="md-ambient" style="left:85%;animation-delay:1s;animation-duration:8.5s;font-size:3.2rem">🌸</div>
+  <div class="md-ambient" style="left:92%;animation-delay:3.5s;animation-duration:7s;font-size:1.6rem">✿</div>
   <div style="position:absolute;inset:0;background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_397528386.jpg?v=1776643566');background-size:cover;background-position:center;opacity:.15;mix-blend-mode:luminosity"></div>
   <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(42,14,16,.88) 0%,rgba(92,30,34,.7) 50%,rgba(181,70,74,.45) 100%)"></div>
-  <div style="position:relative;z-index:2;max-width:var(--max-w);margin:0 auto;width:100%;padding:5rem var(--gutter);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
+  <div style="position:relative;z-index:3;max-width:var(--max-w);margin:0 auto;width:100%;padding:5rem var(--gutter);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
     <div>
       <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:#E8B4B8;margin-bottom:1.2rem;display:flex;align-items:center;gap:.7rem;"><span style="display:inline-block;width:24px;height:1px;background:#E8B4B8"></span>Mother's Day · May 11</div>
       <h2 style="font-family:var(--font-display);font-size:clamp(2.8rem,6vw,5rem);font-weight:300;line-height:.95;color:#fff;margin-bottom:1.2rem;text-shadow:0 4px 30px rgba(0,0,0,.4);">For the Mum<br/>who <em style="font-style:italic;color:#E8B4B8">glows</em><br/>from within.</h2>
@@ -1072,7 +1102,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 </main>
 
 <!-- === STICKY BOTTOM BANNER === -->
-<div id="mdBottomBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(90deg,#6B1E22 0%,#B5464A 40%,#D4686B 60%,#B5464A 80%,#6B1E22 100%);padding:1rem var(--gutter);border-top:2px solid rgba(232,180,184,.3);display:flex;align-items:center;justify-content:space-between;gap:1rem;transform:translateY(0);transition:transform 400ms ease;box-shadow:0 -4px 20px rgba(181,70,74,.3);">
+<div id="mdBottomBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(90deg,#2D1B3D 0%,#5C3470 40%,#7B4A8A 60%,#5C3470 80%,#2D1B3D 100%);padding:1rem var(--gutter);border-top:2px solid rgba(180,140,210,.3);display:flex;align-items:center;justify-content:space-between;gap:1rem;transform:translateY(0);transition:transform 400ms ease;box-shadow:0 -4px 20px rgba(181,70,74,.3);">
   <div style="display:flex;align-items:center;gap:1rem;flex:1;min-width:0;">
     <span style="font-size:1.2rem;flex-shrink:0;">🌸</span>
     <div style="min-width:0;">
@@ -1186,9 +1216,16 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     section.addEventListener('mousemove', (e) => {
       if (throttle) return;
       throttle = true;
-      setTimeout(() => throttle = false, 180);
+      setTimeout(() => throttle = false, 100);
       const r = section.getBoundingClientRect();
-      if (Math.random() > 0.6) spawnPetal(e.clientX - r.left, e.clientY - r.top);
+      // Spawn 1-2 particles more frequently
+      spawnPetal(e.clientX - r.left, e.clientY - r.top);
+      if (Math.random() > 0.5) {
+        setTimeout(() => spawnPetal(
+          e.clientX - r.left + (Math.random()-0.5)*40,
+          e.clientY - r.top + (Math.random()-0.5)*20
+        ), 80);
+      }
     });
   })();
 
