@@ -1233,26 +1233,20 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   (function(){
     const popup = document.getElementById('mdPopup');
     if (!popup) return;
-    // Show after 3 seconds if not dismissed
-    const dismissed = sessionStorage.getItem('mdPopupDismissed');
-    if (!dismissed) {
-      setTimeout(() => {
-        popup.style.display = 'flex';
+    // Always show on page load for demo — remove sessionStorage check for now
+    // Change setTimeout delay: 2 seconds
+    setTimeout(() => {
+      popup.style.display = 'flex';
+      requestAnimationFrame(() => {
         requestAnimationFrame(() => popup.classList.add('md-popup--visible'));
-      }, 3000);
-    }
-    document.getElementById('mdPopupClose')?.addEventListener('click', () => {
+      });
+    }, 2000);
+    function closePopup(){
       popup.classList.remove('md-popup--visible');
-      setTimeout(() => popup.style.display = 'none', 400);
-      sessionStorage.setItem('mdPopupDismissed', '1');
-    });
-    popup.addEventListener('click', (e) => {
-      if (e.target === popup) {
-        popup.classList.remove('md-popup--visible');
-        setTimeout(() => popup.style.display = 'none', 400);
-        sessionStorage.setItem('mdPopupDismissed', '1');
-      }
-    });
+      setTimeout(() => { popup.style.display = 'none'; }, 400);
+    }
+    document.getElementById('mdPopupClose')?.addEventListener('click', closePopup);
+    popup.addEventListener('click', (e) => { if(e.target === popup) closePopup(); });
   })();
 
   /* B. RIGHT SIDEBAR PROGRESS BAR */
@@ -1888,7 +1882,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 })();
 </script>
 <!-- === MOTHERS DAY POPUP === -->
-<div id="mdPopup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,8,9,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity 400ms ease;" class="">
+<div id="mdPopup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,8,9,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity 400ms ease;">
   <style>
     .md-popup--visible{opacity:1!important}
     #mdPopupCard{transform:translateY(30px) scale(.96);transition:transform 500ms cubic-bezier(0.34,1.56,0.64,1)}
@@ -1906,7 +1900,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       <div style="font-family:var(--font-mono);font-size:.9rem;color:#E8B4B8;">From $35.00 USD</div>
     </div>
     <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:block;padding:1rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.8rem;transition:background 200ms;">Gift the Wellness Bundle →</a>
-    <button onclick="document.getElementById('mdPopup').classList.remove('md-popup--visible');setTimeout(()=>document.getElementById('mdPopup').style.display='none',400);sessionStorage.setItem('mdPopupDismissed','1')" style="background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color 200ms;">No thanks, maybe later</button>
+    <button onclick="this.closest('#mdPopup').classList.remove('md-popup--visible');setTimeout(()=>{this.closest('#mdPopup').style.display='none'},400)" style="background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color 200ms;">No thanks, maybe later</button>
   </div>
 </div>
 
