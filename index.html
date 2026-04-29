@@ -33,8 +33,9 @@
 
 /* === RESET === */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-padding-top:80px}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-padding-top:80px;scrollbar-width:none;-ms-overflow-style:none}
 body{font-family:var(--font-body);font-weight:400;font-size:16px;line-height:1.55;color:var(--ink);background:var(--white);overflow-x:hidden;min-height:100vh}
+body::-webkit-scrollbar{display:none}
 img,video{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -59,11 +60,19 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .cursor-glow{position:fixed;pointer-events:none;z-index:9999;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(181,110,69,.12) 0%,transparent 65%);filter:blur(40px);transform:translate(-50%,-50%);mix-blend-mode:multiply;opacity:0;transition:opacity 400ms var(--ease)}
 .cursor-glow.active{opacity:1}
 @media (hover:none),(max-width:768px){.cursor-glow{display:none}}
-.scroll-progress{position:fixed;top:0;left:0;height:2px;width:0%;background:var(--copper-gradient);z-index:9998;transition:width 100ms linear;box-shadow:0 0 8px rgba(181,110,69,.3)}
+/* scroll-progress moved to right sidebar */
+.scroll-progress{display:none}
+/* Right sidebar progress */
+.progress-sidebar{position:fixed;right:0;top:0;bottom:0;width:6px;z-index:9997;background:rgba(47,58,52,.06);cursor:pointer}
+.progress-sidebar-track{position:absolute;top:0;left:0;right:0;height:100%;background:transparent}
+.progress-sidebar-thumb{position:absolute;left:0;right:0;background:var(--copper-gradient);border-radius:99px;transition:opacity 300ms var(--ease);opacity:.7;min-height:40px;cursor:grab;box-shadow:0 0 8px rgba(181,110,69,.3)}
+.progress-sidebar-thumb:hover,.progress-sidebar-thumb.dragging{opacity:1;box-shadow:0 0 12px rgba(181,110,69,.5)}
+.progress-sidebar:hover{width:8px;background:rgba(47,58,52,.1)}
+@media(max-width:768px){.progress-sidebar{display:none}}
 
 /* === NAV === */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.4rem var(--gutter);transition:background 400ms var(--ease),border-color 400ms var(--ease),padding 400ms var(--ease),backdrop-filter 400ms var(--ease),box-shadow 400ms var(--ease)}
-.nav.over-hero .nav-link,.nav.over-hero .wordmark,.nav.over-hero .cart-btn,.nav.over-hero .menu-btn,.nav.over-hero .wordmark em{color:var(--white)}
+.nav{position:sticky;top:0;left:0;right:0;z-index:100;padding:1.4rem var(--gutter);transition:background 400ms var(--ease),border-color 400ms var(--ease),padding 400ms var(--ease),backdrop-filter 400ms var(--ease),box-shadow 400ms var(--ease)}
+.nav.over-hero .nav-link,.nav.over-hero .cart-btn,.nav.over-hero .menu-btn{color:var(--forest)}
 .nav.is-scrolled{background:rgba(255,255,255,.88);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:0 1px 0 var(--line-soft),0 10px 30px -15px rgba(47,58,52,.08);padding-top:.9rem;padding-bottom:.9rem}
 .nav.is-scrolled .nav-link,.nav.is-scrolled .wordmark,.nav.is-scrolled .cart-btn,.nav.is-scrolled .menu-btn{color:var(--forest)}
 .nav.is-scrolled .wordmark em{color:var(--copper-med)}
@@ -110,7 +119,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .text-link:hover svg{transform:translateX(4px)}
 
 /* === HERO === */
-.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:7rem var(--gutter) 5rem;overflow:hidden;color:var(--white);isolation:isolate}
+.hero{position:relative;min-height:calc(100vh - 44px);display:flex;align-items:flex-end;padding:5rem var(--gutter) 5rem;overflow:hidden;color:var(--white);isolation:isolate}
 .hero-carousel{position:absolute;inset:0;z-index:-2;overflow:hidden}
 .hero-slide{position:absolute;inset:0;opacity:0;transform:scale(1.1);transition:opacity 1800ms var(--ease),transform 9000ms var(--ease);background-color:var(--forest);background-size:cover;background-position:center;will-change:opacity,transform}
 .hero-slide.active{opacity:1;transform:scale(1)}
@@ -293,7 +302,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .ing-slide.active{opacity:1;transform:scale(1)}
 .ing-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(30,38,33,.35) 100%)}
 .ingredient-card:hover .ing-slide.active{transform:scale(1.05)}
-.ingredient-origin-tag{position:absolute;top:1.2rem;right:1.2rem;z-index:2;padding:6px 12px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-radius:99px;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--forest)}
+.ingredient-origin-tag{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:2;padding:5px 14px;background:rgba(30,38,33,.75);backdrop-filter:blur(8px);border-radius:99px;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.9);white-space:nowrap}
 .ing-thumbs{position:absolute;bottom:1rem;left:1rem;right:1rem;display:flex;gap:6px;z-index:2;justify-content:center}
 .ing-thumbs button{width:40px;height:3px;background:rgba(255,255,255,.4);border-radius:99px;transition:background 300ms var(--ease)}
 .ing-thumbs button.active{background:var(--copper-sand)}
@@ -302,6 +311,32 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .ingredient-card:hover .ingredient-name{letter-spacing:.02em;color:var(--copper-med)}
 .ingredient-origin{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-med);margin-bottom:1rem}
 .ingredient-desc{font-size:.95rem;line-height:1.6;color:var(--ink-muted);max-width:30ch}
+
+/* === PROCESS === */
+.process-section{background:linear-gradient(135deg,#3D2314 0%,#6B3520 25%,#934225 50%,#7A3B1E 75%,#2F1A0E 100%);padding:6rem var(--gutter)}
+.process-head{max-width:var(--max-w);margin:0 auto 4rem;text-align:center}
+.process-head h2{font-size:clamp(2.4rem,5vw,4rem);font-weight:300;color:var(--white)}
+.process-head h2 em{font-style:italic;color:var(--copper-sand)}
+.process-head .eyebrow{color:var(--copper-sand);margin-bottom:1.2rem}
+.process-head .eyebrow::before{background:var(--copper-sand)}
+.process-steps{max-width:var(--max-w);margin:0 auto;display:flex;flex-direction:column;gap:0}
+.process-step{display:grid;grid-template-columns:1fr 1fr;min-height:500px}
+.process-step--reverse{direction:rtl}
+.process-step--reverse .process-step-body{direction:ltr}
+.process-step-img{background-size:cover;background-position:center;transition:transform 600ms var(--ease)}
+.process-step:hover .process-step-img{transform:scale(1.02)}
+.process-step-body{padding:4rem clamp(2rem,5vw,5rem);background:rgba(0,0,0,.15);display:flex;flex-direction:column;justify-content:center;direction:ltr}
+.process-step-num{font-family:var(--font-display);font-style:italic;font-size:5rem;color:var(--copper-sand);opacity:.35;line-height:1;margin-bottom:.5rem;display:block}
+.process-step-body h3{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;color:var(--white);margin-bottom:1rem;line-height:1.05}
+.process-step-body h3 em{font-style:italic;color:var(--copper-sand)}
+.process-step-body p{font-family:var(--font-display);font-style:italic;font-size:1.05rem;color:rgba(255,255,255,.75);line-height:1.6;max-width:38ch}
+.process-step-body .eyebrow{color:var(--copper-sand)}
+.process-step-body .eyebrow::before{background:var(--copper-sand)}
+@media(max-width:900px){
+  .process-step,.process-step--reverse{grid-template-columns:1fr;direction:ltr}
+  .process-step-img{min-height:300px}
+  .process-step--reverse .process-step-img{order:-1}
+}
 
 /* === GALLERY === */
 .gallery{padding:7rem 0 8rem;background:var(--off-white);overflow:hidden;position:relative}
@@ -507,10 +542,15 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 <body>
 <div class="cursor-glow" id="cursorGlow"></div>
 <div class="scroll-progress" id="scrollProgress"></div>
+<div class="progress-sidebar" id="progressSidebar" title="Click or drag to navigate">
+  <div class="progress-sidebar-track" id="progressTrack">
+    <div class="progress-sidebar-thumb" id="progressThumb"></div>
+  </div>
+</div>
 
 <!-- === NAV === -->
 <!-- === MOTHERS DAY BAR === -->
-<div id="mothersBar" style="background:linear-gradient(90deg,#B5464A 0%,#8B3A3E 40%,#B5464A 100%);color:#fff;padding:.65rem var(--gutter);text-align:center;position:relative;z-index:101;">
+<div id="mothersBar" style="background:linear-gradient(90deg,#B5464A 0%,#8B3A3E 40%,#B5464A 100%);color:#fff;padding:.65rem var(--gutter);text-align:center;position:relative;z-index:102;">
   <div style="display:flex;align-items:center;justify-content:center;gap:1.2rem;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;flex-wrap:wrap;">
     <span>✿</span>
     <span>Mother's Day — Gift Mum the ritual she deserves.</span>
@@ -617,27 +657,47 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 </section>
 
 <!-- === MOTHERS DAY CAMPAIGN === -->
-<section style="position:relative;overflow:hidden;min-height:480px;display:flex;align-items:center;background:linear-gradient(135deg,#2A0E10 0%,#5C1E22 30%,#8B3A3E 60%,#B5464A 100%);">
+<section id="mothersDayCampaign" style="position:relative;overflow:hidden;min-height:520px;display:flex;align-items:center;background:linear-gradient(135deg,#2A0E10 0%,#5C1E22 30%,#8B3A3E 60%,#B5464A 100%);cursor:default;">
+  <style>
+    #mothersDayCampaign{transition:background 600ms ease}
+    .md-particle{position:absolute;pointer-events:none;font-size:1.2rem;opacity:0;animation:mdFloat 4s ease-in-out forwards}
+    @keyframes mdFloat{0%{opacity:0;transform:translateY(0) scale(0.5)}20%{opacity:.7}80%{opacity:.4}100%{opacity:0;transform:translateY(-120px) scale(1.2) rotate(20deg)}}
+    .md-bundle-card{transition:transform 400ms cubic-bezier(0.34,1.56,0.64,1),box-shadow 400ms ease}
+    .md-bundle-card:hover{transform:translateY(-8px) scale(1.02)!important;box-shadow:0 30px 60px rgba(0,0,0,.4)!important}
+    .md-gift-btn{position:relative;overflow:hidden;transition:all 300ms ease}
+    .md-gift-btn::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-101%);transition:transform 400ms ease}
+    .md-gift-btn:hover::after{transform:translateX(0)}
+    .md-countdown{display:flex;gap:1rem;margin-bottom:1.5rem}
+    .md-count-unit{text-align:center;min-width:52px}
+    .md-count-num{font-family:var(--font-display);font-size:2rem;color:#E8B4B8;line-height:1;display:block}
+    .md-count-label{font-family:var(--font-mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+  </style>
   <div style="position:absolute;inset:0;background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_397528386.jpg?v=1776643566');background-size:cover;background-position:center;opacity:.15;mix-blend-mode:luminosity"></div>
   <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(42,14,16,.88) 0%,rgba(92,30,34,.7) 50%,rgba(181,70,74,.45) 100%)"></div>
   <div style="position:relative;z-index:2;max-width:var(--max-w);margin:0 auto;width:100%;padding:5rem var(--gutter);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
     <div>
       <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:#E8B4B8;margin-bottom:1.2rem;display:flex;align-items:center;gap:.7rem;"><span style="display:inline-block;width:24px;height:1px;background:#E8B4B8"></span>Mother's Day · May 11</div>
       <h2 style="font-family:var(--font-display);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;line-height:.98;color:#fff;margin-bottom:1.2rem;">For the Mum<br/>who <em style="font-style:italic;color:#E8B4B8">glows</em><br/>from within.</h2>
-      <p style="font-family:var(--font-display);font-style:italic;font-size:1.05rem;color:rgba(255,255,255,.8);line-height:1.6;max-width:40ch;margin-bottom:2rem;">Gift Mum the ritual she deserves. Ancient skincare secrets pressed by hand — for skin that remembers what it was always meant to do.</p>
+      <p style="font-family:var(--font-display);font-style:italic;font-size:1.05rem;color:rgba(255,255,255,.8);line-height:1.6;max-width:40ch;margin-bottom:1.5rem;">Gift Mum the ritual she deserves. Ancient skincare secrets pressed by hand — for skin that remembers what it was always meant to do.</p>
+      <div class="md-countdown">
+        <div class="md-count-unit"><span class="md-count-num" id="mdDays">--</span><span class="md-count-label">Days</span></div>
+        <div class="md-count-unit"><span class="md-count-num" id="mdHours">--</span><span class="md-count-label">Hours</span></div>
+        <div class="md-count-unit"><span class="md-count-num" id="mdMins">--</span><span class="md-count-label">Mins</span></div>
+        <div class="md-count-unit"><span class="md-count-num" id="mdSecs">--</span><span class="md-count-label">Secs</span></div>
+      </div>
       <div style="display:flex;gap:1rem;flex-wrap:wrap;">
         <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:inline-flex;align-items:center;gap:.7rem;padding:1rem 2rem;background:#fff;color:#B5464A;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;">Gift the Wellness Bundle →</a>
         <a href="/#products" style="display:inline-flex;align-items:center;gap:.7rem;padding:1rem 1.8rem;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;">All Products</a>
       </div>
     </div>
-    <div style="background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:2rem;text-align:center;">
+    <div class="md-bundle-card" style="background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:2rem;text-align:center;">
       <div style="aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.1);margin-bottom:1.5rem;">
         <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114" alt="Wellness Gift Bundle" style="width:100%;height:100%;object-fit:cover;" />
       </div>
       <div style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:#E8B4B8;margin-bottom:.5rem;">Mother's Day · Limited Gift</div>
       <div style="font-family:var(--font-display);font-size:1.3rem;color:#fff;margin-bottom:.3rem;">Wellness Gift Bundle</div>
       <div style="font-family:var(--font-mono);font-size:.82rem;color:#E8B4B8;margin-bottom:1.2rem;">From $35.00 USD</div>
-      <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:block;padding:.9rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;">Gift This Ritual →</a>
+      <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" class="md-gift-btn" style="display:block;padding:.9rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;text-align:center;">Gift This Ritual →</a>
     </div>
   </div>
 </section>
@@ -755,37 +815,38 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   </div>
 </section>
 
-<!-- === PINNED === -->
-<section class="pinned" aria-label="Food for Skin — How the Recipes Are Cooked" id="pinned">
-  <div class="pinned-scroll">
-    <div class="pinned-sticky">
-      <div class="pinned-media">
-        <div class="pinned-img active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114')"></div>
-        <div class="pinned-img pinned-img--multi" data-step="1">
-          <div class="pinned-img-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUK7O2QZj8X1jOeHj2A-AZ2oUK7Ov754pPSvVsO_Lg.jpg?v=1776647134')"></div>
-          <div class="pinned-img-slide" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oS6s4MhVDU3oU7g0kTw-AZ2oS6s4HvcTRl5pcNz_iw.jpg?v=1776647205')"></div>
-          <div class="pinned-img-slide" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUnPrQf3m1YPl3VCqZA-AZ2oUnPrCbZa8teYD26MiQ.jpg?v=1776647246')"></div>
-        </div>
-        <div class="pinned-img" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/PXL_20230513_165246228.PORTRAIT.jpg?v=1776647295')"></div>
+<!-- === PROCESS === -->
+<section class="process-section" aria-label="Our process" id="pinned">
+  <div class="process-head">
+    <div class="eyebrow">Food for Skin</div>
+    <h2>How the recipes<br/>are <em>cooked.</em></h2>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="process-step-img" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114')"></div>
+      <div class="process-step-body">
+        <span class="process-step-num">01</span>
+        <div class="eyebrow" style="margin-bottom:1rem">Food for Skin</div>
+        <h3>Ingredients sourced &amp; <em>ground.</em></h3>
+        <p>Roots, petals and pods — traced back to the hands and soils they come from. Ground slowly, the way the recipe always asked.</p>
       </div>
-      <div class="pinned-text">
-        <article class="pinned-step active">
-          <div class="eyebrow">Food for Skin</div><span class="num">01</span>
-          <h2>Ingredients sourced &amp; <em>ground.</em></h2>
-          <p>Roots, petals and pods — traced back to the hands and soils they come from. Ground slowly, the way the recipe always asked.</p>
-        </article>
-        <article class="pinned-step">
-          <div class="eyebrow">How the Recipes Are Cooked</div><span class="num">02</span>
-          <h2>Expert-guided mixing &amp; <em>blending.</em></h2>
-          <p>Small batches, cold-pressed under expert hands. No high heat, no synthetics — just what the recipe asks for, and nothing it doesn't.</p>
-        </article>
-        <article class="pinned-step">
-          <div class="eyebrow">From the Earth's Oldest Recipes</div><span class="num">03</span>
-          <h2>Quality check &amp; <em>packaging.</em></h2>
-          <p>Every stick is quality-checked and packaged by hand before it reaches yours. Small batches. No exceptions.</p>
-        </article>
-        <div class="pinned-progress"><div class="pinned-progress-bar" id="pinnedBar"></div></div>
-        <div class="pinned-step-count" id="pinnedCount">01 / 03</div>
+    </div>
+    <div class="process-step process-step--reverse">
+      <div class="process-step-img" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUK7O2QZj8X1jOeHj2A-AZ2oUK7Ov754pPSvVsO_Lg.jpg?v=1776647134')"></div>
+      <div class="process-step-body">
+        <span class="process-step-num">02</span>
+        <div class="eyebrow" style="margin-bottom:1rem">How the Recipes Are Cooked</div>
+        <h3>Expert-guided mixing &amp; <em>blending.</em></h3>
+        <p>Small batches, cold-pressed under expert hands. No high heat, no synthetics — just what the recipe asks for, and nothing it doesn't.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="process-step-img" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/PXL_20230513_165246228.PORTRAIT.jpg?v=1776647295')"></div>
+      <div class="process-step-body">
+        <span class="process-step-num">03</span>
+        <div class="eyebrow" style="margin-bottom:1rem">From the Earth's Oldest Recipes</div>
+        <h3>Quality check &amp; <em>packaging.</em></h3>
+        <p>Every stick is quality-checked and packaged by hand before it reaches yours. Small batches. No exceptions.</p>
       </div>
     </div>
   </div>
@@ -1006,6 +1067,21 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 
 </main>
 
+<!-- === STICKY BOTTOM BANNER === -->
+<div id="mdBottomBanner" style="position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(90deg,#2A0E10 0%,#8B3A3E 50%,#2A0E10 100%);padding:.8rem var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:1rem;transform:translateY(0);transition:transform 400ms ease;box-shadow:0 -4px 20px rgba(181,70,74,.3);">
+  <div style="display:flex;align-items:center;gap:1rem;flex:1;min-width:0;">
+    <span style="font-size:1.2rem;flex-shrink:0;">🌸</span>
+    <div style="min-width:0;">
+      <div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#E8B4B8;margin-bottom:.2rem;">Mother's Day · May 11</div>
+      <div style="font-family:var(--font-display);font-size:clamp(.9rem,1.5vw,1.1rem);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Gift Mum the ritual she deserves — <em style="font-style:italic;color:#E8B4B8">Wellness Gift Bundle from $35</em></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.8rem;flex-shrink:0;">
+    <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.4rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;transition:background 200ms;">Gift Now →</a>
+    <button onclick="document.getElementById('mdBottomBanner').style.transform='translateY(120%)'" style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);font-size:1.1rem;line-height:1;padding:.2rem;" aria-label="Close">×</button>
+  </div>
+</div>
+
 <!-- === FOOTER === -->
 <footer class="footer" aria-label="Footer">
   <div class="footer-grid">
@@ -1063,15 +1139,155 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     });
   }
 
-  /* B. SCROLL PROGRESS BAR */
-  const sp = document.getElementById('scrollProgress');
-  const updateProgress = () => {
+  /* MOTHERS DAY CAMPAIGN */
+  (function(){
+    const section = document.getElementById('mothersDayCampaign');
+    if (!section) return;
+
+    // Countdown to May 11
+    function updateCountdown(){
+      const now = new Date();
+      const target = new Date(now.getFullYear(), 4, 11); // May 11
+      if (now > target) target.setFullYear(target.getFullYear() + 1);
+      const diff = target - now;
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      const d = document.getElementById('mdDays');
+      const h = document.getElementById('mdHours');
+      const m = document.getElementById('mdMins');
+      const s = document.getElementById('mdSecs');
+      if(d) d.textContent = String(days).padStart(2,'0');
+      if(h) h.textContent = String(hours).padStart(2,'0');
+      if(m) m.textContent = String(mins).padStart(2,'0');
+      if(s) s.textContent = String(secs).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Petal particles on hover
+    const petals = ['🌸','✿','❀','🌺','✾','🌷'];
+    function spawnPetal(x, y){
+      const p = document.createElement('div');
+      p.className = 'md-particle';
+      p.textContent = petals[Math.floor(Math.random() * petals.length)];
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      p.style.animationDelay = Math.random() * 300 + 'ms';
+      section.appendChild(p);
+      setTimeout(() => p.remove(), 4500);
+    }
+    let throttle = false;
+    section.addEventListener('mousemove', (e) => {
+      if (throttle) return;
+      throttle = true;
+      setTimeout(() => throttle = false, 180);
+      const r = section.getBoundingClientRect();
+      if (Math.random() > 0.6) spawnPetal(e.clientX - r.left, e.clientY - r.top);
+    });
+  })();
+
+  /* MOTHERS DAY POPUP */
+  (function(){
+    const popup = document.getElementById('mdPopup');
+    if (!popup) return;
+    // Show after 3 seconds if not dismissed
+    const dismissed = sessionStorage.getItem('mdPopupDismissed');
+    if (!dismissed) {
+      setTimeout(() => {
+        popup.style.display = 'flex';
+        requestAnimationFrame(() => popup.classList.add('md-popup--visible'));
+      }, 3000);
+    }
+    document.getElementById('mdPopupClose')?.addEventListener('click', () => {
+      popup.classList.remove('md-popup--visible');
+      setTimeout(() => popup.style.display = 'none', 400);
+      sessionStorage.setItem('mdPopupDismissed', '1');
+    });
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.classList.remove('md-popup--visible');
+        setTimeout(() => popup.style.display = 'none', 400);
+        sessionStorage.setItem('mdPopupDismissed', '1');
+      }
+    });
+  })();
+
+  /* B. RIGHT SIDEBAR PROGRESS BAR */
+  const sidebar = document.getElementById('progressSidebar');
+  const thumb = document.getElementById('progressThumb');
+  let isDragging = false;
+  let dragStartY = 0;
+  let dragStartScroll = 0;
+
+  function updateProgressThumb() {
+    if (!thumb || !sidebar) return;
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
-    if (sp) sp.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
-  };
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
+    const progress = max > 0 ? h.scrollTop / max : 0;
+    const sidebarH = sidebar.offsetHeight;
+    const thumbH = Math.max(40, sidebarH * (window.innerHeight / h.scrollHeight));
+    const thumbTop = progress * (sidebarH - thumbH);
+    thumb.style.height = thumbH + 'px';
+    thumb.style.top = thumbTop + 'px';
+  }
+
+  window.addEventListener('scroll', updateProgressThumb, { passive: true });
+  updateProgressThumb();
+
+  // Click on sidebar to navigate
+  sidebar && sidebar.addEventListener('click', (e) => {
+    if (isDragging) return;
+    const rect = sidebar.getBoundingClientRect();
+    const clickY = e.clientY - rect.top;
+    const ratio = clickY / rect.height;
+    const h = document.documentElement;
+    const targetScroll = ratio * (h.scrollHeight - h.clientHeight);
+    window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+  });
+
+  // Drag thumb to navigate
+  thumb && thumb.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    dragStartY = e.clientY;
+    dragStartScroll = document.documentElement.scrollTop;
+    thumb.classList.add('dragging');
+    e.preventDefault();
+    e.stopPropagation();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging || !sidebar) return;
+    const h = document.documentElement;
+    const sidebarH = sidebar.offsetHeight;
+    const dy = e.clientY - dragStartY;
+    const scrollRange = h.scrollHeight - h.clientHeight;
+    const scrollDelta = (dy / sidebarH) * scrollRange;
+    window.scrollTo({ top: dragStartScroll + scrollDelta });
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isDragging) { isDragging = false; thumb && thumb.classList.remove('dragging'); }
+  });
+
+  // Touch support
+  thumb && thumb.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    dragStartY = e.touches[0].clientY;
+    dragStartScroll = document.documentElement.scrollTop;
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging || !sidebar) return;
+    const h = document.documentElement;
+    const dy = e.touches[0].clientY - dragStartY;
+    const scrollRange = h.scrollHeight - h.clientHeight;
+    window.scrollTo({ top: dragStartScroll + (dy / sidebar.offsetHeight) * scrollRange });
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => { isDragging = false; });
 
   /* C. NAV STATE */
   const nav = document.getElementById('nav');
@@ -1181,7 +1397,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       const card = carousel.closest('[data-handle]');
       if (card) {
         const handle = card.getAttribute('data-handle');
-        window.location.href = `https://petalsandpods.myshopify.com/products/${handle}`;
+        window.location.href = `/product.html?handle=${handle}`;
       }
     });
     carousel.style.cursor = 'pointer';
@@ -1630,5 +1846,28 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   hydrate();
 })();
 </script>
+<!-- === MOTHERS DAY POPUP === -->
+<div id="mdPopup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,8,9,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity 400ms ease;" class="">
+  <style>
+    .md-popup--visible{opacity:1!important}
+    #mdPopupCard{transform:translateY(30px) scale(.96);transition:transform 500ms cubic-bezier(0.34,1.56,0.64,1)}
+    .md-popup--visible #mdPopupCard{transform:translateY(0) scale(1)}
+  </style>
+  <div id="mdPopupCard" style="background:linear-gradient(145deg,#2A0E10,#6B1E22);border:1px solid rgba(232,180,184,.2);border-radius:24px;max-width:480px;width:100%;padding:3rem 2.5rem;text-align:center;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.5);">
+    <button id="mdPopupClose" style="position:absolute;top:1.2rem;right:1.2rem;background:rgba(255,255,255,.1);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;color:rgba(255,255,255,.7);font-size:1rem;line-height:1;display:grid;place-items:center;" aria-label="Close">×</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem;">🌸</div>
+    <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:#E8B4B8;margin-bottom:1rem;">Mother's Day · May 11</div>
+    <h2 style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:#fff;line-height:1.05;margin-bottom:.8rem;">Gift the Mum<br/>who <em style="font-style:italic;color:#E8B4B8">glows.</em></h2>
+    <p style="font-family:var(--font-display);font-style:italic;font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:2rem;line-height:1.6;">Ancient skincare secrets pressed by hand.<br/>Because she deserves a ritual, not just a gift.</p>
+    <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1.2rem;margin-bottom:1.8rem;">
+      <div style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#E8B4B8;margin-bottom:.4rem;">Wellness Gift Bundle</div>
+      <div style="font-family:var(--font-display);font-size:1.4rem;color:#fff;margin-bottom:.2rem;">One cleansing stick · One bar · Two teas</div>
+      <div style="font-family:var(--font-mono);font-size:.9rem;color:#E8B4B8;">From $35.00 USD</div>
+    </div>
+    <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:block;padding:1rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.8rem;transition:background 200ms;">Gift the Wellness Bundle →</a>
+    <button onclick="document.getElementById('mdPopup').classList.remove('md-popup--visible');setTimeout(()=>document.getElementById('mdPopup').style.display='none',400);sessionStorage.setItem('mdPopupDismissed','1')" style="background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color 200ms;">No thanks, maybe later</button>
+  </div>
+</div>
+
 </body>
 </html>
