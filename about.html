@@ -107,8 +107,8 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 .team-head .eyebrow{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--copper-med);margin-bottom:1rem}
 .team-head h2{font-size:clamp(2rem,4vw,3rem);font-weight:300}
 .team-head h2 em{font-style:italic;color:var(--copper-med)}
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
-@media(max-width:900px){.team-grid{grid-template-columns:repeat(2,1fr)}}
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}
+@media(max-width:640px){.team-grid{grid-template-columns:1fr}}
 @media(max-width:500px){.team-grid{grid-template-columns:1fr}}
 .team-card{background:var(--white);border-radius:16px;overflow:hidden;transition:transform 300ms var(--ease),box-shadow 300ms var(--ease)}
 .team-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px -15px rgba(47,58,52,.15)}
@@ -318,7 +318,8 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
       <div class="eyebrow">The people behind the sticks</div>
       <h2>Meet the <em>team</em></h2>
     </div>
-    <div class="team-grid">
+    <!-- Founders — large 2-up -->
+    <div class="team-founders">
       <!-- Leena -->
       <div class="team-card reveal">
         <div class="team-photo">

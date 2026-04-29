@@ -313,29 +313,30 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 .ingredient-desc{font-size:.95rem;line-height:1.6;color:var(--ink-muted);max-width:30ch}
 
 /* === PROCESS === */
-.process-section{background:linear-gradient(135deg,#3D2314 0%,#6B3520 25%,#934225 50%,#7A3B1E 75%,#2F1A0E 100%);padding:6rem var(--gutter)}
-.process-head{max-width:var(--max-w);margin:0 auto 4rem;text-align:center}
+.process-section{background:linear-gradient(135deg,#3D2314 0%,#6B3520 25%,#934225 50%,#7A3B1E 75%,#2F1A0E 100%);padding:0}
+.process-head{max-width:var(--max-w);margin:0 auto;text-align:center;padding:5rem var(--gutter) 4rem}
 .process-head h2{font-size:clamp(2.4rem,5vw,4rem);font-weight:300;color:var(--white)}
 .process-head h2 em{font-style:italic;color:var(--copper-sand)}
 .process-head .eyebrow{color:var(--copper-sand);margin-bottom:1.2rem}
 .process-head .eyebrow::before{background:var(--copper-sand)}
-.process-steps{max-width:var(--max-w);margin:0 auto;display:flex;flex-direction:column;gap:0}
-.process-step{display:grid;grid-template-columns:1fr 1fr;min-height:500px}
+.process-steps{display:flex;flex-direction:column;gap:0}
+.process-step{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
 .process-step--reverse{direction:rtl}
 .process-step--reverse .process-step-body{direction:ltr}
-.process-step-img{background-size:cover;background-position:center;transition:transform 600ms var(--ease)}
+.process-step-img{background-size:cover;background-position:center;transition:transform 800ms var(--ease)}
 .process-step:hover .process-step-img{transform:scale(1.02)}
-.process-step-body{padding:4rem clamp(2rem,5vw,5rem);background:rgba(0,0,0,.15);display:flex;flex-direction:column;justify-content:center;direction:ltr}
-.process-step-num{font-family:var(--font-display);font-style:italic;font-size:5rem;color:var(--copper-sand);opacity:.35;line-height:1;margin-bottom:.5rem;display:block}
-.process-step-body h3{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;color:var(--white);margin-bottom:1rem;line-height:1.05}
+.process-step-body{padding:5rem clamp(2rem,5vw,6rem);background:rgba(0,0,0,.18);display:flex;flex-direction:column;justify-content:center;direction:ltr}
+.process-step-num{font-family:var(--font-display);font-style:italic;font-size:6rem;color:var(--copper-sand);opacity:.3;line-height:1;margin-bottom:.5rem;display:block}
+.process-step-body h3{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--white);margin-bottom:1.2rem;line-height:1.02}
 .process-step-body h3 em{font-style:italic;color:var(--copper-sand)}
-.process-step-body p{font-family:var(--font-display);font-style:italic;font-size:1.05rem;color:rgba(255,255,255,.75);line-height:1.6;max-width:38ch}
+.process-step-body p{font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:rgba(255,255,255,.78);line-height:1.65;max-width:38ch}
 .process-step-body .eyebrow{color:var(--copper-sand)}
 .process-step-body .eyebrow::before{background:var(--copper-sand)}
 @media(max-width:900px){
-  .process-step,.process-step--reverse{grid-template-columns:1fr;direction:ltr}
-  .process-step-img{min-height:300px}
+  .process-step,.process-step--reverse{grid-template-columns:1fr;min-height:auto;direction:ltr}
+  .process-step-img{min-height:50vw}
   .process-step--reverse .process-step-img{order:-1}
+  .process-step-body{padding:3rem var(--gutter)}
 }
 
 /* === GALLERY === */
@@ -781,7 +782,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
         <span class="story-tag-inline">Small batch</span>
         <span class="story-tag-inline">5,000-year-old recipe</span>
       </div>
-      <a href="https://petalsandpods.myshopify.com/pages/about-us" class="text-link" style="margin-top:2rem"><span>Read our full story</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></a>
+      <a href="/about.html" class="text-link" style="margin-top:2rem"><span>Read our full story</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></a>
     </div>
   </div>
 </section>
