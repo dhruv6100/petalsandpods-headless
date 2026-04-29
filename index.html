@@ -1229,25 +1229,14 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     });
   })();
 
-  /* MOTHERS DAY POPUP */
-  (function(){
-    const popup = document.getElementById('mdPopup');
-    if (!popup) return;
-    // Always show on page load for demo — remove sessionStorage check for now
-    // Change setTimeout delay: 2 seconds
-    setTimeout(() => {
-      popup.style.display = 'flex';
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => popup.classList.add('md-popup--visible'));
-      });
-    }, 2000);
-    function closePopup(){
-      popup.classList.remove('md-popup--visible');
-      setTimeout(() => { popup.style.display = 'none'; }, 400);
-    }
-    document.getElementById('mdPopupClose')?.addEventListener('click', closePopup);
-    popup.addEventListener('click', (e) => { if(e.target === popup) closePopup(); });
-  })();
+  /* MOTHERS DAY POPUP — show after 2s, close on backdrop click */
+  setTimeout(function(){
+    var p = document.getElementById('mdPopup');
+    if(p){ p.style.display = 'flex'; }
+  }, 2000);
+  document.getElementById('mdPopup')?.addEventListener('click', function(e){
+    if(e.target === this) this.style.display = 'none';
+  });
 
   /* B. RIGHT SIDEBAR PROGRESS BAR */
   const sidebar = document.getElementById('progressSidebar');
@@ -1882,14 +1871,13 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 })();
 </script>
 <!-- === MOTHERS DAY POPUP === -->
-<div id="mdPopup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(20,8,9,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1rem;opacity:0;transition:opacity 400ms ease;">
+<div id="mdPopup" style="position:fixed;inset:0;z-index:9999;background:rgba(20,8,9,.8);backdrop-filter:blur(8px);padding:1rem;display:none;align-items:center;justify-content:center;">
   <style>
-    .md-popup--visible{opacity:1!important}
-    #mdPopupCard{transform:translateY(30px) scale(.96);transition:transform 500ms cubic-bezier(0.34,1.56,0.64,1)}
-    .md-popup--visible #mdPopupCard{transform:translateY(0) scale(1)}
+    #mdPopupCard{animation:popupIn 500ms cubic-bezier(0.34,1.56,0.64,1) forwards}
+    @keyframes popupIn{from{opacity:0;transform:translateY(30px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
   </style>
   <div id="mdPopupCard" style="background:linear-gradient(145deg,#2A0E10,#6B1E22);border:1px solid rgba(232,180,184,.2);border-radius:24px;max-width:480px;width:100%;padding:3rem 2.5rem;text-align:center;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.5);">
-    <button id="mdPopupClose" style="position:absolute;top:1.2rem;right:1.2rem;background:rgba(255,255,255,.1);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;color:rgba(255,255,255,.7);font-size:1rem;line-height:1;display:grid;place-items:center;" aria-label="Close">×</button>
+    <button id="mdPopupClose" onclick="document.getElementById('mdPopup').style.display='none'" style="position:absolute;top:1.2rem;right:1.2rem;background:rgba(255,255,255,.1);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;color:rgba(255,255,255,.7);font-size:1rem;line-height:1;display:grid;place-items:center;" aria-label="Close">×</button>
     <div style="font-size:2.5rem;margin-bottom:1rem;">🌸</div>
     <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:#E8B4B8;margin-bottom:1rem;">Mother's Day · May 11</div>
     <h2 style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:#fff;line-height:1.05;margin-bottom:.8rem;">Gift the Mum<br/>who <em style="font-style:italic;color:#E8B4B8">glows.</em></h2>
@@ -1900,7 +1888,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       <div style="font-family:var(--font-mono);font-size:.9rem;color:#E8B4B8;">From $35.00 USD</div>
     </div>
     <a href="https://petalsandpods.myshopify.com/products/wellness-gift-bundle" style="display:block;padding:1rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.8rem;transition:background 200ms;">Gift the Wellness Bundle →</a>
-    <button onclick="this.closest('#mdPopup').classList.remove('md-popup--visible');setTimeout(()=>{this.closest('#mdPopup').style.display='none'},400)" style="background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color 200ms;">No thanks, maybe later</button>
+    <button onclick="document.getElementById('mdPopup').style.display='none'" style="background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color 200ms;">No thanks, maybe later</button>
   </div>
 </div>
 
