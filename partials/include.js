@@ -105,7 +105,7 @@
     if (headerTarget && !headerTarget.dataset.loaded) jobs.push({ target: headerTarget, url: '/partials/header.html', event: 'pp:header-ready' });
     if (footerTarget && !footerTarget.dataset.loaded) jobs.push({ target: footerTarget, url: '/partials/footer.html', event: 'pp:footer-ready' });
 
-    if (jobs.length === 0) return;
+    if (jobs.length === 0 && !document.getElementById('site-popup')) return;
 
     var results = await Promise.all(jobs.map(function (j) { return fetchPartial(j.url); }));
 
@@ -122,6 +122,20 @@
       bindAnnouncementBar();
       syncCartBadge();
       markActiveNav();
+    }
+
+    /* ── popup partial ───────────────────────────────────────────── */
+    var popupTarget = document.getElementById('site-popup');
+    if (popupTarget && !popupTarget.dataset.loaded) {
+      var popupHTML = await fetchPartial('/partials/popup.html');
+      if (popupHTML) {
+        popupTarget.innerHTML = popupHTML;
+        popupTarget.dataset.loaded = '1';
+        var s = document.createElement('script');
+        s.src = '/partials/popup.js';
+        document.body.appendChild(s);
+        fire('pp:popup-ready');
+      }
     }
 
     /* Listen for cart updates from other scripts */

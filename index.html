@@ -1330,39 +1330,6 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     });
   })();
 
-  /* MOTHERS DAY POPUP — show once per device, then never again. */
-  (function(){
-    var KEY = 'pp_md_popup_dismissed';
-    function hasCookie(){
-      return document.cookie.split(';').some(function(c){ return c.trim().indexOf(KEY + '=1') === 0; });
-    }
-    function setDismissed(){
-      try { localStorage.setItem(KEY, '1'); } catch(e){}
-      try {
-        var d = new Date();
-        d.setTime(d.getTime() + 365*24*60*60*1000);
-        document.cookie = KEY + '=1; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
-      } catch(e){}
-    }
-    function isDismissed(){
-      try { if (localStorage.getItem(KEY) === '1') return true; } catch(e){}
-      return hasCookie();
-    }
-    function closePopup(){
-      var p = document.getElementById('mdPopup');
-      if (p) p.style.display = 'none';
-      setDismissed();
-    }
-    if (isDismissed()) return;
-    setTimeout(function(){
-      var p = document.getElementById('mdPopup');
-      if (!p) return;
-      p.style.display = 'flex';
-      p.addEventListener('click', function(e){ if (e.target === p) closePopup(); });
-      p.querySelectorAll('[data-md-close]').forEach(function(btn){ btn.addEventListener('click', closePopup); });
-    }, 2000);
-  })();
-
   /* B. RIGHT SIDEBAR PROGRESS BAR */
   const sidebar = document.getElementById('progressSidebar');
   const thumb = document.getElementById('progressThumb');
@@ -1995,27 +1962,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   hydrate();
 })();
 </script>
-<!-- === MOTHERS DAY POPUP === -->
-<div id="mdPopup" style="position:fixed;inset:0;z-index:9999;background:rgba(20,8,9,.8);backdrop-filter:blur(8px);padding:1rem;display:none;align-items:center;justify-content:center;">
-  <style>
-    #mdPopupCard{animation:popupIn 500ms cubic-bezier(0.34,1.56,0.64,1) forwards}
-    @keyframes popupIn{from{opacity:0;transform:translateY(30px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
-  </style>
-  <div id="mdPopupCard" style="background:linear-gradient(145deg,#2A0E10,#6B1E22);border:1px solid rgba(232,180,184,.2);border-radius:24px;max-width:480px;width:100%;padding:3rem 2.5rem;text-align:center;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.5);">
-    <button id="mdPopupClose" data-md-close style="position:absolute;top:1.2rem;right:1.2rem;background:rgba(255,255,255,.1);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;color:rgba(255,255,255,.7);font-size:1rem;line-height:1;display:grid;place-items:center;" aria-label="Close">×</button>
-    <div style="font-size:2.5rem;margin-bottom:1rem;">🌸</div>
-    <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:#E8B4B8;margin-bottom:1rem;">Mother's Day · May 11</div>
-    <h2 style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:#fff;line-height:1.05;margin-bottom:.8rem;">For the Mum<br/>who <em style="font-style:italic;color:#E8B4B8">glows.</em></h2>
-    <p style="font-family:var(--font-display);font-style:italic;font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:2rem;line-height:1.6;">Four wellness sets, hand-pressed with ancient botanicals.<br/>Cleanse, sip, breathe, return.</p>
-    <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1.2rem;margin-bottom:1.8rem;">
-      <div style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#E8B4B8;margin-bottom:.4rem;">Mother's Day Collection</div>
-      <div style="font-family:var(--font-display);font-size:1.4rem;color:#fff;margin-bottom:.2rem;">Quiet · Grounding · Calm Within · Complete</div>
-      <div style="font-family:var(--font-mono);font-size:.9rem;color:#E8B4B8;">From $42.00 USD</div>
-    </div>
-    <a href="/bundle.html" style="display:block;padding:1rem;background:#B5464A;color:#fff;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.8rem;transition:background 200ms;">Shop the Collection →</a>
-    <button data-md-close style="background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color 200ms;">No thanks, maybe later</button>
-  </div>
-</div>
-
+<div id="site-popup"></div>
+<script src="/partials/include.js" defer></script>
 </body>
 </html>
