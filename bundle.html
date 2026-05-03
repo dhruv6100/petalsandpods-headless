@@ -10,7 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/partials/include.css" />
 <style>
 :root{
   --white:#FFFFFF;--off-white:#FBFAF7;--cream:#E7E1D6;--cream-soft:#F2EEE5;--cream-warm:#EFE9DC;
@@ -44,7 +43,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
 
 .pdp-gallery{position:relative}
 .pdp-stage{position:relative;aspect-ratio:3/4;border-radius:24px;overflow:hidden;background:var(--cream-warm);box-shadow:0 40px 80px -25px rgba(47,58,52,.25),0 16px 32px -16px rgba(47,58,52,.12)}
-.pdp-stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 600ms var(--ease)}
+.pdp-stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 600ms var(--ease)}
 .pdp-stage-img.is-active{opacity:1}
 .pdp-stage-tag{position:absolute;top:1.5rem;left:1.5rem;z-index:2;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--white);background:rgba(181,70,74,.92);padding:.45rem .9rem;border-radius:99px;backdrop-filter:blur(6px);box-shadow:0 4px 12px -4px rgba(0,0,0,.3)}
 .pdp-thumbs{display:flex;gap:.7rem;margin-top:1rem}
@@ -105,7 +104,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
 .cmp-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px -25px rgba(47,58,52,.25);border-color:transparent}
 .cmp-card.is-selected{border-color:var(--copper-med);box-shadow:0 0 0 2px var(--copper-med)}
 .cmp-card-img{aspect-ratio:3/4;overflow:hidden;background:var(--cream-warm)}
-.cmp-card-img img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease)}
+.cmp-card-img img{width:100%;height:100%;object-fit:contain;transition:transform 700ms var(--ease)}
 .cmp-card:hover .cmp-card-img img{transform:scale(1.05)}
 .cmp-card-body{padding:1.2rem}
 .cmp-card-name{font-family:var(--font-display);font-size:1.2rem;line-height:1.1;color:var(--ink);margin-bottom:.3rem}
