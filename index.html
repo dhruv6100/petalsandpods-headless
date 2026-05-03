@@ -873,43 +873,161 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 </section>
 
 <!-- === INGREDIENTS === -->
-<section class="ingredients" id="ingredients" aria-label="Ingredient philosophy">
-  <div class="section-head">
-    <div class="section-head-lead reveal">
-      <div class="eyebrow">Every Ingredient Has a 1,000-Year Story</div>
-      <h2>Every ingredient has a<br/>1,000-year <em>story.</em></h2>
+<!-- === INGREDIENTS — 3D peek-around carousel === -->
+<section class="ingredients" id="ingredients" aria-label="Ingredient philosophy" style="padding:8rem var(--gutter) 9rem;background:var(--white);overflow:hidden;">
+  <div style="max-width:var(--max-w);margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:3.5rem;">
+      <div class="eyebrow" style="margin-bottom:1.2rem;display:inline-flex;">The Botanicals</div>
+      <h2 style="font-family:var(--font-display);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;">Every Ingredient Has a <em style="font-style:italic;color:var(--copper-med)">1,000-Year Story.</em></h2>
     </div>
-    <p class="section-head-note reveal delay-2">Every ingredient has a 1,000-year story. That the earth has always known what skin needs — and the best thing we can do is get out of the way.</p>
+    <div class="ingc-wrap">
+      <button type="button" class="ingc-arrow ingc-arrow--prev" id="ingcPrev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div class="ingc-stage" id="ingcStage" data-active="0">
+        <article class="ingc" data-idx="0" tabindex="0" style="--ingc-bg:#FDEEDE;--ingc-tag-bg:#FFFFFF;--ingc-tag-text:#934225;--ingc-title:#934225;--ingc-btn:#934225;">
+          <span class="ingc-tag">Adaptogenic</span>
+          <h3 class="ingc-title">Ashwagandha</h3>
+          <div class="ingc-image" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_iufixgiufixgiufi.png?v=1776647400')"></div>
+          <button class="ingc-btn" type="button" data-ingc-show>Show More</button>
+          <div class="ingc-detail" hidden>
+            <div class="ingc-region">Rajasthan &middot; India</div>
+            <p>A 3,000-year-old Ayurvedic root. Calms inflammation, strengthens the skin barrier and restores a quiet, balanced glow.</p>
+          </div>
+        </article>
+        <article class="ingc" data-idx="1" tabindex="0" style="--ingc-bg:#F4E5D6;--ingc-tag-bg:#FFFFFF;--ingc-tag-text:#6E3A14;--ingc-title:#6E3A14;--ingc-btn:#6E3A14;">
+          <span class="ingc-tag">Brightening</span>
+          <h3 class="ingc-title">Saffron</h3>
+          <div class="ingc-image" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_t97zvdt97zvdt97z.png?v=1776647465')"></div>
+          <button class="ingc-btn" type="button" data-ingc-show>Show More</button>
+          <div class="ingc-detail" hidden>
+            <div class="ingc-region">Kashmir Valley</div>
+            <p>Hand-picked threads revered in Ayurveda for restoring luminosity and gently lifting the appearance of dark spots.</p>
+          </div>
+        </article>
+        <article class="ingc" data-idx="2" tabindex="0" style="--ingc-bg:#FFF6DD;--ingc-tag-bg:#FFFFFF;--ingc-tag-text:#8A6210;--ingc-title:#8A6210;--ingc-btn:#8A6210;">
+          <span class="ingc-tag">Nourishing</span>
+          <h3 class="ingc-title">Almonds</h3>
+          <div class="ingc-image" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_e23vnle23vnle23v.png?v=1776647468')"></div>
+          <button class="ingc-btn" type="button" data-ingc-show>Show More</button>
+          <div class="ingc-detail" hidden>
+            <div class="ingc-region">Mediterranean &middot; Kashmir</div>
+            <p>Rich in Vitamin E. Used for centuries across Ayurvedic traditions to deeply nourish and soften skin to silk.</p>
+          </div>
+        </article>
+      </div>
+      <button type="button" class="ingc-arrow ingc-arrow--next" id="ingcNext" aria-label="Next">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+    <div class="ingc-dots" id="ingcDots" role="tablist" aria-label="Ingredient navigation"></div>
   </div>
-  <div class="ingredients-grid">
-    <article class="ingredient-card reveal" data-tilt data-tilt-max="5">
-      <div class="ingredient-media">
-        <div class="ing-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_iufixgiufixgiufi.png?v=1776647400')"></div>
-        <span class="ingredient-origin-tag">Rajasthan · India</span>
-      </div>
-      <div class="ingredient-origin">Adaptogenic · Calming · Ancient</div>
-      <h3 class="ingredient-name">Ashwagandha</h3>
-      <p class="ingredient-desc">A 3,000-year-old Ayurvedic root. Calms inflammation, strengthens the skin barrier and restores a quiet, balanced glow.</p>
-    </article>
-    <article class="ingredient-card reveal delay-1" data-tilt data-tilt-max="5">
-      <div class="ingredient-media">
-        <div class="ing-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_t97zvdt97zvdt97z.png?v=1776647465')"></div>
-        <span class="ingredient-origin-tag">Kashmir Valley</span>
-      </div>
-      <div class="ingredient-origin">Hand-picked · Brightening · Rare</div>
-      <h3 class="ingredient-name">Saffron</h3>
-      <p class="ingredient-desc">Hand-picked threads revered in Ayurveda for restoring luminosity and gently lifting the appearance of dark spots.</p>
-    </article>
-    <article class="ingredient-card reveal delay-2" data-tilt data-tilt-max="5">
-      <div class="ingredient-media">
-        <div class="ing-slide active" style="background-image:url('https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_e23vnle23vnle23v.png?v=1776647468')"></div>
-        <span class="ingredient-origin-tag">Mediterranean · Kashmir</span>
-      </div>
-      <div class="ingredient-origin">Nourishing · Softening · Timeless</div>
-      <h3 class="ingredient-name">Almonds</h3>
-      <p class="ingredient-desc">Rich in Vitamin E and fatty acids. Used for centuries across Ayurvedic traditions to deeply nourish and soften skin.</p>
-    </article>
-  </div>
+  <style>
+    .ingc-wrap{position:relative;max-width:1100px;margin:0 auto;padding:0 4rem}
+    .ingc-stage{position:relative;height:560px;perspective:1600px}
+    .ingc{position:absolute;top:0;left:50%;width:340px;height:520px;margin-left:-170px;background:var(--ingc-bg,#FDEEDE);border-radius:24px;padding:2.4rem 2rem 2.2rem;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 30px 60px -25px rgba(28,33,30,.35),0 12px 24px -12px rgba(28,33,30,.18);cursor:pointer;transform-origin:center center;transition:transform 700ms cubic-bezier(0.22,1,0.36,1),opacity 500ms cubic-bezier(0.22,1,0.36,1),box-shadow 500ms cubic-bezier(0.22,1,0.36,1);will-change:transform,opacity}
+    .ingc:focus{outline:none}
+    .ingc:focus-visible{box-shadow:0 0 0 3px var(--copper-sand),0 30px 60px -25px rgba(28,33,30,.35)}
+    .ingc-tag{display:inline-block;background:var(--ingc-tag-bg,#fff);color:var(--ingc-tag-text,#333);font-family:var(--font-mono);font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;padding:.45rem 1.1rem;border-radius:99px;box-shadow:0 4px 10px -4px rgba(28,33,30,.18);margin-bottom:1.4rem}
+    .ingc-title{font-family:var(--font-display);font-size:2.4rem;font-weight:600;color:var(--ingc-title,#333);line-height:1;margin-bottom:1.4rem;letter-spacing:-.01em}
+    .ingc-image{flex:1;width:100%;background-size:contain;background-repeat:no-repeat;background-position:center;margin-bottom:1.4rem;min-height:0}
+    .ingc-btn{background:var(--ingc-btn,#333);color:#fff;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:.95rem 1.8rem;border-radius:99px;transition:transform 250ms,box-shadow 250ms;border:none;cursor:pointer}
+    .ingc-btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -8px rgba(0,0,0,.3)}
+    .ingc-detail{width:100%;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(0,0,0,.1);font-family:var(--font-display)}
+    .ingc-detail .ingc-region{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.55);margin-bottom:.5rem}
+    .ingc-detail p{font-style:italic;font-size:.95rem;color:rgba(0,0,0,.75);line-height:1.55;margin:0}
+    .ingc.is-center{z-index:10;opacity:1;transform:translateX(0) scale(1) rotate(0deg)}
+    .ingc.is-side-l{z-index:7;opacity:.95;transform:translateX(-72%) scale(.84) rotate(-3deg)}
+    .ingc.is-side-r{z-index:7;opacity:.95;transform:translateX(72%) scale(.84) rotate(3deg)}
+    .ingc.is-far-l{z-index:4;opacity:.4;transform:translateX(-110%) scale(.7) rotate(-5deg);pointer-events:none}
+    .ingc.is-far-r{z-index:4;opacity:.4;transform:translateX(110%) scale(.7) rotate(5deg);pointer-events:none}
+    .ingc.is-hidden{z-index:1;opacity:0;transform:translateX(0) scale(.6);pointer-events:none}
+    .ingc:not(.is-center) .ingc-btn{pointer-events:none}
+    .ingc-arrow{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:var(--forest);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 20px -6px rgba(28,33,30,.35);transition:transform 250ms,background 250ms;z-index:20;border:none}
+    .ingc-arrow:hover{background:var(--forest-deep);transform:translateY(-50%) scale(1.08)}
+    .ingc-arrow:focus{outline:none;box-shadow:0 0 0 3px var(--copper-sand)}
+    .ingc-arrow--prev{left:0}
+    .ingc-arrow--next{right:0}
+    .ingc-dots{display:flex;justify-content:center;gap:.7rem;margin-top:2.5rem}
+    .ingc-dot{width:28px;height:4px;border-radius:2px;background:rgba(47,58,52,.18);cursor:pointer;transition:background 300ms,width 300ms;border:none;padding:0}
+    .ingc-dot.is-active{background:var(--forest);width:42px}
+    .ingc-dot:hover{background:rgba(47,58,52,.45)}
+    @media(max-width:768px){
+      .ingc-wrap{padding:0 1rem}
+      .ingc-stage{height:500px}
+      .ingc{width:280px;height:460px;margin-left:-140px;padding:2rem 1.6rem 1.8rem}
+      .ingc-title{font-size:2rem}
+      .ingc.is-side-l{transform:translateX(-50%) scale(.8) rotate(-3deg)}
+      .ingc.is-side-r{transform:translateX(50%) scale(.8) rotate(3deg)}
+      .ingc.is-far-l,.ingc.is-far-r{opacity:0;pointer-events:none}
+      .ingc-arrow{width:40px;height:40px}
+    }
+  </style>
+  <script>
+    (function(){
+      var stage=document.getElementById('ingcStage');
+      if(!stage)return;
+      var cards=Array.from(stage.querySelectorAll('.ingc'));
+      var prev=document.getElementById('ingcPrev');
+      var next=document.getElementById('ingcNext');
+      var dotsEl=document.getElementById('ingcDots');
+      if(!cards.length)return;
+      var n=cards.length;
+      var active=0;
+      cards.forEach(function(_,i){
+        var b=document.createElement('button');
+        b.className='ingc-dot'+(i===0?' is-active':'');
+        b.type='button';b.setAttribute('role','tab');
+        b.setAttribute('aria-label','Go to ingredient '+(i+1));
+        b.addEventListener('click',function(){go(i);});
+        dotsEl.appendChild(b);
+      });
+      var dots=Array.from(dotsEl.children);
+      function classForOffset(o){
+        if(o===0)return'is-center';
+        if(o===-1)return'is-side-l';
+        if(o===1)return'is-side-r';
+        if(o===-2)return'is-far-l';
+        if(o===2)return'is-far-r';
+        return'is-hidden';
+      }
+      function render(){
+        cards.forEach(function(card,i){
+          var raw=i-active;var half=Math.floor(n/2);var offset=raw;
+          if(offset>half)offset-=n;if(offset<-half)offset+=n;
+          ['is-center','is-side-l','is-side-r','is-far-l','is-far-r','is-hidden'].forEach(function(c){card.classList.remove(c);});
+          card.classList.add(classForOffset(offset));
+          card.setAttribute('aria-hidden',offset===0?'false':'true');
+          if(offset!==0){var d=card.querySelector('.ingc-detail');if(d)d.hidden=true;var btn=card.querySelector('.ingc-btn');if(btn)btn.textContent='Show More';}
+        });
+        dots.forEach(function(d,i){d.classList.toggle('is-active',i===active);});
+        stage.dataset.active=String(active);
+      }
+      function go(i){active=((i%n)+n)%n;render();}
+      function nextStep(){go(active+1);}
+      function prevStep(){go(active-1);}
+      prev.addEventListener('click',prevStep);
+      next.addEventListener('click',nextStep);
+      cards.forEach(function(card,i){
+        card.addEventListener('click',function(e){
+          if(e.target.closest('[data-ingc-show]')){
+            if(i!==active)return;
+            var detail=card.querySelector('.ingc-detail');var btn=card.querySelector('.ingc-btn');
+            if(!detail)return;
+            var willShow=detail.hidden;detail.hidden=!willShow;
+            if(btn)btn.textContent=willShow?'Show Less':'Show More';
+            return;
+          }
+          if(i!==active)go(i);
+        });
+        card.addEventListener('keydown',function(e){
+          if(e.key==='ArrowRight'){e.preventDefault();nextStep();}
+          if(e.key==='ArrowLeft'){e.preventDefault();prevStep();}
+        });
+      });
+      render();
+    })();
+  </script>
 </section>
 
 <!-- === GALLERY === -->
