@@ -121,6 +121,18 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 .team-role{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--copper-med);margin-bottom:.8rem}
 .team-bio{font-size:.82rem;color:var(--ink-muted);line-height:1.6}
 .team-photo-note{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);opacity:.6;text-align:center}
+.founder-solo{display:grid;grid-template-columns:1fr;max-width:720px;margin:0 auto 4rem;}
+.founder-solo .team-card{display:grid;grid-template-columns:1fr 1.2fr;gap:0;align-items:stretch}
+.founder-photo{aspect-ratio:3/4;height:100%}
+.founder-body{padding:2.5rem 2.5rem 2.5rem 2.5rem;display:flex;flex-direction:column;justify-content:center}
+.founder-name{font-size:2.4rem !important;line-height:1.05;margin-bottom:.4rem}
+.founder-bio{font-size:1.05rem !important;line-height:1.6}
+@media(max-width:680px){.founder-solo .team-card{grid-template-columns:1fr}.founder-photo{aspect-ratio:4/5}}
+.team-compact{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:720px;margin:0 auto}
+.team-compact .team-card{display:flex;flex-direction:column}
+.team-photo-sm{aspect-ratio:1/1;height:auto}
+.team-compact .team-bio{font-size:.85rem;line-height:1.5}
+@media(max-width:520px){.team-compact{grid-template-columns:1fr}}
 
 /* VALUES MANIFESTO */
 .manifesto{padding:8rem var(--gutter);background:var(--forest);color:var(--white);position:relative;overflow:hidden}
@@ -218,24 +230,6 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   </div>
 </section>
 
-<!-- VIDEO -->
-<section style="background:var(--forest);padding:5rem var(--gutter);text-align:center;">
-  <div style="max-width:860px;margin:0 auto;">
-    <div class="reveal" style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--copper-sand);margin-bottom:1rem;">Our Story · In Her Own Words</div>
-    <h2 class="reveal delay-1" style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:var(--white);margin-bottom:2rem;">The <em style="font-style:italic;color:var(--copper-sand)">why</em> behind every stick.</h2>
-    <div class="reveal delay-2" style="position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.4);">
-      <iframe
-        src="https://www.youtube.com/embed/no-uMZH0RzI?autoplay=0&rel=0&modestbranding=1"
-        title="Petals & Pods — Our Story"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        style="position:absolute;inset:0;width:100%;height:100%;"
-      ></iframe>
-    </div>
-  </div>
-</section>
-
 <!-- NUMBERS -->
 <section class="numbers">
   <div class="numbers-inner">
@@ -317,36 +311,27 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
       <div class="eyebrow">The people behind the sticks</div>
       <h2>Meet the <em>team</em></h2>
     </div>
-    <!-- Founders — large 2-up -->
-    <div class="team-founders">
-      <!-- Leena -->
+    <!-- Founder — solo prominent -->
+    <div class="founder-solo">
       <div class="team-card reveal">
-        <div class="team-photo">
+        <div class="team-photo founder-photo">
           <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/IMG_20230523_002004_1.webp?v=1777494988" alt="Leena Valleru — Founder" style="width:100%;height:100%;object-fit:cover;object-position:top" />
         </div>
-        <div class="team-body">
-          <div class="team-name">Leena Valleru</div>
+        <div class="team-body founder-body">
+          <div class="team-name founder-name">Leena Valleru</div>
           <div class="team-role">Founder</div>
-          <p class="team-bio">Explorer of self-knowing. Conscious living advocate. The vision, the recipes, and the heart behind every stick we press. San Francisco — London.</p>
+          <p class="team-bio founder-bio">Explorer of self-knowing. Conscious living advocate. The vision, the recipes, and the heart behind every stick we press. San Francisco — London.</p>
         </div>
       </div>
-      <!-- Varsha -->
+    </div>
+
+    <!-- Team — compact -->
+    <div class="team-compact">
       <div class="team-card reveal delay-1">
-        <div class="team-photo">
-          <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/WhatsApp_Image_2023-07-30_at_12.24.07.webp?v=1777494987" alt="Varsha — Co-Founder" style="width:100%;height:100%;object-fit:cover;object-position:top" />
-        </div>
-        <div class="team-body">
-          <div class="team-name">Varsha</div>
-          <div class="team-role">Co-Founder</div>
-          <p class="team-bio">Co-architect of the Petals & Pods vision. Brings the operational depth and collaborative spirit that turns ancient recipes into a thriving modern brand.</p>
-        </div>
-      </div>
-      <!-- Lokesh -->
-      <div class="team-card reveal delay-2">
-        <div class="team-photo">
+        <div class="team-photo team-photo-sm">
           <div class="team-photo-placeholder">
             <div class="team-photo-initials">L</div>
-            </div>
+          </div>
         </div>
         <div class="team-body">
           <div class="team-name">Lokesh</div>
@@ -354,17 +339,16 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
           <p class="team-bio">The operational backbone that keeps everything running smoothly — from communications to coordination — so the founders can focus on what matters most.</p>
         </div>
       </div>
-      <!-- Dhruv -->
-      <div class="team-card reveal delay-3">
-        <div class="team-photo">
+      <div class="team-card reveal delay-2">
+        <div class="team-photo team-photo-sm">
           <div class="team-photo-placeholder">
             <div class="team-photo-initials">D</div>
-            </div>
+          </div>
         </div>
         <div class="team-body">
-          <div class="team-name">Dhruv Parashar</div>
-          <div class="team-role">Growth Partner · ClutchFox</div>
-          <p class="team-bio">Digital growth strategist at ClutchFox. Building the digital infrastructure — website, Amazon, marketplace expansion — that takes Petals & Pods to the world.</p>
+          <div class="team-name">Dhruv</div>
+          <div class="team-role">Growth & Tech</div>
+          <p class="team-bio">Architect of the digital experience. Brings strategy and craft to every pixel of the brand's online presence.</p>
         </div>
       </div>
     </div>
