@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Petals & Pods Mother's Day Collection — Quiet, Grounding, Calm Within and Complete Care Sets. Ancient skincare pressed by hand, gifted with intention." />
+<title>Mother's Day Collection — Petals & Pods</title>
+<link rel="icon" type="image/png" href="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/4th_Logo.ai_3.png?v=1777752837" />
+<link rel="apple-touch-icon" href="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/4th_Logo.ai_3.png?v=1777752837" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/partials/include.css" />
+<style>
+:root{
+  --white:#FFFFFF;--off-white:#FBFAF7;--cream:#E7E1D6;--cream-soft:#F2EEE5;--cream-warm:#EFE9DC;
+  --forest:#2F3A34;--forest-deep:#1E2621;
+  --copper-sand:#D6A07A;--copper-med:#934225;
+  --rose:#B5464A;--rose-light:#E8B4B8;--rose-pale:#FDF0F1;
+  --ink:#1C211E;--ink-muted:#5B6560;--line:rgba(47,58,52,.12);--line-soft:rgba(47,58,52,.06);
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-body:'DM Sans',-apple-system,sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --max-w:1320px;--gutter:clamp(1.25rem,4vw,3rem);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--ink);background:var(--off-white);overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none}
+
+.cmp-hero{position:relative;overflow:hidden;padding:5rem var(--gutter) 3rem;background:linear-gradient(180deg,#FDF0F1 0%,#FBFAF7 100%);text-align:center}
+.cmp-eyebrow{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;color:var(--rose);margin-bottom:1.4rem}
+.cmp-eyebrow::before,.cmp-eyebrow::after{content:"";display:inline-block;width:28px;height:1px;background:var(--rose)}
+.cmp-title{font-family:var(--font-display);font-weight:300;font-size:clamp(2.6rem,6.5vw,5.5rem);line-height:.96;color:var(--ink);margin-bottom:1rem;letter-spacing:-.01em}
+.cmp-title em{font-style:italic;color:var(--copper-med)}
+.cmp-sub{font-family:var(--font-display);font-style:italic;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--ink-muted);max-width:54ch;margin:0 auto;line-height:1.6}
+
+.pdp{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,5rem);max-width:var(--max-w);margin:0 auto;padding:3rem var(--gutter) 5rem}
+@media(max-width:900px){.pdp{grid-template-columns:1fr;padding-top:1.5rem}}
+
+.pdp-gallery{position:relative}
+.pdp-stage{position:relative;aspect-ratio:3/4;border-radius:24px;overflow:hidden;background:var(--cream-warm);box-shadow:0 40px 80px -25px rgba(47,58,52,.25),0 16px 32px -16px rgba(47,58,52,.12)}
+.pdp-stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 600ms var(--ease)}
+.pdp-stage-img.is-active{opacity:1}
+.pdp-stage-tag{position:absolute;top:1.5rem;left:1.5rem;z-index:2;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--white);background:rgba(181,70,74,.92);padding:.45rem .9rem;border-radius:99px;backdrop-filter:blur(6px);box-shadow:0 4px 12px -4px rgba(0,0,0,.3)}
+.pdp-thumbs{display:flex;gap:.7rem;margin-top:1rem}
+.pdp-thumb{flex:1;min-width:0;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:var(--cream-warm);cursor:pointer;border:2px solid transparent;transition:border-color 300ms var(--ease),transform 300ms var(--ease);padding:0}
+.pdp-thumb img{width:100%;height:100%;object-fit:cover}
+.pdp-thumb.is-active{border-color:var(--copper-med);transform:translateY(-2px)}
+.pdp-thumb:hover:not(.is-active){border-color:var(--copper-sand)}
+
+.pdp-info{display:flex;flex-direction:column;gap:1.2rem;padding-top:1rem}
+.pdp-collection{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--rose)}
+.pdp-name{font-family:var(--font-display);font-weight:300;font-size:clamp(2rem,3.6vw,3rem);line-height:1;color:var(--ink);letter-spacing:-.01em}
+.pdp-name em{font-style:italic;color:var(--copper-med)}
+.pdp-tagline{font-family:var(--font-display);font-style:italic;font-size:1.05rem;color:var(--ink-muted);line-height:1.55;max-width:42ch}
+.pdp-price-row{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;margin-top:.4rem}
+.pdp-price{font-family:var(--font-display);font-size:2rem;font-weight:400;color:var(--ink)}
+.pdp-stock{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-muted);display:inline-flex;align-items:center;gap:.4rem}
+.pdp-stock-dot{width:7px;height:7px;border-radius:50%;background:#7CB67C;box-shadow:0 0 8px rgba(124,182,124,.6)}
+
+.pdp-picker-label{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-muted);margin-top:.6rem}
+.pdp-picker{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+.pdp-option{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;padding:1rem 1.1rem;background:var(--white);border:1px solid var(--line);border-radius:14px;cursor:pointer;text-align:left;transition:border-color 300ms var(--ease),transform 300ms var(--ease),box-shadow 300ms var(--ease)}
+.pdp-option:hover{border-color:var(--copper-sand);transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(47,58,52,.2)}
+.pdp-option.is-active{border-color:var(--copper-med);box-shadow:0 0 0 2px var(--copper-med),0 12px 24px -12px rgba(147,66,37,.25);background:var(--cream-soft)}
+.pdp-option-name{font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:var(--ink);line-height:1.1}
+.pdp-option-price{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted)}
+.pdp-option-tag{position:absolute;top:.55rem;right:.7rem;font-family:var(--font-mono);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--white);background:var(--copper-med);padding:.24rem .55rem;border-radius:99px}
+
+.pdp-includes{display:flex;flex-wrap:wrap;gap:.4rem .55rem;margin-top:.4rem}
+.pdp-include{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--forest);background:var(--cream-soft);padding:.45rem .8rem;border-radius:99px;border:1px solid var(--line-soft)}
+
+.pdp-cta-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.6rem}
+.pdp-cta{flex:1;min-width:160px;padding:1.05rem 1.6rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;border-radius:99px;transition:transform 300ms var(--ease),background 300ms var(--ease),box-shadow 300ms var(--ease)}
+.pdp-cta-primary{background:var(--rose);color:var(--white);box-shadow:0 16px 32px -12px rgba(181,70,74,.4)}
+.pdp-cta-primary:hover{background:#9A3A3E;transform:translateY(-2px);box-shadow:0 20px 40px -10px rgba(181,70,74,.5)}
+.pdp-cta-primary:disabled{opacity:.6;cursor:wait;transform:none;box-shadow:none}
+.pdp-cta-secondary{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.pdp-cta-secondary:hover{background:var(--ink);color:var(--white)}
+
+.pdp-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--line-soft)}
+.pdp-meta-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.3rem}
+.pdp-meta-icon{font-size:1.1rem;color:var(--copper-med)}
+.pdp-meta-label{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);line-height:1.3}
+
+.cmp-strip{background:var(--forest);color:var(--white);padding:5rem var(--gutter);text-align:center}
+.cmp-strip-inner{max-width:760px;margin:0 auto}
+.cmp-strip-quote{font-family:var(--font-display);font-style:italic;font-weight:300;font-size:clamp(1.5rem,2.6vw,2.2rem);line-height:1.4;color:rgba(255,255,255,.92)}
+.cmp-strip-quote em{color:var(--copper-sand);font-style:italic}
+.cmp-strip-by{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:1.4rem}
+
+.cmp-all{padding:5rem var(--gutter);background:var(--off-white);max-width:var(--max-w);margin:0 auto}
+.cmp-all-head{text-align:center;margin-bottom:3rem}
+.cmp-all-head h2{font-family:var(--font-display);font-weight:300;font-size:clamp(2rem,3.5vw,3rem);color:var(--ink)}
+.cmp-all-head h2 em{font-style:italic;color:var(--copper-med)}
+.cmp-all-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+@media(max-width:900px){.cmp-all-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.cmp-all-grid{grid-template-columns:1fr}}
+.cmp-card{background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--line-soft);cursor:pointer;text-align:left;padding:0;transition:transform 400ms var(--ease),box-shadow 400ms var(--ease),border-color 400ms var(--ease)}
+.cmp-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px -25px rgba(47,58,52,.25);border-color:transparent}
+.cmp-card.is-selected{border-color:var(--copper-med);box-shadow:0 0 0 2px var(--copper-med)}
+.cmp-card-img{aspect-ratio:3/4;overflow:hidden;background:var(--cream-warm)}
+.cmp-card-img img{width:100%;height:100%;object-fit:cover;transition:transform 700ms var(--ease)}
+.cmp-card:hover .cmp-card-img img{transform:scale(1.05)}
+.cmp-card-body{padding:1.2rem}
+.cmp-card-name{font-family:var(--font-display);font-size:1.2rem;line-height:1.1;color:var(--ink);margin-bottom:.3rem}
+.cmp-card-name em{font-style:italic;color:var(--copper-med)}
+.cmp-card-price{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted)}
+
+.cmp-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);background:var(--forest-deep);color:var(--white);padding:.9rem 1.3rem;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;box-shadow:0 24px 48px -16px rgba(0,0,0,.4);transition:transform 500ms var(--ease-spring);z-index:9999}
+.cmp-toast.is-show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<section class="cmp-hero">
+  <div class="cmp-eyebrow">Mother's Day Collection &middot; May 11</div>
+  <h1 class="cmp-title">For the mum who <em>glows</em><br/>from within.</h1>
+  <p class="cmp-sub">Four wellness sets, hand-pressed with ancient botanicals and gifted with intention. Cleanse, sip, breathe, return.</p>
+</section>
+
+<section class="pdp" id="pdp" aria-label="Mother's Day Bundle">
+  <div class="pdp-gallery">
+    <div class="pdp-stage" id="pdpStage">
+      <div class="pdp-stage-tag" id="pdpStageTag">Limited Edition</div>
+      <img class="pdp-stage-img is-active" id="img-quiet"     src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/7_81abdd03-5c18-4542-b618-5201a6dcded4.png?v=1777755120" alt="The Quiet Care Set" />
+      <img class="pdp-stage-img"           id="img-grounding" src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/8_1.png?v=1777755120" alt="The Grounding Care Set" />
+      <img class="pdp-stage-img"           id="img-calm"      src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/9_2ec3083c-e20a-41ff-9507-036c4ca45cb4.png?v=1777755121" alt="The Calm Within Set" />
+      <img class="pdp-stage-img"           id="img-complete"  src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/10_ea08f81b-c9f7-4e11-89ff-f86d8524409d.png?v=1777755120" alt="The Complete Care Set" />
+    </div>
+    <div class="pdp-thumbs" id="pdpThumbs">
+      <button type="button" class="pdp-thumb is-active" data-variant="quiet"     aria-label="The Quiet Care Set"    ><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/7_81abdd03-5c18-4542-b618-5201a6dcded4.png?v=1777755120" alt="" /></button>
+      <button type="button" class="pdp-thumb"           data-variant="grounding" aria-label="The Grounding Care Set"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/8_1.png?v=1777755120" alt="" /></button>
+      <button type="button" class="pdp-thumb"           data-variant="calm"      aria-label="The Calm Within Set"   ><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/9_2ec3083c-e20a-41ff-9507-036c4ca45cb4.png?v=1777755121" alt="" /></button>
+      <button type="button" class="pdp-thumb"           data-variant="complete"  aria-label="The Complete Care Set" ><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/10_ea08f81b-c9f7-4e11-89ff-f86d8524409d.png?v=1777755120" alt="" /></button>
+    </div>
+  </div>
+
+  <div class="pdp-info">
+    <div class="pdp-collection">Mother's Day Collection</div>
+    <h1 class="pdp-name" id="pdpName">The <em>Quiet</em> Care Set</h1>
+    <p class="pdp-tagline" id="pdpTagline">A return to rest and quiet care. Cleanse &middot; Sip &middot; Unwind.</p>
+
+    <div class="pdp-price-row">
+      <div class="pdp-price" id="pdpPrice">$42.00 USD</div>
+      <span class="pdp-stock" id="pdpStock"><span class="pdp-stock-dot"></span> In stock &middot; Ships free over $60</span>
+    </div>
+
+    <div class="pdp-includes" id="pdpIncludes">
+      <span class="pdp-include">2 Herbal Teas</span>
+      <span class="pdp-include">1 Glass-Skin Cleanser</span>
+      <span class="pdp-include">1 Hand-poured Candle</span>
+    </div>
+
+    <div class="pdp-picker-label">Choose your set</div>
+    <div class="pdp-picker" id="pdpPicker">
+      <button type="button" class="pdp-option is-active" data-variant="quiet">
+        <span class="pdp-option-name">The Quiet Care Set</span>
+        <span class="pdp-option-price">$42 USD</span>
+      </button>
+      <button type="button" class="pdp-option" data-variant="grounding">
+        <span class="pdp-option-name">The Grounding Care Set</span>
+        <span class="pdp-option-price">$69 USD</span>
+      </button>
+      <button type="button" class="pdp-option" data-variant="calm">
+        <span class="pdp-option-name">The Calm Within Set</span>
+        <span class="pdp-option-price">$89 USD</span>
+      </button>
+      <button type="button" class="pdp-option" data-variant="complete">
+        <span class="pdp-option-tag">Best value</span>
+        <span class="pdp-option-name">The Complete Care Set</span>
+        <span class="pdp-option-price">$149 USD</span>
+      </button>
+    </div>
+
+    <div class="pdp-cta-row">
+      <button type="button" class="pdp-cta pdp-cta-primary" id="pdpAddBtn">Add to bag</button>
+      <button type="button" class="pdp-cta pdp-cta-secondary" id="pdpBuyBtn">Buy now</button>
+    </div>
+
+    <div class="pdp-meta">
+      <div class="pdp-meta-item"><div class="pdp-meta-icon">&#10022;</div><div class="pdp-meta-label">Natural<br/>Ingredients</div></div>
+      <div class="pdp-meta-item"><div class="pdp-meta-icon">&#10022;</div><div class="pdp-meta-label">Thoughtful<br/>Care</div></div>
+      <div class="pdp-meta-item"><div class="pdp-meta-icon">&#10022;</div><div class="pdp-meta-label">Made for<br/>Motherhood</div></div>
+      <div class="pdp-meta-item"><div class="pdp-meta-icon">&#10022;</div><div class="pdp-meta-label">Lasting<br/>Impact</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cmp-strip">
+  <div class="cmp-strip-inner">
+    <p class="cmp-strip-quote">A moment of stillness. <em>A lifetime of wellbeing.</em></p>
+    <div class="cmp-strip-by">Petals &amp; Pods &middot; Mother's Day 2026</div>
+  </div>
+</section>
+
+<section class="cmp-all">
+  <div class="cmp-all-head">
+    <h2>The full <em>collection.</em></h2>
+  </div>
+  <div class="cmp-all-grid">
+    <button type="button" class="cmp-card is-selected" data-variant="quiet">
+      <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/7_81abdd03-5c18-4542-b618-5201a6dcded4.png?v=1777755120" alt="The Quiet Care Set" /></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Quiet</em> Care Set</div><div class="cmp-card-price">From $42 USD</div></div>
+    </button>
+    <button type="button" class="cmp-card" data-variant="grounding">
+      <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/8_1.png?v=1777755120" alt="The Grounding Care Set" /></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Grounding</em> Care Set</div><div class="cmp-card-price">From $69 USD</div></div>
+    </button>
+    <button type="button" class="cmp-card" data-variant="calm">
+      <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/9_2ec3083c-e20a-41ff-9507-036c4ca45cb4.png?v=1777755121" alt="The Calm Within Set" /></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Calm Within</em> Set</div><div class="cmp-card-price">From $89 USD</div></div>
+    </button>
+    <button type="button" class="cmp-card" data-variant="complete">
+      <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/10_ea08f81b-c9f7-4e11-89ff-f86d8524409d.png?v=1777755120" alt="The Complete Care Set" /></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Complete</em> Care Set</div><div class="cmp-card-price">From $149 USD</div></div>
+    </button>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<div class="cmp-toast" id="cmpToast">Added to bag</div>
+
+<script>
+(function(){
+  'use strict';
+  const VARIANTS = {
+    quiet:    { numericId:'52152437801243', name:'The <em>Quiet</em> Care Set',     tagline:'A return to rest and quiet care. Cleanse \u00b7 Sip \u00b7 Unwind.', price:'$42.00 USD', tag:'Limited Edition', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','1 Hand-poured Candle'] },
+    grounding:{ numericId:'52152437834011', name:'The <em>Grounding</em> Care Set', tagline:'A return to steadiness and presence. Move \u00b7 Cleanse \u00b7 Reconnect.', price:'$69.00 USD', tag:'Earth & Ether collab', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Somatic / Pranic session'] },
+    calm:     { numericId:'52152437866779', name:'The <em>Calm Within</em> Set',    tagline:'A moment of stillness. A lifetime of wellbeing. Soothe \u00b7 Nourish \u00b7 Restore.', price:'$89.00 USD', tag:'Meditate with Sarika', includes:['1 Herbal Tea','1 Glass-Skin Cleanser','Energy alignment OR Quantum healing'] },
+    complete: { numericId:'52152437899547', name:'The <em>Complete</em> Care Set',  tagline:'The whole-body care experience for mind, skin and soul.', price:'$149.00 USD', tag:'Best value \u00b7 2 collabs', includes:['2 Herbal Teas','2 Cleansers','Earth & Ether session','Meditate with Sarika session'] }
+  };
+  const SHOPIFY_DOMAIN   = 'petalsandpods.myshopify.com';
+  const STOREFRONT_TOKEN = 'ce505ca3842d26ea4023c53169225868';
+  const ENDPOINT         = 'https://' + SHOPIFY_DOMAIN + '/api/2024-10/graphql.json';
+  const STORAGE_KEY      = 'pp_cart_id';
+  const TOKEN_OK         = STOREFRONT_TOKEN && STOREFRONT_TOKEN.length === 32;
+  let   currentVariant   = 'quiet';
+
+  function gidFor(k){ return 'gid://shopify/ProductVariant/' + VARIANTS[k].numericId; }
+
+  const nameEl     = document.getElementById('pdpName');
+  const taglineEl  = document.getElementById('pdpTagline');
+  const priceEl    = document.getElementById('pdpPrice');
+  const stageTagEl = document.getElementById('pdpStageTag');
+  const includesEl = document.getElementById('pdpIncludes');
+  const stageImgs  = {
+    quiet: document.getElementById('img-quiet'),
+    grounding: document.getElementById('img-grounding'),
+    calm: document.getElementById('img-calm'),
+    complete: document.getElementById('img-complete')
+  };
+  const thumbBtns  = document.querySelectorAll('#pdpThumbs .pdp-thumb');
+  const optionBtns = document.querySelectorAll('#pdpPicker .pdp-option');
+  const allCards   = document.querySelectorAll('.cmp-all-grid .cmp-card');
+  const addBtn     = document.getElementById('pdpAddBtn');
+  const buyBtn     = document.getElementById('pdpBuyBtn');
+  const toast      = document.getElementById('cmpToast');
+
+  function selectVariant(key){
+    if (!VARIANTS[key]) return;
+    currentVariant = key;
+    const v = VARIANTS[key];
+    nameEl.innerHTML     = v.name;
+    taglineEl.textContent = v.tagline;
+    priceEl.textContent  = v.price;
+    stageTagEl.textContent = v.tag;
+    includesEl.innerHTML = v.includes.map(function(x){ return '<span class="pdp-include">' + x + '</span>'; }).join('');
+    Object.keys(stageImgs).forEach(function(k){ if (stageImgs[k]) stageImgs[k].classList.toggle('is-active', k === key); });
+    thumbBtns.forEach(function(b){ b.classList.toggle('is-active', b.dataset.variant === key); });
+    optionBtns.forEach(function(b){ b.classList.toggle('is-active', b.dataset.variant === key); b.setAttribute('aria-pressed', b.dataset.variant === key ? 'true' : 'false'); });
+    allCards.forEach(function(c){ c.classList.toggle('is-selected', c.dataset.variant === key); });
+    if (history.replaceState) history.replaceState(null, '', '#' + key);
+  }
+
+  thumbBtns.forEach(function(b){ b.addEventListener('click', function(){ selectVariant(b.dataset.variant); }); });
+  optionBtns.forEach(function(b){ b.addEventListener('click', function(){ selectVariant(b.dataset.variant); }); });
+  allCards.forEach(function(c){ c.addEventListener('click', function(){
+    selectVariant(c.dataset.variant);
+    document.getElementById('pdp').scrollIntoView({ behavior:'smooth', block:'start' });
+  }); });
+
+  const initialHash = (window.location.hash || '').replace('#','');
+  if (initialHash && VARIANTS[initialHash]) selectVariant(initialHash);
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('is-show');
+    setTimeout(function(){ toast.classList.remove('is-show'); }, 2400);
+  }
+
+  async function gql(query, variables){
+    const r = await fetch(ENDPOINT, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+      body: JSON.stringify({ query: query, variables: variables })
+    });
+    if (!r.ok) throw new Error('Storefront API ' + r.status);
+    const j = await r.json();
+    if (j.errors && j.errors.length) throw new Error(j.errors[0].message);
+    return j;
+  }
+
+  async function ensureCart(){
+    let cartId = localStorage.getItem(STORAGE_KEY);
+    if (cartId) return cartId;
+    const d = await gql('mutation { cartCreate { cart { id checkoutUrl } userErrors { message } } }');
+    cartId = d.data.cartCreate.cart.id;
+    localStorage.setItem(STORAGE_KEY, cartId);
+    return cartId;
+  }
+
+  async function addToCart(variantKey, redirect){
+    if (!TOKEN_OK){
+      const num = VARIANTS[variantKey].numericId;
+      window.location.href = 'https://' + SHOPIFY_DOMAIN + '/cart/' + num + ':1';
+      return;
+    }
+    addBtn.disabled = true; buyBtn.disabled = true;
+    addBtn.textContent = 'Adding...';
+    try {
+      const cartId = await ensureCart();
+      const d = await gql(
+        'mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{id checkoutUrl totalQuantity}userErrors{message}}}',
+        { cartId: cartId, lines:[{ merchandiseId: gidFor(variantKey), quantity: 1 }] }
+      );
+      const cart = d.data.cartLinesAdd.cart;
+      if (!cart) throw new Error('No cart');
+      try { localStorage.setItem('pp_cart_count', String(cart.totalQuantity)); } catch(e){}
+      window.dispatchEvent(new CustomEvent('pp:cart-updated', { detail: cart.totalQuantity }));
+      if (redirect && cart.checkoutUrl){
+        showToast('Opening checkout...');
+        setTimeout(function(){ window.location.href = cart.checkoutUrl; }, 600);
+      } else {
+        showToast('Added to bag');
+      }
+    } catch (err) {
+      console.error(err);
+      const num = VARIANTS[variantKey].numericId;
+      window.location.href = 'https://' + SHOPIFY_DOMAIN + '/cart/' + num + ':1';
+    } finally {
+      addBtn.disabled = false; buyBtn.disabled = false;
+      addBtn.textContent = 'Add to bag';
+    }
+  }
+
+  addBtn.addEventListener('click', function(){ addToCart(currentVariant, false); });
+  buyBtn.addEventListener('click', function(){ addToCart(currentVariant, true);  });
+})();
+</script>
+
+<script src="/partials/include.js" defer></script>
+
+</body>
+</html>
