@@ -1028,30 +1028,45 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   </script>
 </section>
 
-<!-- === GALLERY === -->
-<section class="gallery" aria-label="The look and feel">
+<!-- === ZERO WASTE — 2-image editorial === -->
+<section class="gallery zw-2up" aria-label="Zero Waste — The world we come back to">
   <div class="gallery-head">
     <div class="reveal">
       <div class="eyebrow" style="margin-bottom:1.5rem;">Zero Waste</div>
       <h2>The World We<br/><em>Come Back To.</em></h2>
     </div>
-    <p style="color:var(--ink-muted);font-style:italic;max-width:44ch;font-family:var(--font-display);font-size:1.05rem;margin-top:1rem;margin-bottom:1.5rem;">Everything that comes into existence dissolves back into the same existence without any trace, with a minimal to zero disruption. We are one step ahead in making it all happen.</p>
-    <div class="gallery-controls reveal delay-2">
-      <button class="gallery-btn" id="galleryPrev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3L5 8l5 5"/></svg></button>
-      <button class="gallery-btn" id="galleryNext" aria-label="Next"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg></button>
-    </div>
+    <p style="color:var(--ink-muted);font-style:italic;max-width:48ch;font-family:var(--font-display);font-size:1.1rem;margin-top:1rem;">Everything that comes into existence dissolves back into the same existence without any trace, with a minimal to zero disruption. We are one step ahead in making it all happen.</p>
   </div>
-  <div class="gallery-track-wrap"><div class="gallery-track" id="galleryTrack">
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114" alt="Sourced botanicals" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Botanicals</span><h4>Sourced with patience</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUK7O2QZj8X1jOeHj2A-AZ2oUK7Ov754pPSvVsO_Lg.jpg?v=1776647134" alt="Mixing process" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Craft</span><h4>Mixed by hand</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oS6s4MhVDU3oU7g0kTw-AZ2oS6s4HvcTRl5pcNz_iw.jpg?v=1776647205" alt="Grinding process" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Process</span><h4>Ground slowly</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUnPrQf3m1YPl3VCqZA-AZ2oUnPrCbZa8teYD26MiQ.jpg?v=1776647246" alt="Making process" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Making</span><h4>The recipe in motion</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/PXL_20230513_165246228.PORTRAIT.jpg?v=1776647295" alt="Packaging" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Small batch</span><h4>Packaged by hand</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_iufixgiufixgiufi.png?v=1776647400" alt="Ashwagandha" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Origin</span><h4>Ashwagandha root</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_t97zvdt97zvdt97z.png?v=1776647465" alt="Saffron" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Origin</span><h4>Kashmir saffron</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_397528386.jpg?v=1776643566" alt="Pure ingredient" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Pure</span><h4>Nothing borrowed</h4></div></div>
-    <div class="gallery-item"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_618889243_Preview.jpg?v=1776643639" alt="Radiant" loading="lazy" /><div class="gallery-item-overlay"><span class="tag">Radiant</span><h4>By nature's design</h4></div></div>
-  </div></div>
+  <div class="zw-grid">
+    <figure class="zw-fig zw-fig--lg reveal">
+      <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114" alt="Sourced with patience" loading="lazy" />
+      <figcaption><span class="zw-tag">Botanicals</span><span class="zw-cap">Sourced with patience</span></figcaption>
+    </figure>
+    <figure class="zw-fig zw-fig--sm reveal delay-1">
+      <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/PXL_20230513_165246228.PORTRAIT.jpg?v=1776647295" alt="Packaged by hand" loading="lazy" />
+      <figcaption><span class="zw-tag">Small batch</span><span class="zw-cap">Packaged by hand</span></figcaption>
+    </figure>
+  </div>
+  <style>
+    .zw-2up{padding:6rem var(--gutter) 7rem;background:var(--white)}
+    .zw-2up .gallery-head{max-width:var(--max-w);margin:0 auto 3rem;text-align:center;display:block}
+    .zw-2up .gallery-head h2{font-family:var(--font-display);font-size:clamp(2.4rem,4.5vw,3.6rem);font-weight:300;line-height:1.05}
+    .zw-2up .gallery-head h2 em{font-style:italic;color:var(--copper-med)}
+    .zw-2up .gallery-head p{margin:1rem auto 0}
+    .zw-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:2rem;max-width:var(--max-w);margin:0 auto;align-items:end}
+    .zw-fig{position:relative;overflow:hidden;border-radius:18px;box-shadow:0 30px 60px -25px rgba(28,33,30,.25);margin:0}
+    .zw-fig img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 900ms cubic-bezier(0.22,1,0.36,1)}
+    .zw-fig:hover img{transform:scale(1.04)}
+    .zw-fig--lg{aspect-ratio:4/5}
+    .zw-fig--sm{aspect-ratio:3/4;margin-bottom:3rem}
+    .zw-fig figcaption{position:absolute;left:1.3rem;bottom:1.3rem;display:flex;flex-direction:column;gap:.4rem;color:#fff}
+    .zw-tag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);padding:.35rem .8rem;border-radius:99px;align-self:flex-start;border:1px solid rgba(255,255,255,.25)}
+    .zw-cap{font-family:var(--font-display);font-style:italic;font-size:1.3rem;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+    @media(max-width:780px){
+      .zw-grid{grid-template-columns:1fr;gap:1.4rem}
+      .zw-fig--sm{margin-bottom:0}
+    }
+  </style>
 </section>
 
 <!-- === TESTIMONIALS === -->
@@ -1097,53 +1112,57 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   <p class="testimonials-cta reveal">More reviews coming soon — follow us <a href="https://www.instagram.com/petalsandpods/" target="_blank" rel="noopener" style="color:var(--copper-med);text-decoration:underline;">@petalsandpods</a></p>
 </section>
 
-<!-- === JOURNAL === -->
-<section class="journal" id="commitment" aria-label="Conscious Living">
+<!-- === CONSCIOUS LIVING — 2-image editorial === -->
+<section class="journal cl-2up" id="commitment" aria-label="Conscious Living">
   <div class="journal-head">
     <div class="reveal">
       <div class="eyebrow">Conscious Living</div>
       <h2>Bigger than<br/><em>skin.</em></h2>
     </div>
-    <p class="reveal delay-2" style="color:rgba(255,255,255,0.7);font-style:italic;max-width:36ch;font-family:var(--font-display);font-size:1.2rem;">Essays on ritual, seasonality and slower living — from the hands that make your skincare.</p>
+    <p class="reveal delay-2" style="color:rgba(255,255,255,0.7);font-style:italic;max-width:42ch;font-family:var(--font-display);font-size:1.2rem;">Essays on ritual, seasonality and slower living — from the hands that make your skincare.</p>
   </div>
-  <!-- Meditate with Us subsection -->
-  <div class="reveal" style="max-width:720px;margin:0 auto 3rem;padding:2.5rem;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
+  <div class="reveal" style="max-width:720px;margin:0 auto 4rem;padding:2.5rem;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
     <div class="eyebrow" style="margin-bottom:1rem;">Meditate with Us</div>
     <p style="color:rgba(255,255,255,0.75);font-family:var(--font-display);font-size:1.1rem;line-height:1.7;font-style:italic;">Every breath, thought, and action — in alignment with Mother Nature. There's a lot that can be spoken, and yet there is nothing to be said. Silence and stillness is all there is. Meditate with us.</p>
   </div>
-  <div class="journal-track">
-    <article class="journal-card">
-      <div class="journal-media"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_205203236.jpg?v=1776647114" alt="Sourced botanicals" loading="lazy" /><span class="journal-tag">Ingredient</span><span class="journal-read"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></span></div>
-      <div class="journal-date">Spring · 04 Issue</div>
-      <h3>The kitchen that became a skincare lab</h3>
-      <p>On growing up with haldi in the medicine cabinet — and why every stick we press begins in a kitchen.</p>
+  <div class="cl-grid">
+    <article class="cl-fig cl-fig--lg reveal">
+      <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_t97zvdt97zvdt97z.png?v=1776647465" alt="Letters from the saffron harvest" loading="lazy" />
+      <div class="cl-body">
+        <span class="cl-tag">Origins</span>
+        <h3>Letters from the saffron harvest</h3>
+        <p>A week in the Kashmir Valley with the women who pick every thread by hand at first light.</p>
+      </div>
     </article>
-    <article class="journal-card">
-      <div class="journal-media"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_t97zvdt97zvdt97z.png?v=1776647465" alt="Saffron" loading="lazy" /><span class="journal-tag">Origins</span><span class="journal-read"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></span></div>
-      <div class="journal-date">Winter · 02 Issue</div>
-      <h3>Letters from the saffron harvest</h3>
-      <p>A week in the Kashmir Valley with the women who pick every thread by hand at first light.</p>
-    </article>
-    <article class="journal-card">
-      <div class="journal-media"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUK7O2QZj8X1jOeHj2A-AZ2oUK7Ov754pPSvVsO_Lg.jpg?v=1776647134" alt="Making process" loading="lazy" /><span class="journal-tag">Craft</span><span class="journal-read"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></span></div>
-      <div class="journal-date">Winter · 01 Issue</div>
-      <h3>Why we refuse to scale</h3>
-      <p>Small batch is not a marketing story. It's a decision we make every Monday, when we start pressing the week's sticks.</p>
-    </article>
-    <article class="journal-card">
-      <div class="journal-media"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/Gemini_Generated_Image_iufixgiufixgiufi.png?v=1776647400" alt="Ashwagandha root" loading="lazy" /><span class="journal-tag">Ritual</span><span class="journal-read"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></span></div>
-      <div class="journal-date">Spring · 03 Issue</div>
-      <h3>A slower morning, in five gestures</h3>
-      <p>How to turn cleansing into a quiet morning practice — the case for a single stick, a slow breath, and nothing else.</p>
-    </article>
-    <article class="journal-card">
-      <div class="journal-media"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AdobeStock_397528386.jpg?v=1776643566" alt="Pure ingredients" loading="lazy" /><span class="journal-tag">Seasonal</span><span class="journal-read"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2l5 5-5 5"/></svg></span></div>
-      <div class="journal-date">Autumn · 04 Issue</div>
-      <h3>What the earth is doing right now</h3>
-      <p>A quick letter on seasonal shifts — and the two or three things we do differently when the light changes.</p>
+    <article class="cl-fig cl-fig--sm reveal delay-1">
+      <img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/AZ2oUK7O2QZj8X1jOeHj2A-AZ2oUK7Ov754pPSvVsO_Lg.jpg?v=1776647134" alt="Why we refuse to scale" loading="lazy" />
+      <div class="cl-body">
+        <span class="cl-tag">Craft</span>
+        <h3>Why we refuse to scale</h3>
+        <p>Small batch is not a marketing story. It's a decision we make every Monday, when we start pressing the week's sticks.</p>
+      </div>
     </article>
   </div>
-  <div class="journal-footer"><a href="#" class="btn btn-ghost"><span>Read Our Commitment</span><span class="btn-arrow">→</span></a></div>
+  <style>
+    .cl-2up{padding:7rem var(--gutter);background:var(--forest);color:#fff}
+    .cl-2up .journal-head{max-width:var(--max-w);margin:0 auto 3rem;text-align:center;display:block}
+    .cl-2up .journal-head h2{font-family:var(--font-display);font-size:clamp(2.4rem,4.5vw,3.6rem);font-weight:300;line-height:1.05;color:#fff}
+    .cl-2up .journal-head h2 em{font-style:italic;color:var(--copper-sand)}
+    .cl-2up .journal-head p{margin:1rem auto 0}
+    .cl-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;max-width:var(--max-w);margin:0 auto;align-items:start}
+    .cl-fig{background:rgba(255,255,255,.04);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);transition:transform 400ms cubic-bezier(0.22,1,0.36,1);cursor:pointer}
+    .cl-fig:hover{transform:translateY(-6px)}
+    .cl-fig img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+    .cl-fig--lg img{aspect-ratio:4/3.2}
+    .cl-fig--sm img{aspect-ratio:4/3}
+    .cl-body{padding:1.8rem 1.6rem 2rem}
+    .cl-tag{display:inline-block;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--copper-sand);padding:.35rem 0;margin-bottom:.6rem}
+    .cl-fig h3{font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:#fff;line-height:1.15;margin:0 0 .8rem}
+    .cl-fig p{color:rgba(255,255,255,.65);font-family:var(--font-display);font-style:italic;font-size:1rem;line-height:1.55;margin:0}
+    @media(max-width:780px){
+      .cl-grid{grid-template-columns:1fr}
+    }
+  </style>
 </section>
 
 <!-- === INSTA === -->
