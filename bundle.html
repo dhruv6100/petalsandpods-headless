@@ -60,6 +60,8 @@ button{font:inherit;cursor:pointer;border:none;background:none}
 .pdp-tagline{font-family:var(--font-display);font-style:italic;font-size:1.05rem;color:var(--ink-muted);line-height:1.55;max-width:42ch}
 .pdp-price-row{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;margin-top:.4rem}
 .pdp-price{font-family:var(--font-display);font-size:2rem;font-weight:400;color:var(--ink)}
+.pdp-price-was{font-family:var(--font-display);font-size:1.4rem;color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--rose);text-decoration-thickness:1.5px;margin-right:.6rem;font-weight:300;}
+.pdp-price-now{}
 .pdp-stock{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-muted);display:inline-flex;align-items:center;gap:.4rem}
 .pdp-stock-dot{width:7px;height:7px;border-radius:50%;background:#7CB67C;box-shadow:0 0 8px rgba(124,182,124,.6)}
 
@@ -149,7 +151,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
     <p class="pdp-tagline" id="pdpTagline">A return to rest and quiet care. Cleanse &middot; Sip &middot; Unwind.</p>
 
     <div class="pdp-price-row">
-      <div class="pdp-price" id="pdpPrice">$42.00 USD</div>
+      <div class="pdp-price" id="pdpPrice"><span class="pdp-price-was" id="pdpPriceWas">$48</span> <span class="pdp-price-now">$42.00 USD</span></div>
       <span class="pdp-stock" id="pdpStock"><span class="pdp-stock-dot"></span> In stock &middot; Ships free over $60</span>
     </div>
 
@@ -163,20 +165,20 @@ button{font:inherit;cursor:pointer;border:none;background:none}
     <div class="pdp-picker" id="pdpPicker">
       <button type="button" class="pdp-option is-active" data-variant="quiet">
         <span class="pdp-option-name">The Quiet Care Set</span>
-        <span class="pdp-option-price">$42 USD</span>
+        <span class="pdp-option-price"><s>$48</s> $42 USD</span>
       </button>
       <button type="button" class="pdp-option" data-variant="grounding">
         <span class="pdp-option-name">The Grounding Care Set</span>
-        <span class="pdp-option-price">$69 USD</span>
+        <span class="pdp-option-price"><s>$78</s> $69 USD</span>
       </button>
       <button type="button" class="pdp-option" data-variant="calm">
         <span class="pdp-option-name">The Calm Within Set</span>
-        <span class="pdp-option-price">$89 USD</span>
+        <span class="pdp-option-price"><s>$101</s> $89 USD</span>
       </button>
       <button type="button" class="pdp-option" data-variant="complete">
         <span class="pdp-option-tag">Best value</span>
         <span class="pdp-option-name">The Complete Care Set</span>
-        <span class="pdp-option-price">$149 USD</span>
+        <span class="pdp-option-price"><s>$169</s> $149 USD</span>
       </button>
     </div>
 
@@ -208,19 +210,19 @@ button{font:inherit;cursor:pointer;border:none;background:none}
   <div class="cmp-all-grid">
     <button type="button" class="cmp-card is-selected" data-variant="quiet">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/7_81abdd03-5c18-4542-b618-5201a6dcded4.png?v=1777755120" alt="The Quiet Care Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Quiet</em> Care Set</div><div class="cmp-card-price">From $42 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Quiet</em> Care Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$48</s> From $42 USD</div></div>
     </button>
     <button type="button" class="cmp-card" data-variant="grounding">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/8_1.png?v=1777755120" alt="The Grounding Care Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Grounding</em> Care Set</div><div class="cmp-card-price">From $69 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Grounding</em> Care Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$78</s> From $69 USD</div></div>
     </button>
     <button type="button" class="cmp-card" data-variant="calm">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/9_2ec3083c-e20a-41ff-9507-036c4ca45cb4.png?v=1777755121" alt="The Calm Within Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Calm Within</em> Set</div><div class="cmp-card-price">From $89 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Calm Within</em> Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$101</s> From $89 USD</div></div>
     </button>
     <button type="button" class="cmp-card" data-variant="complete">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/10_ea08f81b-c9f7-4e11-89ff-f86d8524409d.png?v=1777755120" alt="The Complete Care Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Complete</em> Care Set</div><div class="cmp-card-price">From $149 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Complete</em> Care Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$169</s> From $149 USD</div></div>
     </button>
   </div>
 </section>
@@ -233,10 +235,10 @@ button{font:inherit;cursor:pointer;border:none;background:none}
 (function(){
   'use strict';
   const VARIANTS = {
-    quiet:    { numericId:'52152437801243', name:'The <em>Quiet</em> Care Set',     tagline:'A return to rest and quiet care. Cleanse \u00b7 Sip \u00b7 Unwind.', price:'$42.00 USD', tag:'Limited Edition', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','1 Hand-poured Candle'] },
-    grounding:{ numericId:'52152437834011', name:'The <em>Grounding</em> Care Set', tagline:'A return to steadiness and presence. Move \u00b7 Cleanse \u00b7 Reconnect.', price:'$69.00 USD', tag:'Earth & Ether collab', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Somatic / Pranic session'] },
-    calm:     { numericId:'52152437866779', name:'The <em>Calm Within</em> Set',    tagline:'A moment of stillness. A lifetime of wellbeing. Soothe \u00b7 Nourish \u00b7 Restore.', price:'$89.00 USD', tag:'Meditate with Sarika', includes:['1 Herbal Tea','1 Glass-Skin Cleanser','Energy alignment OR Quantum healing'] },
-    complete: { numericId:'52152437899547', name:'The <em>Complete</em> Care Set',  tagline:'The whole-body care experience for mind, skin and soul.', price:'$149.00 USD', tag:'Best value \u00b7 2 collabs', includes:['2 Herbal Teas','2 Cleansers','Earth & Ether session','Meditate with Sarika session'] }
+    quiet:    { numericId:'52152437801243', name:'The <em>Quiet</em> Care Set',     tagline:'A return to rest and quiet care. Cleanse \u00b7 Sip \u00b7 Unwind.', price:'<span class="pdp-price-was">$48</span> <span class="pdp-price-now">$42.00 USD</span>', tag:'Limited Edition', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','1 Hand-poured Candle'] },
+    grounding:{ numericId:'52152437834011', name:'The <em>Grounding</em> Care Set', tagline:'A return to steadiness and presence. Move \u00b7 Cleanse \u00b7 Reconnect.', price:'<span class="pdp-price-was">$78</span> <span class="pdp-price-now">$69.00 USD</span>', tag:'Earth & Ether collab', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Somatic / Pranic session'] },
+    calm:     { numericId:'52152437866779', name:'The <em>Calm Within</em> Set',    tagline:'A moment of stillness. A lifetime of wellbeing. Soothe \u00b7 Nourish \u00b7 Restore.', price:'<span class="pdp-price-was">$101</span> <span class="pdp-price-now">$89.00 USD</span>', tag:'Meditate with Sarika', includes:['1 Herbal Tea','1 Glass-Skin Cleanser','Energy alignment OR Quantum healing'] },
+    complete: { numericId:'52152437899547', name:'The <em>Complete</em> Care Set',  tagline:'The whole-body care experience for mind, skin and soul.', price:'<span class="pdp-price-was">$169</span> <span class="pdp-price-now">$149.00 USD</span>', tag:'Best value \u00b7 2 collabs', includes:['2 Herbal Teas','2 Cleansers','Earth & Ether session','Meditate with Sarika session'] }
   };
   const SHOPIFY_DOMAIN   = 'petalsandpods.myshopify.com';
   const STOREFRONT_TOKEN = 'ce505ca3842d26ea4023c53169225868';
@@ -271,7 +273,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
     const v = VARIANTS[key];
     nameEl.innerHTML     = v.name;
     taglineEl.textContent = v.tagline;
-    priceEl.textContent  = v.price;
+    priceEl.innerHTML  = v.price;
     stageTagEl.textContent = v.tag;
     includesEl.innerHTML = v.includes.map(function(x){ return '<span class="pdp-include">' + x + '</span>'; }).join('');
     Object.keys(stageImgs).forEach(function(k){ if (stageImgs[k]) stageImgs[k].classList.toggle('is-active', k === key); });
