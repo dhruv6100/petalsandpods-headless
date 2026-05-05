@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git config *)",
+      "Bash(git reset *)",
+      "Bash(git push *)",
+      "Bash(git remote *)",
+      "Bash(git pull *)",
+      "Bash(git checkout *)",
+      "Bash(python3 *)",
+      "Bash(python *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(node *)",
+      "Bash(where node *)",
+      "Bash(git merge *)",
+      "Bash(awk NR>=1899 && NR<=1920 *)",
+      "Bash(grep *)",
+      "Bash(awk NR>=876 && NR<=913 *)",
+      "Bash(awk 'NR>=320 && NR<=360' /c/Projects/petalsandpods-headless/about.html)",
+      "Bash(awk 'NR>=220 && NR<=235' /c/Projects/petalsandpods-headless/about.html)",
+      "Bash(awk 'NR>=108 && NR<=115' /c/Projects/petalsandpods-headless/about.html)"
+    ]
+  }
+}
