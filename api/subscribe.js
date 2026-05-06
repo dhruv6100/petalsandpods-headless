@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
   const { email, phoneNumber, listId } = req.body;
 
-  // Klaviyo Private API Key - Vercel Environment Variable se le
+  // Klaviyo Private API Key - Vercel Environment Variable se
   const KLAVIYO_PRIVATE_KEY = process.env.KLAVIYO_PRIVATE_KEY;
 
   if (!KLAVIYO_PRIVATE_KEY) {
@@ -16,70 +16,69 @@ export default async function handler(req, res) {
   try {
     let profileId;
 
-    // Agar email hai toh profile create karo
-    if (email) {
-      const profilePayload = {
-        data: {
-          type: 'profile',
-          attributes: {
-            email: email
-          }
-        }
-      };
+    // Profile data prepare karo
+    let profileAttributes = {};
+    if (email) profileAttributes.email = email;
+    if (phoneNumber) {
+      profileAttributes.phone_number = phoneNumber;
+      profileAttributes.properties = { sms_consent: true };
+    }
 
-      const profileResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
-        method: 'POST',
+    // Profile create/get karo
+    const profilePayload = {
+      data: {
+        type: 'profile',
+        attributes: profileAttributes
+      }
+    };
+
+    const profileResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Klaviyo-API-Key ${KLAVIYO_PRIVATE_KEY}`,
+        'revision': '2025-01-15'
+      },
+      body: JSON.stringify(profilePayload)
+    });
+
+    // 409 = Profile already exists - yeh error nahi hai!
+    if (profileResponse.status === 409) {
+      // Profile pehle se hai, hume existing profile ID find karni hogi
+      // Simple solution: Search for profile by email/phone
+      const searchParams = new URLSearchParams();
+      if (email) searchParams.append('filter', `equals(email,"${email}")`);
+      if (phoneNumber) searchParams.append('filter', `equals(phone_number,"${phoneNumber}")`);
+      
+      const searchResponse = await fetch(`https://a.klaviyo.com/api/profiles/?${searchParams}`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Klaviyo-API-Key ${KLAVIYO_PRIVATE_KEY}`,
           'revision': '2025-01-15'
-        },
-        body: JSON.stringify(profilePayload)
+        }
       });
-
-      if (!profileResponse.ok) {
-        const error = await profileResponse.text();
-        return res.status(profileResponse.status).json({ error: 'Profile creation failed', details: error });
+      
+      if (searchResponse.ok) {
+        const searchData = await searchResponse.json();
+        if (searchData.data && searchData.data.length > 0) {
+          profileId = searchData.data[0].id;
+        }
       }
-
+    } 
+    else if (!profileResponse.ok) {
+      const error = await profileResponse.text();
+      return res.status(profileResponse.status).json({ error: 'Profile creation failed', details: error });
+    }
+    else {
       const profileResult = await profileResponse.json();
       profileId = profileResult.data.id;
     }
 
-    // Agar phone hai toh profile create karo (ya same profile update)
-    if (phoneNumber) {
-      const phonePayload = {
-        data: {
-          type: 'profile',
-          attributes: {
-            phone_number: phoneNumber,
-            properties: {
-              sms_consent: true
-            }
-          }
-        }
-      };
-
-      const phoneResponse = await fetch('https://a.klaviyo.com/api/profiles/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Klaviyo-API-Key ${KLAVIYO_PRIVATE_KEY}`,
-          'revision': '2025-01-15'
-        },
-        body: JSON.stringify(phonePayload)
-      });
-
-      if (!phoneResponse.ok) {
-        const error = await phoneResponse.text();
-        return res.status(phoneResponse.status).json({ error: 'Profile creation failed', details: error });
-      }
-
-      const phoneResult = await phoneResponse.json();
-      profileId = phoneResult.data.id;
+    if (!profileId) {
+      return res.status(500).json({ error: 'Could not find or create profile' });
     }
 
-    // Profile ko list mein add karo
+    // Profile ko list mein add karo (agar already hai toh 409 aayega - ignore karo)
     const subscribePayload = {
       data: [
         {
@@ -98,6 +97,11 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify(subscribePayload)
     });
+
+    // 409 = Already in list - treat as success
+    if (listResponse.status === 409 || listResponse.ok) {
+      return res.status(200).json({ success: true, message: 'Already subscribed or successfully added' });
+    }
 
     if (!listResponse.ok) {
       const error = await listResponse.text();
