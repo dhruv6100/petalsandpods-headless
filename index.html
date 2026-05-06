@@ -1418,8 +1418,8 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 </form>
       <div id="emailSuccess" style="display:none; margin-top:0.5rem;">You're in. Check your inbox for your 10% discount code.</div>
 
-      <!-- Phone — 20% off -->
-      <!-- Phone — 20% off -->
+      
+    <!-- Phone — 20% off -->
 <form class="sms-form" id="smsForm" novalidate style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;">
   <input type="tel" class="sms-input" id="smsInput" name="phone" placeholder="Your number — 20% off" aria-label="Phone number" autocomplete="tel" style="flex:1;min-width:200px;" />
   <button type="submit" class="sms-submit"><span>Get 20% off</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></button>
@@ -1431,7 +1431,6 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   </div>
   <script>
 (function() {
-  var KLAVIYO_COMPANY_ID = 'QXgzpX';
   var EMAIL_LIST_ID = 'YknngE';
   var SMS_LIST_ID = 'RiXYR2';
   var EMAIL_CODE = 'WELCOME10';
@@ -1455,57 +1454,20 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     formEl.appendChild(errorDiv);
   }
 
-  async function subscribeToKlaviyo(profileData, listId) {
-    // Sahi endpoint with correct API format
-    var endpoint = 'https://a.klaviyo.com/api/subscriptions/';
-    
-    var payload = {
-      data: {
-        type: 'subscription',
-        attributes: {
-          custom_source: 'Website Form',
-          profile: {
-            email: profileData.email,
-            phone_number: profileData.phone_number,
-            properties: profileData.properties || {}
-          }
-        },
-        relationships: {
-          list: {
-            data: {
-              type: 'list',
-              id: listId
-            }
-          }
-        }
-      }
-    };
-
-    // Agar phone hai toh sms_consent add karo
-    if (profileData.phone_number) {
-      payload.data.attributes.profile.properties = {
-        ...payload.data.attributes.profile.properties,
-        sms_consent: true
-      };
-    }
-
-    var response = await fetch(endpoint, {
+  async function subscribeViaBackend(email, phoneNumber, listId) {
+    var response = await fetch('/api/subscribe', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'revision': '2025-01-15'
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        email: email,
+        phoneNumber: phoneNumber,
+        listId: listId
+      })
     });
 
-    if (response.status === 202 || response.status === 200 || response.ok) {
-      return true;
-    }
-    
-    var errorText = await response.text();
-    console.error('Klaviyo error:', response.status, errorText);
-    return false;
+    return response.ok;
   }
 
   // EMAIL FORM
@@ -1535,8 +1497,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       submitBtn.disabled = true;
 
       try {
-        var profileData = { email: email };
-        var success = await subscribeToKlaviyo(profileData, EMAIL_LIST_ID);
+        var success = await subscribeViaBackend(email, null, EMAIL_LIST_ID);
         
         if (success) {
           showSuccess(emailSuccess, emailForm, EMAIL_CODE, 'email');
@@ -1593,11 +1554,7 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
       submitBtn.disabled = true;
 
       try {
-        var profileData = { 
-          phone_number: phoneNumber
-        };
-        
-        var success = await subscribeToKlaviyo(profileData, SMS_LIST_ID);
+        var success = await subscribeViaBackend(null, phoneNumber, SMS_LIST_ID);
         
         if (success) {
           showSuccess(smsSuccess, smsForm, SMS_CODE, 'sms');
