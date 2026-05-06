@@ -1412,142 +1412,210 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 
     <div style="display:flex;flex-direction:column;gap:1rem;">
       <!-- Email — 10% off -->
-      <form class="sms-form" id="emailForm" novalidate style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-        <input type="email" class="sms-input" id="emailInput" name="email" placeholder="Your email — 10% off" aria-label="Email address" autocomplete="email" style="flex:1;min-width:200px;" />
-        <button type="submit" class="sms-submit"><span>Get 10% off</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></button>
-      </form>
-      <div class="sms-success" id="emailSuccess" style="display:none;">You're in. Check your inbox for your 10% discount code.</div>
+<form class="sms-form" id="emailForm" novalidate style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;">
+  <input type="email" class="sms-input" id="emailInput" name="email" placeholder="Your email — 10% off" aria-label="Email address" autocomplete="email" style="flex:1;min-width:200px;" />
+  <button type="submit" class="sms-submit"><span>Get 10% off</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></button>
+</form>
+      <div id="emailSuccess" style="display:none; margin-top:0.5rem;">You're in. Check your inbox for your 10% discount code.</div>
 
       <!-- Phone — 20% off -->
-      <form class="sms-form" id="smsForm" novalidate style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-        <input type="tel" class="sms-input" id="smsInput" name="phone" placeholder="Your number — 20% off" aria-label="Phone number" autocomplete="tel" style="flex:1;min-width:200px;" />
-        <button type="submit" class="sms-submit"><span>Get 20% off</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></button>
-      </form>
-      <div class="sms-success" id="smsSuccess" style="display:none;">You're in. Your 20% discount code is on its way.</div>
+      <!-- Phone — 20% off -->
+<form class="sms-form" id="smsForm" novalidate style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;">
+  <input type="tel" class="sms-input" id="smsInput" name="phone" placeholder="Your number — 20% off" aria-label="Phone number" autocomplete="tel" style="flex:1;min-width:200px;" />
+  <button type="submit" class="sms-submit"><span>Get 20% off</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></button>
+</form>
+      <div id="smsSuccess" style="display:none; margin-top:0.5rem;">You're in. Your 20% discount code is on its way.</div>
     </div>
 
     <p class="sms-fine" style="margin-top:1.5rem;">No spam. Unsubscribe anytime with a single word.</p>
   </div>
   <script>
-  (function(){
-    var KLAVIYO_COMPANY_ID = 'QXgzpX';
-    var EMAIL_FORM_ID = 'YknngE';
-    var PHONE_FORM_ID = 'RiXYR2';
-    var EMAIL_CODE = 'WELCOME10';
-    var PHONE_CODE = 'WELCOME20';
+(function() {
+  var KLAVIYO_COMPANY_ID = 'QXgzpX';
+  var EMAIL_LIST_ID = 'YknngE';
+  var SMS_LIST_ID = 'RiXYR2';
+  var EMAIL_CODE = 'WELCOME10';
+  var SMS_CODE = 'WELCOME20';
 
-    function showSuccess(successEl, formEl, code, type){
-      formEl.style.display = 'none';
-      successEl.style.display = 'block';
-      successEl.innerHTML = "You're in. Use code <strong>" + code + "</strong> at checkout for " + (type === 'email' ? '10%' : '20%') + " off your first order.";
-    }
-    function showError(formEl, msg){
-      var existing = formEl.querySelector('.sms-error');
-      if (existing) existing.remove();
-      var e = document.createElement('div');
-      e.className = 'sms-error';
-      e.style.cssText = 'color:#B5464A;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;margin-top:.5rem;flex-basis:100%;';
-      e.textContent = msg;
-      formEl.appendChild(e);
-    }
+  function showSuccess(successEl, formEl, code, type) {
+    formEl.style.display = 'none';
+    successEl.style.display = 'block';
+    var discount = type === 'email' ? '10%' : '20%';
+    successEl.innerHTML = "✓ You're in! Use code <strong>" + code + "</strong> at checkout for " + discount + " off your first order.";
+    successEl.style.cssText = 'color:#2c7a4a; font-family:monospace; font-size:0.85rem; margin-top:0.5rem; padding:0.5rem; background:#e8f5e9; border-radius:4px;';
+  }
 
-    function subscribeKlaviyo(payload, listId){
-      var endpoint = 'https://a.klaviyo.com/client/subscriptions/?company_id=' + KLAVIYO_COMPANY_ID;
-      return fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'revision': '2024-10-15'
+  function showError(formEl, message) {
+    var existing = formEl.querySelector('.sms-error');
+    if (existing) existing.remove();
+    var errorDiv = document.createElement('div');
+    errorDiv.className = 'sms-error';
+    errorDiv.style.cssText = 'color:#B5464A; font-family:monospace; font-size:0.75rem; margin-top:0.5rem; flex-basis:100%;';
+    errorDiv.textContent = message;
+    formEl.appendChild(errorDiv);
+  }
+
+  async function subscribeToKlaviyo(profileData, listId) {
+    // Sahi endpoint with correct API format
+    var endpoint = 'https://a.klaviyo.com/api/subscriptions/';
+    
+    var payload = {
+      data: {
+        type: 'subscription',
+        attributes: {
+          custom_source: 'Website Form',
+          profile: {
+            email: profileData.email,
+            phone_number: profileData.phone_number,
+            properties: profileData.properties || {}
+          }
         },
-        body: JSON.stringify({
-          data: {
-            type: 'subscription',
-            attributes: {
-              custom_source: 'Petals & Pods Homepage CTA',
-              profile: { data: { type: 'profile', attributes: payload } }
-            },
-            relationships: {
-              list: { data: { type: 'list', id: listId } }
+        relationships: {
+          list: {
+            data: {
+              type: 'list',
+              id: listId
             }
           }
-        })
-      });
+        }
+      }
+    };
+
+    // Agar phone hai toh sms_consent add karo
+    if (profileData.phone_number) {
+      payload.data.attributes.profile.properties = {
+        ...payload.data.attributes.profile.properties,
+        sms_consent: true
+      };
     }
 
-    // EMAIL FORM
-    var emailForm = document.getElementById('emailForm');
-    var emailInput = document.getElementById('emailInput');
-    var emailSuccess = document.getElementById('emailSuccess');
-    if (emailForm) {
-      emailForm.addEventListener('submit', async function(ev){
-        ev.preventDefault();
-        var existing = emailForm.querySelector('.sms-error');
-        if (existing) existing.remove();
-        var email = (emailInput.value || '').trim();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-          showError(emailForm, 'Please enter a valid email address');
-          return;
-        }
-        var btn = emailForm.querySelector('button');
-        var btnText = btn.querySelector('span');
-        var originalText = btnText.textContent;
-        btnText.textContent = 'Sending...';
-        btn.disabled = true;
-        try {
-          var resp = await subscribeKlaviyo({ email: email }, EMAIL_FORM_ID);
-          if (resp.ok || resp.status === 202){
-            showSuccess(emailSuccess, emailForm, EMAIL_CODE, 'email');
-          } else {
-            showError(emailForm, 'Something went wrong. Please try again.');
-            btnText.textContent = originalText;
-            btn.disabled = false;
-          }
-        } catch (err){
-          showError(emailForm, 'Network error. Please try again.');
-          btnText.textContent = originalText;
-          btn.disabled = false;
-        }
-      });
-    }
+    var response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'revision': '2025-01-15'
+      },
+      body: JSON.stringify(payload)
+    });
 
-    // PHONE FORM
-    var smsForm = document.getElementById('smsForm');
-    var smsInput = document.getElementById('smsInput');
-    var smsSuccess = document.getElementById('smsSuccess');
-    if (smsForm) {
-      smsForm.addEventListener('submit', async function(ev){
-        ev.preventDefault();
-        var existing = smsForm.querySelector('.sms-error');
-        if (existing) existing.remove();
-        var phone = (smsInput.value || '').trim().replace(/[\s\-\(\)]/g, '');
-        if (!phone || phone.length < 10){
-          showError(smsForm, 'Please enter a valid phone number');
+    if (response.status === 202 || response.status === 200 || response.ok) {
+      return true;
+    }
+    
+    var errorText = await response.text();
+    console.error('Klaviyo error:', response.status, errorText);
+    return false;
+  }
+
+  // EMAIL FORM
+  var emailForm = document.getElementById('emailForm');
+  var emailInput = document.getElementById('emailInput');
+  var emailSuccess = document.getElementById('emailSuccess');
+
+  if (emailForm && emailInput && emailSuccess) {
+    emailForm.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      var oldError = emailForm.querySelector('.sms-error');
+      if (oldError) oldError.remove();
+      
+      var email = emailInput.value.trim();
+      var emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+      
+      if (!email || !emailRegex.test(email)) {
+        showError(emailForm, 'Please enter a valid email address');
+        return;
+      }
+
+      var submitBtn = emailForm.querySelector('button');
+      var btnSpan = submitBtn.querySelector('span');
+      var originalText = btnSpan.textContent;
+      btnSpan.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+
+      try {
+        var profileData = { email: email };
+        var success = await subscribeToKlaviyo(profileData, EMAIL_LIST_ID);
+        
+        if (success) {
+          showSuccess(emailSuccess, emailForm, EMAIL_CODE, 'email');
+        } else {
+          showError(emailForm, 'Something went wrong. Please try again.');
+          btnSpan.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showError(emailForm, 'Network error. Please try again.');
+        btnSpan.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  // SMS/PHONE FORM
+  var smsForm = document.getElementById('smsForm');
+  var smsInput = document.getElementById('smsInput');
+  var smsSuccess = document.getElementById('smsSuccess');
+
+  if (smsForm && smsInput && smsSuccess) {
+    smsForm.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      var oldError = smsForm.querySelector('.sms-error');
+      if (oldError) oldError.remove();
+      
+      var phoneRaw = smsInput.value.trim();
+      var phoneDigits = phoneRaw.replace(/[\s\-\(\)\+]/g, '');
+      
+      if (!phoneDigits || phoneDigits.length < 10) {
+        showError(smsForm, 'Please enter a valid phone number (at least 10 digits)');
+        return;
+      }
+      
+      var phoneNumber = phoneDigits;
+      if (!phoneNumber.startsWith('+')) {
+        if (phoneNumber.length === 10) {
+          phoneNumber = '+1' + phoneNumber;
+        } else if (phoneNumber.length === 11 && phoneNumber.startsWith('1')) {
+          phoneNumber = '+' + phoneNumber;
+        } else {
+          showError(smsForm, 'Please enter a valid US phone number');
           return;
         }
-        if (!/^\+/.test(phone)) phone = '+1' + phone;
-        var btn = smsForm.querySelector('button');
-        var btnText = btn.querySelector('span');
-        var originalText = btnText.textContent;
-        btnText.textContent = 'Sending...';
-        btn.disabled = true;
-        try {
-          var resp = await subscribeKlaviyo({ phone_number: phone, properties: { sms_consent: true } }, PHONE_FORM_ID);
-          if (resp.ok || resp.status === 202){
-            showSuccess(smsSuccess, smsForm, PHONE_CODE, 'phone');
-          } else {
-            showError(smsForm, 'Something went wrong. Please try again.');
-            btnText.textContent = originalText;
-            btn.disabled = false;
-          }
-        } catch (err){
-          showError(smsForm, 'Network error. Please try again.');
-          btnText.textContent = originalText;
-          btn.disabled = false;
+      }
+
+      var submitBtn = smsForm.querySelector('button');
+      var btnSpan = submitBtn.querySelector('span');
+      var originalText = btnSpan.textContent;
+      btnSpan.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+
+      try {
+        var profileData = { 
+          phone_number: phoneNumber
+        };
+        
+        var success = await subscribeToKlaviyo(profileData, SMS_LIST_ID);
+        
+        if (success) {
+          showSuccess(smsSuccess, smsForm, SMS_CODE, 'sms');
+        } else {
+          showError(smsForm, 'Something went wrong. Please try again.');
+          btnSpan.textContent = originalText;
+          submitBtn.disabled = false;
         }
-      });
-    }
-  })();
-  </script>
+      } catch (error) {
+        console.error('Error:', error);
+        showError(smsForm, 'Network error. Please try again.');
+        btnSpan.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+})();
+</script>
 </section>
 
 </main>
