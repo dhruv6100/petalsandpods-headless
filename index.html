@@ -1454,21 +1454,22 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
     formEl.appendChild(errorDiv);
   }
 
-  async function subscribeViaBackend(email, phoneNumber, listId) {
-    var response = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        phoneNumber: phoneNumber,
-        listId: listId
-      })
-    });
+ async function subscribeViaBackend(email, phoneNumber, listId) {
+  var response = await fetch('/api/subscribe', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: email,
+      phoneNumber: phoneNumber,
+      listId: listId
+    })
+  });
 
-    return response.ok;
-  }
+  // 200, 201, 202, 409 sabko success treat karo
+  return response.ok || response.status === 409;
+}
 
   // EMAIL FORM
   var emailForm = document.getElementById('emailForm');
