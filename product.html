@@ -175,6 +175,68 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 .footer-mini{background:var(--forest-deep);color:rgba(255,255,255,.7);padding:3rem var(--gutter);text-align:center;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase}
 .footer-mini a{color:var(--copper-sand);margin:0 1rem;transition:opacity 200ms}
 .footer-mini a:hover{opacity:.7}
+
+/* === EDITORIAL SECTIONS === */
+.pdp-eyebrow{font-family:var(--font-body);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.16em;color:var(--forest);margin:0 0 1.2rem}
+.pdp-origin{padding:5rem 32px;background:var(--cream-soft,#FBF8F0)}
+.pdp-origin-inner{max-width:780px;margin:0 auto}
+.pdp-origin-title{font-family:var(--font-display);font-style:italic;font-weight:300;font-size:clamp(1.8rem,3.5vw,2.6rem);color:#1C1C1C;margin:0 0 1.5rem;line-height:1.2}
+.pdp-origin-body{font-family:var(--font-body);font-size:16px;line-height:1.85;color:#3D3D3D;margin:0 0 1.2rem}
+.pdp-origin-quote{font-family:var(--font-display);font-style:italic;font-size:1.15rem;line-height:1.7;color:var(--forest);border-left:2px solid var(--forest);padding-left:1.2rem;margin:2rem 0 0;max-width:64ch}
+
+.pdp-benefits{padding:3rem 32px;background:var(--cream)}
+.pdp-benefits-inner{max-width:880px;margin:0 auto}
+.pdp-pill-row{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.6rem}
+.pdp-pill{font-family:var(--font-body);font-size:12px;letter-spacing:.04em;padding:.5rem 1rem;border-radius:99px;background:var(--cream-soft);color:var(--forest);border:1px solid rgba(47,58,52,.12)}
+
+.pdp-why{padding:4rem 32px;background:var(--off-white,#FAFAF8)}
+.pdp-why-inner{max-width:1080px;margin:0 auto}
+.pdp-why-grid{list-style:none;padding:0;margin:1.5rem 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.pdp-why-card{background:var(--white);border:1px solid rgba(47,58,52,.06);border-radius:4px;padding:1.5rem 1.4rem}
+.pdp-why-card h3{font-family:var(--font-body);font-size:14px;font-weight:600;color:#1C1C1C;margin:0 0 .6rem;line-height:1.4}
+.pdp-why-card p{font-family:var(--font-body);font-size:13px;line-height:1.7;color:var(--ink-muted);margin:0}
+
+.pdp-scent{padding:3.5rem 32px;background:var(--cream-soft)}
+.pdp-scent-inner{max-width:880px;margin:0 auto}
+.pdp-scent-content{background:var(--white);border:1px solid rgba(47,58,52,.06);border-radius:4px;padding:2rem 2.2rem}
+.pdp-scent-notes{font-family:var(--font-display);font-style:italic;font-size:1.4rem;color:#1C1C1C;margin:0 0 .8rem;line-height:1.4}
+.pdp-scent-desc{font-family:var(--font-body);font-size:14px;line-height:1.75;color:var(--ink-muted);margin:0;max-width:64ch}
+
+.pdp-howto{padding:4rem 32px;background:var(--off-white,#FAFAF8)}
+.pdp-howto-inner{max-width:1080px;margin:0 auto}
+.pdp-howto-steps{list-style:none;padding:0;margin:1.5rem 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+.pdp-howto-steps li{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1.5rem 1rem;background:var(--white);border:1px solid rgba(47,58,52,.06);border-radius:4px}
+.pdp-step-num{font-family:var(--font-display);font-style:italic;font-weight:300;font-size:1.8rem;color:var(--forest);margin-bottom:.6rem;line-height:1}
+.pdp-step-text{font-family:var(--font-body);font-size:13px;line-height:1.5;color:var(--ink-muted)}
+
+.pdp-tip{padding:0 32px 4rem;background:var(--off-white,#FAFAF8)}
+.pdp-tip-inner{max-width:1080px;margin:0 auto;background:var(--cream-soft);border-radius:4px;padding:1.4rem 1.6rem}
+.pdp-tip-text{font-family:var(--font-body);font-size:14px;line-height:1.75;color:#3D3D3D;margin:0}
+.pdp-tip-text strong{color:var(--forest);font-weight:600}
+
+.pdp-stats{padding:4rem 32px;background:var(--forest);color:var(--cream)}
+.pdp-stats-inner{max-width:1080px;margin:0 auto}
+.pdp-stats-row{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:0;text-align:center}
+.pdp-stats-row li{padding:1rem;border-right:1px solid rgba(245,239,230,.18)}
+.pdp-stats-row li:last-child{border-right:none}
+.pdp-stat-num{display:block;font-family:var(--font-display);font-style:italic;font-weight:300;font-size:clamp(2rem,4vw,2.8rem);color:var(--cream);margin-bottom:.5rem;line-height:1}
+.pdp-stat-label{display:block;font-family:var(--font-body);font-size:12px;line-height:1.6;color:rgba(245,239,230,.7)}
+
+@media(max-width:1023px){.pdp-why-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:767px){
+  .pdp-origin{padding:3.5rem 20px}
+  .pdp-benefits{padding:2.5rem 20px}
+  .pdp-why{padding:3rem 20px}
+  .pdp-scent{padding:2.5rem 20px}
+  .pdp-scent-content{padding:1.5rem 1.4rem}
+  .pdp-howto{padding:3rem 20px}
+  .pdp-howto-steps{grid-template-columns:1fr 1fr}
+  .pdp-tip{padding:0 20px 3rem}
+  .pdp-stats-row{grid-template-columns:1fr;gap:1.5rem}
+  .pdp-stats-row li{border-right:none;border-bottom:1px solid rgba(245,239,230,.18);padding-bottom:1.5rem}
+  .pdp-stats-row li:last-child{border-bottom:none}
+}
+@media(max-width:600px){.pdp-why-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -269,23 +331,6 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
     <div class="accordion">
       <div class="accordion-item">
         <button class="accordion-btn" onclick="toggleAccordion(this)">
-          <span>How to use</span>
-          <svg class="accordion-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1v12M1 7h12"/></svg>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-content">
-            <ul>
-              <li>Wet face with lukewarm water</li>
-              <li>Glide stick gently across wet skin — forehead, cheeks, nose, chin</li>
-              <li>Massage in circular motions for 30–60 seconds</li>
-              <li>Rinse thoroughly with water</li>
-              <li>Use morning and evening for best results</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn" onclick="toggleAccordion(this)">
           <span>Ingredients</span>
           <svg class="accordion-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1v12M1 7h12"/></svg>
         </button>
@@ -329,15 +374,57 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   </div>
 </main>
 
-<!-- STORY STRIP -->
-<div style="max-width:var(--max-w);margin:0 auto;padding:0 var(--gutter)">
-  <div class="story-strip">
-    <div class="eyebrow">Founded on a 5,000-year-old recipe</div>
-    <h2>Nalupu / Ubtan from <em>India.</em></h2>
-    <p>Every ingredient carries a thousand-year story. We revive what was never broken — ancient skincare wisdom, pressed by hand in small batches in the United States.</p>
-    <a href="/#story" style="display:inline-flex;align-items:center;gap:.7rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);border-bottom:1px solid var(--copper-med);padding-bottom:2px">Read our story <svg width="12" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M0 5h13M9 1l4 4-4 4"/></svg></a>
+<!-- ORIGIN STORY -->
+<section class="pdp-origin">
+  <div class="pdp-origin-inner">
+    <p class="pdp-eyebrow">The Origin Story</p>
+    <h2 class="pdp-origin-title" data-origin-title></h2>
+    <p class="pdp-origin-body" data-origin-body-1></p>
+    <p class="pdp-origin-body" data-origin-body-2></p>
+    <blockquote class="pdp-origin-quote" data-origin-quote></blockquote>
   </div>
-</div>
+</section>
+
+<!-- SKIN BENEFITS -->
+<section class="pdp-benefits">
+  <div class="pdp-benefits-inner">
+    <p class="pdp-eyebrow">Skin Benefits</p>
+    <ul class="pdp-pill-row" data-benefits-pills></ul>
+  </div>
+</section>
+
+<!-- WHY IT WORKS -->
+<section class="pdp-why">
+  <div class="pdp-why-inner">
+    <p class="pdp-eyebrow">Why It Works</p>
+    <ul class="pdp-why-grid" data-why-grid></ul>
+  </div>
+</section>
+
+<!-- SCENT PROFILE -->
+<section class="pdp-scent">
+  <div class="pdp-scent-inner">
+    <div class="pdp-scent-content">
+      <p class="pdp-eyebrow">Scent Profile</p>
+      <p class="pdp-scent-notes" data-scent-notes></p>
+      <p class="pdp-scent-desc" data-scent-desc></p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO USE -->
+<section class="pdp-howto">
+  <div class="pdp-howto-inner">
+    <p class="pdp-eyebrow">How to Use</p>
+    <ol class="pdp-howto-steps">
+      <li><span class="pdp-step-num">1</span><span class="pdp-step-text">Wet face with lukewarm water</span></li>
+      <li><span class="pdp-step-num">2</span><span class="pdp-step-text">Glide stick directly across wet skin</span></li>
+      <li><span class="pdp-step-num">3</span><span class="pdp-step-text">Massage in circular motions for 30 to 60 seconds</span></li>
+      <li><span class="pdp-step-num">4</span><span class="pdp-step-text">Rinse thoroughly with water</span></li>
+      <li><span class="pdp-step-num">5</span><span class="pdp-step-text">Use morning and evening for best results</span></li>
+    </ol>
+  </div>
+</section>
 
 <!-- KEY INGREDIENTS -->
 <div class="ingredients-section">
@@ -365,9 +452,36 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   </div>
 </div>
 
+<!-- USAGE TIP -->
+<section class="pdp-tip">
+  <div class="pdp-tip-inner">
+    <p class="pdp-tip-text"><strong>A little goes a long way.</strong> This stick is 3× more concentrated than liquid cleansers. You need far less than you think. Light lather is completely normal and intentional. Applying directly to your face (not your hands) means zero product is wasted.</p>
+  </div>
+</section>
+
+<!-- VALUE STATS -->
+<section class="pdp-stats">
+  <div class="pdp-stats-inner">
+    <ul class="pdp-stats-row">
+      <li>
+        <span class="pdp-stat-num">$7–8</span>
+        <span class="pdp-stat-label">per month<br>(lasts 2 to 4 months)</span>
+      </li>
+      <li>
+        <span class="pdp-stat-num">3×</span>
+        <span class="pdp-stat-label">more concentrated than<br>liquid cleansers</span>
+      </li>
+      <li>
+        <span class="pdp-stat-num">0</span>
+        <span class="pdp-stat-label">water, chemicals,<br>synthetic fragrance</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
 <!-- RELATED PRODUCTS -->
 <div class="related-section">
-  <h2>Complete the <em>ritual</em></h2>
+  <h2>Complete the <em>moment</em></h2>
   <div class="related-grid" id="relatedGrid">
     <div class="related-card loading-skeleton" style="height:280px"></div>
     <div class="related-card loading-skeleton" style="height:280px"></div>
@@ -397,8 +511,9 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   // Get handle from URL: /product?handle=glass-skin-miracle-stick
   const params   = new URLSearchParams(window.location.search);
   const HANDLE   = params.get('handle') || 'glass-skin-miracle-stick';
-  const BADGE    = HANDLE.includes('brightening') ? 'No. 02 · New' : 'No. 01 · Best seller';
-  const SUBTITLE = HANDLE.includes('brightening')
+  const isBrightening = HANDLE.includes('brightening');
+  const BADGE    = isBrightening ? 'No. 02 · New' : 'No. 01 · Best seller';
+  const SUBTITLE = isBrightening
     ? 'Inspired by Ayurvedic cleansing practices from 2000 BC in the Indus Valley'
     : '2000 year old Nuruk Balhyo fermentation recipe inspired face wash';
 
@@ -603,7 +718,69 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
     if(!isOpen) item.classList.add('open');
   };
 
+  // ── EDITORIAL CONTENT ────────────────────────────────────────────────────
+  const editorialContent = {
+    brightening: {
+      origin: {
+        title: 'A 5,000-year blessing ceremony, pressed into a stick.',
+        body1: 'Five thousand years ago in the Indus Valley, women roasted and ground whole herbs (turmeric, sandalwood, chickpea flour) into a fine paste with honey and yogurt. This was the Nalugu tradition: a sacred cleansing and blessing ceremony performed for brides and bridegrooms before their wedding. If you\'ve ever watched an Indian wedding and seen the couple covered in a warm golden paste, that was this exact recipe.',
+        body2: 'We hand-roast whole herbs and marinate them for two weeks, then stone-grind and cold-pour them into a stick. The original recipe, now made more potent with six carefully chosen modern actives.',
+        quote: 'The recipe is centuries old. That\'s precisely why it works. We\'re not reinventing the wheel. We\'re just finally giving it the right form.'
+      },
+      benefits: ['Brightening','Glow','Acne-Calming','Hyperpigmentation','Gentle Exfoliation','Pore Care','Even Skin Tone'],
+      why: [
+        {title:'Time-proven recipe', body:'This formula is 5,000 years old. Generations of use across cultures is the most powerful proof of efficacy there is. We didn\'t invent it. We preserved it.'},
+        {title:'Intentional whole herbs', body:'Turmeric and saffron aren\'t trendy additions. They\'re the heart of this recipe. Whole herbs roasted and stone-ground, not isolated extracts. Every plant chosen for a reason that goes back centuries.'},
+        {title:'3\u00d7 concentrated, zero water', body:'Solid format means zero water and zero preservatives. Every molecule is an active ingredient. Less product on your face does more.'},
+        {title:'Six premium actives added', body:'Hyaluronic acid, jojoba oil, vitamins B, C, and E amplify what the ancient recipe already does naturally.'},
+        {title:'Gentle almond exfoliation', body:'Ground almonds deliver light physical exfoliation. Smooth, bright skin without harsh synthetic scrubs.'},
+        {title:'pH 7, perfectly balanced', body:'Formulated at neutral pH. Gentle enough for daily use morning and evening without stripping your skin barrier.'}
+      ],
+      scent: {
+        notes: 'Turmeric \u00b7 Saffron \u00b7 Tea Tree \u00b7 Warm Spices',
+        desc: 'Grounded and earthy. The kind of smell that feels like a kitchen in the morning. Whole herbs, warming spices, something deeply familiar. No synthetic fragrance. Everything you smell is an ingredient doing work on your skin.'
+      }
+    },
+    glassSkin: {
+      origin: {
+        title: 'Two thousand years of fermentation, now in your hands.',
+        body1: 'Long before modern skincare, ancient Korean women discovered that the secret to a flawless, luminous complexion was hidden in the harvest. Through Nuruk Balhyo, the traditional art of fermenting rice and delicate flowers, they unlocked powerful natural enzymes that left the skin impossibly soft and deeply hydrated. For over two thousand years, this botanical fermentation process was passed down through generations.',
+        body2: 'Today, we recreate this exact, time-intensive process to naturally rebuild your moisture barrier and give you that signature, supple glow.',
+        quote: 'Fermentation doesn\'t just preserve ingredients. It transforms them. The process unlocks compounds the plant never releases on its own. That\'s the glass skin effect.'
+      },
+      benefits: ['Deep Hydration','Glass Skin Effect','Moisture Retention','Soothes Sensitive Skin','Gentle Exfoliation','Firming','Barrier Repair'],
+      why: [
+        {title:'Time-proven process', body:'Korean brewers have used Nuruk Balhyo fermentation for two millennia. The process is the proof. We didn\'t invent it. We preserved it and brought it to you.'},
+        {title:'2 to 3 months of fermentation', body:'Rice and rose flowers fermented at a specific temperature unlock moisture-binding compounds unavailable in any non-fermented formula.'},
+        {title:'Naturally retains moisture', body:'The fermented base holds hydration in the skin as it cleans. Customers with dry skin and mild eczema report noticeably calmer, softer skin after regular use.'},
+        {title:'Gentle rice exfoliation', body:'Finely ground fermented rice provides the softest possible physical exfoliation. Polished, supple skin without any abrasion.'},
+        {title:'pH 7, skin-balanced', body:'Formulated at neutral pH. Safe for daily use on sensitive and dry skin types, morning and evening.'},
+        {title:'Six premium actives added', body:'Hyaluronic acid, jojoba oil, vitamins B, C, and E work with the fermented base for soft, supple, glass-like skin.'}
+      ],
+      scent: {
+        notes: 'Rose \u00b7 Jasmine \u00b7 Calendula \u00b7 Ylang Ylang \u00b7 Warm Grains',
+        desc: 'Airy and floral with a soft grain warmth underneath. The fermented base gives it depth. Not sharp or sweet, but rounded and alive. No synthetic fragrance added. Every note you smell is a working ingredient.'
+      }
+    }
+  };
+
+  function populateEditorial(){
+    var c = isBrightening ? editorialContent.brightening : editorialContent.glassSkin;
+    var el;
+    el = document.querySelector('[data-origin-title]'); if(el) el.textContent = c.origin.title;
+    el = document.querySelector('[data-origin-body-1]'); if(el) el.textContent = c.origin.body1;
+    el = document.querySelector('[data-origin-body-2]'); if(el) el.textContent = c.origin.body2;
+    el = document.querySelector('[data-origin-quote]'); if(el) el.textContent = c.origin.quote;
+    el = document.querySelector('[data-benefits-pills]');
+    if(el) el.innerHTML = c.benefits.map(function(b){ return '<li class="pdp-pill">'+b+'</li>'; }).join('');
+    el = document.querySelector('[data-why-grid]');
+    if(el) el.innerHTML = c.why.map(function(w){ return '<li class="pdp-why-card"><h3>'+w.title+'</h3><p>'+w.body+'</p></li>'; }).join('');
+    el = document.querySelector('[data-scent-notes]'); if(el) el.textContent = c.scent.notes;
+    el = document.querySelector('[data-scent-desc]'); if(el) el.textContent = c.scent.desc;
+  }
+
   // ── INIT ─────────────────────────────────────────────────────────────────
+  populateEditorial();
   loadProduct();
 })();
 </script>
