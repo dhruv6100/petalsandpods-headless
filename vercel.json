@@ -1,6 +1,13 @@
 {
   "rewrites": [
-    { "source": "/((?!partials/|api/|.*\\.(?:html|js|css|png|jpg|jpeg|webp|svg|gif|ico|woff|woff2|ttf|otf|map|json|txt|xml|webmanifest)$).*)", "destination": "/index.html" }
+    {
+      "source": "/api/subscribe",
+      "destination": "/api/subscribe.js"
+    },
+    {
+      "source": "/((?!api/|partials/|.*\\.(?:html|js|css|png|jpg|jpeg|webp|svg|gif|ico|woff|woff2|ttf|otf|map|json|txt|xml|webmanifest)$).*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
