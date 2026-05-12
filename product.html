@@ -235,6 +235,8 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   .pdp-stats-row li:last-child{border-bottom:none}
 }
 @media(max-width:600px){.pdp-why-grid{grid-template-columns:1fr}}
+@media (max-width:960px){ #pdpReviewsGrid{grid-template-columns:repeat(2,1fr)!important;} }
+@media (max-width:640px){ #pdpReviewsGrid{grid-template-columns:1fr!important;} .pdp-reviews{padding:4rem var(--gutter)!important;} }
 </style>
 </head>
 <body>
@@ -367,6 +369,78 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
       </div>
     </div>
   </div>
+<section class="pdp-reviews" style="padding:6rem var(--gutter);background:var(--cream-soft);">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div style="display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:2rem;margin-bottom:3.5rem;">
+      <div>
+        <div class="eyebrow" style="margin-bottom:1rem;">
+          <span style="width:24px;height:1px;background:var(--copper-med);"></span>
+          Verified reviews
+        </div>
+        <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:300;line-height:1.1;color:var(--forest);margin:0;">
+          What customers <em style="color:var(--copper-med);">say.</em>
+        </h2>
+      </div>
+      <button id="openReviewModal" style="display:inline-flex;align-items:center;gap:.7rem;padding:1rem 1.8rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background 200ms;">
+        Write a review
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg>
+      </button>
+    </div>
+
+    <div id="pdpReviewsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+      <!-- Reviews injected by JS based on product handle -->
+    </div>
+  </div>
+</section>
+
+<!-- REVIEW SUBMISSION MODAL -->
+<div id="reviewModal" style="position:fixed;inset:0;z-index:9999;background:rgba(20,8,9,.8);backdrop-filter:blur(8px);padding:1rem;display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--white);border-radius:20px;max-width:520px;width:100%;padding:3rem 2.5rem;position:relative;max-height:90vh;overflow-y:auto;">
+    <button onclick="document.getElementById('reviewModal').style.display='none'" style="position:absolute;top:1.2rem;right:1.2rem;background:var(--cream-soft);border:none;cursor:pointer;width:36px;height:36px;border-radius:50%;font-size:1.1rem;color:var(--ink-muted);">×</button>
+
+    <!-- STAGE 1: Email gate -->
+    <div id="reviewStage1">
+      <div class="eyebrow" style="margin-bottom:1rem;">Step 1 of 2</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .6rem;">Confirm your email</h3>
+      <p style="font-family:var(--font-body);font-size:.92rem;color:var(--ink-muted);line-height:1.6;margin-bottom:1.5rem;">We verify reviews against our customer list. Enter the email you used when subscribing or purchasing.</p>
+      <input type="email" id="reviewEmail" placeholder="your@email.com" autocomplete="email" style="width:100%;padding:1rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:1rem;margin-bottom:1rem;box-sizing:border-box;" />
+      <button id="verifyEmailBtn" style="width:100%;padding:1.1rem;background:var(--copper-med);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Verify &amp; continue</button>
+      <div id="verifyError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
+    </div>
+
+    <!-- STAGE 2: Review form -->
+    <div id="reviewStage2" style="display:none;">
+      <div class="eyebrow" style="margin-bottom:1rem;">Step 2 of 2</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 1.5rem;">Share your experience</h3>
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Rating</label>
+      <div id="ratingStars" style="display:flex;gap:.4rem;margin-bottom:1.3rem;font-size:1.8rem;color:var(--line-soft);cursor:pointer;">
+        <span data-rating="1">★</span><span data-rating="2">★</span><span data-rating="3">★</span><span data-rating="4">★</span><span data-rating="5">★</span>
+      </div>
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your name</label>
+      <input type="text" id="reviewName" placeholder="First name + last initial" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Headline</label>
+      <input type="text" id="reviewHeadline" placeholder="e.g. Game-changing for my routine" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your review</label>
+      <textarea id="reviewBody" rows="5" placeholder="Tell us what you experienced..." style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.5rem;box-sizing:border-box;resize:vertical;"></textarea>
+
+      <button id="submitReviewBtn" style="width:100%;padding:1.1rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Submit review</button>
+      <div id="submitError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
+    </div>
+
+    <!-- STAGE 3: Success -->
+    <div id="reviewStage3" style="display:none;text-align:center;padding:2rem 0;">
+      <div style="width:80px;height:80px;margin:0 auto 1.5rem;background:var(--cream-soft);border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-size:2rem;color:var(--copper-med);">✓</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .8rem;">Thank you</h3>
+      <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink-muted);line-height:1.7;">Your review has been submitted and will appear after we verify your order. We read every one.</p>
+    </div>
+  </div>
+</div>
+
 </main>
 
 <!-- ORIGIN STORY -->
@@ -774,6 +848,165 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   // ── INIT ─────────────────────────────────────────────────────────────────
   populateEditorial();
   loadProduct();
+})();
+</script>
+<script>
+(function(){
+  'use strict';
+
+  // Real Amazon reviews, split by product handle
+  const REVIEWS = {
+    'brightening-one-step-glow-cleanser-stick': [
+      { rating: 5, headline: 'Radiant results!', name: 'Ranjith Y.', date: 'Nov 2023', body: 'I am delighted to share my experience with this incredible face wash. Within just two weeks of regular use, I noticed a significant improvement in the texture of my skin. Rough patches were smoothed out, and dark areas visibly lightened. The results were beyond my expectations.' },
+      { rating: 5, headline: 'Best cleanser I could ask for', name: 'Javier', date: 'Dec 2023', body: 'I have sensitive skin and was very sceptical to order it. The ingredients are the reason and I am so glad I did. It changed the look of my skin right after a week\'s use. Glow for sure and skin feels so much more even.' },
+      { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal — divine.' }
+    ],
+    'glass-skin-miracle-cleanser-stick': [
+      { rating: 5, headline: 'In love with this cleanser', name: 'Javier', date: 'Dec 2023', body: 'I had my doubts looking at the ingredients. My mom used to tell me about fermented rice water for skin and hair — I could never do it on my own. Glad I found this. It works like a miracle. The glow is unbelievable.' },
+      { rating: 5, headline: 'Great', name: 'Naveen K.', date: 'Jan 2025', body: 'My 14-year-old has been using this product for a year and likes it.' },
+      { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal — divine.' }
+    ]
+  };
+
+  // Default fallback — show all 5 reviews if product handle doesn't match
+  const ALL_REVIEWS = [...REVIEWS['brightening-one-step-glow-cleanser-stick'], ...REVIEWS['glass-skin-miracle-cleanser-stick'].filter((_, i) => i < 2)];
+
+  function getProductHandle() {
+    // Try URL param first (e.g. ?handle=glass-skin-miracle-cleanser-stick)
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('handle')) return params.get('handle');
+    // Fallback: parse from URL path
+    const match = window.location.pathname.match(/\/products?\/([^\/]+)/);
+    return match ? match[1] : null;
+  }
+
+  function getProductName() {
+    const handle = getProductHandle();
+    if (handle && handle.includes('glass-skin')) return 'Glass Skin Miracle Cleanser';
+    if (handle && handle.includes('brightening')) return 'Brightening 1-Step Glow Cleanser';
+    return document.title.split('—')[0].trim() || 'Petals & Pods Product';
+  }
+
+  function renderReviews() {
+    const grid = document.getElementById('pdpReviewsGrid');
+    if (!grid) return;
+    const handle = getProductHandle();
+    const reviews = (handle && REVIEWS[handle]) ? REVIEWS[handle] : ALL_REVIEWS;
+    grid.innerHTML = reviews.map(r => `
+      <article style="background:var(--white);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;box-shadow:var(--shadow-1);">
+        <div style="color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">${'★'.repeat(r.rating)}</div>
+        <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--forest);line-height:1.3;margin:0;">${r.headline}</h3>
+        <p style="font-family:var(--font-body);font-size:.93rem;color:var(--ink);line-height:1.65;margin:0;flex:1;">${r.body}</p>
+        <div style="height:1px;background:var(--line-soft);margin:.3rem 0;"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-family:var(--font-body);font-size:.9rem;font-weight:500;color:var(--ink);">${r.name}</div>
+            <div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-med);margin-top:.2rem;">Verified · Amazon</div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:var(--ink-muted);">${r.date}</div>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  // Modal logic
+  const modal = document.getElementById('reviewModal');
+  const stage1 = document.getElementById('reviewStage1');
+  const stage2 = document.getElementById('reviewStage2');
+  const stage3 = document.getElementById('reviewStage3');
+  let selectedRating = 0;
+  let verifiedEmail = '';
+
+  document.getElementById('openReviewModal').addEventListener('click', () => {
+    stage1.style.display = 'block'; stage2.style.display = 'none'; stage3.style.display = 'none';
+    document.getElementById('verifyError').style.display = 'none';
+    document.getElementById('submitError').style.display = 'none';
+    document.getElementById('reviewEmail').value = '';
+    modal.style.display = 'flex';
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.style.display = 'none';
+  });
+
+  document.getElementById('verifyEmailBtn').addEventListener('click', async () => {
+    const email = document.getElementById('reviewEmail').value.trim();
+    const errEl = document.getElementById('verifyError');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.style.display = 'block'; return;
+    }
+    const btn = document.getElementById('verifyEmailBtn');
+    btn.disabled = true; btn.textContent = 'Verifying...';
+    try {
+      const res = await fetch('/api/verify-and-submit-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verify', email })
+      });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Verify & continue';
+      if (data.verified) {
+        verifiedEmail = email;
+        stage1.style.display = 'none'; stage2.style.display = 'block';
+      } else {
+        errEl.innerHTML = "We couldn't find that email in our customer list. <a href='/' style='color:var(--copper-med);text-decoration:underline;'>Subscribe first</a> to leave a verified review.";
+        errEl.style.display = 'block';
+      }
+    } catch (e) {
+      btn.disabled = false; btn.textContent = 'Verify & continue';
+      errEl.textContent = 'Verification failed. Please try again.';
+      errEl.style.display = 'block';
+    }
+  });
+
+  // Rating star picker
+  document.querySelectorAll('#ratingStars span').forEach(s => {
+    s.addEventListener('click', () => {
+      selectedRating = parseInt(s.dataset.rating);
+      document.querySelectorAll('#ratingStars span').forEach((star, i) => {
+        star.style.color = (i < selectedRating) ? 'var(--copper-med)' : 'var(--line-soft)';
+      });
+    });
+  });
+
+  document.getElementById('submitReviewBtn').addEventListener('click', async () => {
+    const errEl = document.getElementById('submitError');
+    errEl.style.display = 'none';
+    const name = document.getElementById('reviewName').value.trim();
+    const headline = document.getElementById('reviewHeadline').value.trim();
+    const body = document.getElementById('reviewBody').value.trim();
+    if (!selectedRating || !name || !headline || !body) {
+      errEl.textContent = 'Please fill in all fields and select a rating.';
+      errEl.style.display = 'block'; return;
+    }
+    const btn = document.getElementById('submitReviewBtn');
+    btn.disabled = true; btn.textContent = 'Submitting...';
+    try {
+      const res = await fetch('/api/verify-and-submit-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'submit', email: verifiedEmail,
+          review: { rating: selectedRating, headline, body, name, product: getProductName(), productHandle: getProductHandle() }
+        })
+      });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Submit review';
+      if (data.success) {
+        stage2.style.display = 'none'; stage3.style.display = 'block';
+      } else {
+        errEl.textContent = data.error || 'Submission failed. Please try again.';
+        errEl.style.display = 'block';
+      }
+    } catch (e) {
+      btn.disabled = false; btn.textContent = 'Submit review';
+      errEl.textContent = 'Submission failed. Please try again.';
+      errEl.style.display = 'block';
+    }
+  });
+
+  renderReviews();
 })();
 </script>
 <div id="site-popup"></div>
