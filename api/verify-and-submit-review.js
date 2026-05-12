@@ -1,6 +1,6 @@
 export const config = { runtime: 'edge' };
 
-const KLAVIYO_PRIVATE_KEY = process.env.KLAVIYO_PRIVATE_KEY;
+const KLAVIYO_REVIEWS_KEY = process.env.KLAVIYO_REVIEWS_KEY;
 const REVISION = '2024-10-15';
 
 export default async function handler(req) {
@@ -21,7 +21,7 @@ export default async function handler(req) {
     const lookupRes = await fetch(lookupUrl, {
       method: 'GET',
       headers: {
-        'Authorization': `Klaviyo-API-Key ${KLAVIYO_PRIVATE_KEY}`,
+        'Authorization': `Klaviyo-API-Key ${KLAVIYO_REVIEWS_KEY}`,
         'revision': REVISION,
         'Accept': 'application/json'
       }
@@ -74,7 +74,7 @@ export default async function handler(req) {
       const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
         method: 'POST',
         headers: {
-          'Authorization': `Klaviyo-API-Key ${KLAVIYO_PRIVATE_KEY}`,
+          'Authorization': `Klaviyo-API-Key ${KLAVIYO_REVIEWS_KEY}`,
           'revision': REVISION,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
