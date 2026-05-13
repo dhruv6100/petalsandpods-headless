@@ -235,8 +235,14 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   .pdp-stats-row li:last-child{border-bottom:none}
 }
 @media(max-width:600px){.pdp-why-grid{grid-template-columns:1fr}}
-@media (max-width:960px){ #pdpReviewsGrid{grid-template-columns:repeat(2,1fr)!important;} }
-@media (max-width:640px){ #pdpReviewsGrid{grid-template-columns:1fr!important;} .pdp-reviews{padding:4rem var(--gutter)!important;} }
+.ribbon-scroll{scrollbar-width:thin;scrollbar-color:var(--copper-med) transparent;}
+.ribbon-scroll::-webkit-scrollbar{height:4px;}
+.ribbon-scroll::-webkit-scrollbar-track{background:transparent;}
+.ribbon-scroll::-webkit-scrollbar-thumb{background:var(--copper-med);border-radius:2px;}
+@media (max-width:640px){
+  #pdpReviewsRibbon article{flex:0 0 75vw!important;}
+  .video-card{flex:0 0 60vw!important;}
+}
 </style>
 </head>
 <body>
@@ -371,28 +377,97 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   </div>
 </main>
 
-<section class="pdp-reviews" style="padding:6rem var(--gutter);background:var(--cream-soft);">
+<section class="pdp-reviews" style="padding:4rem var(--gutter) 5rem;background:var(--cream-soft);">
   <div style="max-width:1280px;margin:0 auto;">
 
-    <div style="display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:2rem;margin-bottom:3.5rem;">
+    <!-- HEADER ROW -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin-bottom:2.2rem;flex-wrap:wrap;">
       <div>
-        <div class="eyebrow" style="margin-bottom:1rem;">
+        <div class="eyebrow" style="margin-bottom:.7rem;font-size:.62rem;">
           <span style="width:24px;height:1px;background:var(--copper-med);"></span>
-          Verified reviews
+          From real customers
         </div>
-        <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:300;line-height:1.1;color:var(--forest);margin:0;">
-          What customers <em style="color:var(--copper-med);">say.</em>
+        <h2 style="font-family:var(--font-display);font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:300;line-height:1.1;letter-spacing:-.015em;color:var(--forest);margin:0;">
+          The ritual, <em style="font-style:italic;color:var(--copper-med);">reviewed.</em>
         </h2>
       </div>
-      <button id="openReviewModal" style="display:inline-flex;align-items:center;gap:.7rem;padding:1rem 1.8rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background 200ms;">
-        Write a review
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg>
-      </button>
+      <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;">
+          <div style="display:flex;align-items:baseline;gap:.5rem;">
+            <span style="font-family:var(--font-display);font-size:1.8rem;font-weight:500;color:var(--forest);line-height:1;">4.1</span>
+            <span style="color:var(--copper-med);font-size:1rem;letter-spacing:.08em;">★★★★☆</span>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);margin-top:.2rem;">Trustpilot · 5 reviews</div>
+        </div>
+        <button id="openReviewModal" type="button" style="display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.4rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background 200ms;">
+          Write a review
+          <svg width="12" height="9" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg>
+        </button>
+      </div>
     </div>
 
-    <div id="pdpReviewsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
-      <!-- Reviews injected by JS based on product handle -->
+    <!-- TEXT REVIEWS RIBBON -->
+    <div class="ribbon-label" style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;">
+      <span style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-med);">Written</span>
+      <span style="flex:1;height:1px;background:var(--line-soft);"></span>
     </div>
+    <div id="pdpReviewsRibbon" class="ribbon-scroll" style="display:flex;gap:.9rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.5rem;margin-bottom:2rem;-webkit-overflow-scrolling:touch;">
+      <!-- Review cards injected by JS -->
+    </div>
+
+    <!-- VIDEO REVIEWS RIBBON -->
+    <div class="ribbon-label" style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;">
+      <span style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-med);">Video clips</span>
+      <span style="flex:1;height:1px;background:var(--line-soft);"></span>
+    </div>
+    <div id="pdpVideoRibbon" class="ribbon-scroll" style="display:flex;gap:.9rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.5rem;-webkit-overflow-scrolling:touch;">
+      <!-- Video clip placeholders (4 cards) -->
+      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3B33,var(--forest));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+        <div style="position:absolute;inset:0;display:grid;place-items:center;">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+          </div>
+        </div>
+        <div style="position:relative;z-index:1;">
+          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+        </div>
+      </div>
+      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3D2A2A,var(--copper-med));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+        <div style="position:absolute;inset:0;display:grid;place-items:center;">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+          </div>
+        </div>
+        <div style="position:relative;z-index:1;">
+          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+        </div>
+      </div>
+      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3B342A,#7A6648);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+        <div style="position:absolute;inset:0;display:grid;place-items:center;">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+          </div>
+        </div>
+        <div style="position:relative;z-index:1;">
+          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+        </div>
+      </div>
+      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3530,#4A5C50);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+        <div style="position:absolute;inset:0;display:grid;place-items:center;">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+          </div>
+        </div>
+        <div style="position:relative;z-index:1;">
+          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -841,22 +916,22 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   }
 
   function renderReviews() {
-    const grid = document.getElementById('pdpReviewsGrid');
-    if (!grid) return;
+    const ribbon = document.getElementById('pdpReviewsRibbon');
+    if (!ribbon) return;
     const handle = getProductHandle();
     const reviews = (handle && REVIEWS[handle]) ? REVIEWS[handle] : ALL_REVIEWS;
-    grid.innerHTML = reviews.map(r => `
-      <article style="background:var(--white);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;box-shadow:var(--shadow-1);">
-        <div style="color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">${'★'.repeat(r.rating)}</div>
-        <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;color:var(--forest);line-height:1.3;margin:0;">${r.headline}</h3>
-        <p style="font-family:var(--font-body);font-size:.93rem;color:var(--ink);line-height:1.65;margin:0;flex:1;">${r.body}</p>
-        <div style="height:1px;background:var(--line-soft);margin:.3rem 0;"></div>
+    ribbon.innerHTML = reviews.map(r => `
+      <article style="flex:0 0 280px;scroll-snap-align:start;background:var(--white);border:1px solid var(--line-soft);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;gap:.7rem;box-shadow:var(--shadow-1);">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <div style="font-family:var(--font-body);font-size:.9rem;font-weight:500;color:var(--ink);">${r.name}</div>
-            <div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-med);margin-top:.2rem;">Verified · Amazon</div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:var(--ink-muted);">${r.date}</div>
+          <div style="color:var(--copper-med);font-size:.85rem;letter-spacing:.08em;">${'★'.repeat(r.rating)}</div>
+          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.12em;color:var(--ink-muted);">${r.date}</div>
+        </div>
+        <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;color:var(--forest);line-height:1.25;margin:0;">${r.headline}</h3>
+        <p style="font-family:var(--font-body);font-size:.82rem;color:var(--ink);line-height:1.55;margin:0;flex:1;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;">${r.body}</p>
+        <div style="height:1px;background:var(--line-soft);margin:.1rem 0;"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-family:var(--font-body);font-size:.78rem;font-weight:500;color:var(--ink);">${r.name}</div>
+          <div style="font-family:var(--font-mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--copper-med);">Verified · Amazon</div>
         </div>
       </article>
     `).join('');
@@ -884,7 +959,10 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
     document.body.style.overflow = '';
   }
 
-  document.getElementById('openReviewModal').addEventListener('click', openModal);
+  // Delegated click handler for "Write a review" button (resilient to DOM moves)
+  document.addEventListener('click', (e) => {
+    if (e.target.closest && e.target.closest('#openReviewModal')) openModal();
+  });
   document.getElementById('closeReviewModal').addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
@@ -965,7 +1043,11 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
     }
   });
 
-  renderReviews();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderReviews);
+  } else {
+    renderReviews();
+  }
 })();
 </script>
 
