@@ -394,53 +394,6 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   </div>
 </section>
 
-<!-- REVIEW SUBMISSION MODAL -->
-<div id="reviewModal" style="position:fixed;inset:0;z-index:99999;background:rgba(20,8,9,.8);backdrop-filter:blur(8px);padding:1rem;display:none;align-items:center;justify-content:center;">
-  <div style="background:var(--white);border-radius:20px;max-width:520px;width:100%;padding:3rem 2.5rem;position:relative;max-height:90vh;overflow-y:auto;">
-    <button onclick="document.getElementById('reviewModal').style.display='none'" style="position:absolute;top:1.2rem;right:1.2rem;background:var(--cream-soft);border:none;cursor:pointer;width:36px;height:36px;border-radius:50%;font-size:1.1rem;color:var(--ink-muted);">×</button>
-
-    <!-- STAGE 1: Email gate -->
-    <div id="reviewStage1">
-      <div class="eyebrow" style="margin-bottom:1rem;">Step 1 of 2</div>
-      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .6rem;">Confirm your email</h3>
-      <p style="font-family:var(--font-body);font-size:.92rem;color:var(--ink-muted);line-height:1.6;margin-bottom:1.5rem;">We verify reviews against our customer list. Enter the email you used when subscribing or purchasing.</p>
-      <input type="email" id="reviewEmail" placeholder="your@email.com" autocomplete="email" style="width:100%;padding:1rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:1rem;margin-bottom:1rem;box-sizing:border-box;" />
-      <button id="verifyEmailBtn" style="width:100%;padding:1.1rem;background:var(--copper-med);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Verify &amp; continue</button>
-      <div id="verifyError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
-    </div>
-
-    <!-- STAGE 2: Review form -->
-    <div id="reviewStage2" style="display:none;">
-      <div class="eyebrow" style="margin-bottom:1rem;">Step 2 of 2</div>
-      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 1.5rem;">Share your experience</h3>
-
-      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Rating</label>
-      <div id="ratingStars" style="display:flex;gap:.4rem;margin-bottom:1.3rem;font-size:1.8rem;color:var(--line-soft);cursor:pointer;">
-        <span data-rating="1">★</span><span data-rating="2">★</span><span data-rating="3">★</span><span data-rating="4">★</span><span data-rating="5">★</span>
-      </div>
-
-      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your name</label>
-      <input type="text" id="reviewName" placeholder="First name + last initial" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
-
-      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Headline</label>
-      <input type="text" id="reviewHeadline" placeholder="e.g. Game-changing for my routine" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
-
-      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your review</label>
-      <textarea id="reviewBody" rows="5" placeholder="Tell us what you experienced..." style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.5rem;box-sizing:border-box;resize:vertical;"></textarea>
-
-      <button id="submitReviewBtn" style="width:100%;padding:1.1rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Submit review</button>
-      <div id="submitError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
-    </div>
-
-    <!-- STAGE 3: Success -->
-    <div id="reviewStage3" style="display:none;text-align:center;padding:2rem 0;">
-      <div style="width:80px;height:80px;margin:0 auto 1.5rem;background:var(--cream-soft);border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-size:2rem;color:var(--copper-med);">✓</div>
-      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .8rem;">Thank you</h3>
-      <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink-muted);line-height:1.7;">Your review has been submitted and will appear after we verify your order. We read every one.</p>
-    </div>
-  </div>
-</div>
-
 </main>
 
 <!-- ORIGIN STORY -->
@@ -917,18 +870,23 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   let selectedRating = 0;
   let verifiedEmail = '';
 
-  document.getElementById('openReviewModal').addEventListener('click', () => {
+  function openModal() {
     stage1.style.display = 'block'; stage2.style.display = 'none'; stage3.style.display = 'none';
     document.getElementById('verifyError').style.display = 'none';
     document.getElementById('submitError').style.display = 'none';
     document.getElementById('reviewEmail').value = '';
-    if (modal.parentElement !== document.body) document.body.appendChild(modal);
     modal.style.display = 'flex';
-  });
+    document.body.style.overflow = 'hidden';
+  }
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.style.display = 'none';
-  });
+  function closeModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('openReviewModal').addEventListener('click', openModal);
+  document.getElementById('closeReviewModal').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
   document.getElementById('verifyEmailBtn').addEventListener('click', async () => {
     const email = document.getElementById('reviewEmail').value.trim();
@@ -1010,6 +968,54 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   renderReviews();
 })();
 </script>
+
+<!-- REVIEW SUBMISSION MODAL — outside <main> to escape gallery sticky stacking context -->
+<div id="reviewModal" style="position:fixed;inset:0;z-index:99999;background:rgba(20,8,9,.8);backdrop-filter:blur(8px);padding:1rem;display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--white);border-radius:20px;max-width:520px;width:100%;padding:3rem 2.5rem;position:relative;max-height:90vh;overflow-y:auto;">
+    <button id="closeReviewModal" style="position:absolute;top:1.2rem;right:1.2rem;background:var(--cream-soft);border:none;cursor:pointer;width:36px;height:36px;border-radius:50%;font-size:1.1rem;color:var(--ink-muted);">×</button>
+
+    <!-- STAGE 1: Email gate -->
+    <div id="reviewStage1">
+      <div class="eyebrow" style="margin-bottom:1rem;">Step 1 of 2</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .6rem;">Confirm your email</h3>
+      <p style="font-family:var(--font-body);font-size:.92rem;color:var(--ink-muted);line-height:1.6;margin-bottom:1.5rem;">We verify reviews against our customer list. Enter the email you used when subscribing or purchasing.</p>
+      <input type="email" id="reviewEmail" placeholder="your@email.com" autocomplete="email" style="width:100%;padding:1rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:1rem;margin-bottom:1rem;box-sizing:border-box;" />
+      <button id="verifyEmailBtn" style="width:100%;padding:1.1rem;background:var(--copper-med);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Verify &amp; continue</button>
+      <div id="verifyError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
+    </div>
+
+    <!-- STAGE 2: Review form -->
+    <div id="reviewStage2" style="display:none;">
+      <div class="eyebrow" style="margin-bottom:1rem;">Step 2 of 2</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 1.5rem;">Share your experience</h3>
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Rating</label>
+      <div id="ratingStars" style="display:flex;gap:.4rem;margin-bottom:1.3rem;font-size:1.8rem;color:var(--line-soft);cursor:pointer;">
+        <span data-rating="1">★</span><span data-rating="2">★</span><span data-rating="3">★</span><span data-rating="4">★</span><span data-rating="5">★</span>
+      </div>
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your name</label>
+      <input type="text" id="reviewName" placeholder="First name + last initial" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Headline</label>
+      <input type="text" id="reviewHeadline" placeholder="e.g. Game-changing for my routine" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
+
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your review</label>
+      <textarea id="reviewBody" rows="5" placeholder="Tell us what you experienced..." style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.5rem;box-sizing:border-box;resize:vertical;"></textarea>
+
+      <button id="submitReviewBtn" style="width:100%;padding:1.1rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Submit review</button>
+      <div id="submitError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
+    </div>
+
+    <!-- STAGE 3: Success -->
+    <div id="reviewStage3" style="display:none;text-align:center;padding:2rem 0;">
+      <div style="width:80px;height:80px;margin:0 auto 1.5rem;background:var(--cream-soft);border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-size:2rem;color:var(--copper-med);">✓</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .8rem;">Thank you</h3>
+      <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink-muted);line-height:1.7;">Your review has been submitted and will appear after we verify your order. We read every one.</p>
+    </div>
+  </div>
+</div>
+
 <div id="site-popup"></div>
 <script src="/partials/include.js" defer></script>
 </body>
