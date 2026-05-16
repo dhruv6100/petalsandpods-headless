@@ -15,6 +15,9 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: true, status: 500, message: 'Proxy not configured' });
   }
 
+  // Expose custom headers so browser JS can read them on every response
+  res.setHeader('Access-Control-Expose-Headers', 'X-PP-Cart-Token, X-PP-WC-Nonce');
+
   const method = req.method;
 
   if (!ALLOWED_METHODS.has(method)) {
@@ -28,8 +31,17 @@ export default async function handler(req, res) {
   }
 
   const subPath = pathSegments.join('/');
-  const qs = new URLSearchParams(req.query);
-  qs.delete('path'); // remove the catch-all param
+
+  // Rebuild query string preserving array params (e.g. include[]=1&include[]=2)
+  const qs = new URLSearchParams();
+  for (const [key, value] of Object.entries(req.query)) {
+    if (key === 'path') continue; // strip Vercel's catch-all param
+    if (Array.isArray(value)) {
+      for (const v of value) qs.append(key, v);
+    } else {
+      qs.append(key, value);
+    }
+  }
   const queryString = qs.toString();
   const targetUrl = `${UPSTREAM_BASE}/${subPath}${queryString ? '?' + queryString : ''}`;
 
@@ -61,11 +73,17 @@ export default async function handler(req, res) {
     signal: AbortSignal.timeout(TIMEOUT_MS),
   };
 
-  // Forward request body for methods that have one
-  if (method === 'POST' || method === 'PUT') {
-    fetchOpts.body = JSON.stringify(req.body);
-    if (!upstreamHeaders['content-type']) {
-      upstreamHeaders['content-type'] = 'application/json';
+  // Forward request body for methods that carry one
+  if (method === 'POST' || method === 'PUT' || method === 'DELETE') {
+    if (req.body != null) {
+      if (typeof req.body === 'string') {
+        fetchOpts.body = req.body;
+      } else if (typeof req.body === 'object') {
+        fetchOpts.body = JSON.stringify(req.body);
+        if (!upstreamHeaders['content-type']) {
+          upstreamHeaders['content-type'] = 'application/json';
+        }
+      }
     }
   }
 
