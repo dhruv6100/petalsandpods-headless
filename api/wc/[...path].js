@@ -25,8 +25,12 @@ export default async function handler(req, res) {
   }
 
   // Build upstream URL from the catch-all path segments
-  const pathSegments = req.query.path;
-  if (!pathSegments || pathSegments.length === 0) {
+  // Vercel passes a single-segment path as a string, multi-segment as an array
+  const rawPath = req.query.path;
+  const pathSegments = Array.isArray(rawPath)
+    ? rawPath
+    : (typeof rawPath === 'string' && rawPath.length > 0 ? [rawPath] : []);
+  if (pathSegments.length === 0) {
     return res.status(400).json({ error: true, status: 400, message: 'Missing API path' });
   }
 
