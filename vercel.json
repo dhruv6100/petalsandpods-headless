@@ -5,6 +5,14 @@
       "destination": "/api/subscribe.js"
     },
     {
+      "source": "/api/wc/_healthcheck",
+      "destination": "/api/wc/_healthcheck.js"
+    },
+    {
+      "source": "/api/wc/:path*",
+      "destination": "/api/wc/[...path].js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
