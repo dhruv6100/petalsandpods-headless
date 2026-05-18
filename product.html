@@ -596,6 +596,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 </footer>
 
 <script src="/lib/wc-api.js"></script>
+<script src="/lib/cart-drawer.js"></script>
 <script>
 (function(){
   'use strict';
@@ -709,16 +710,32 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
         });
       }
 
-      // ATC — TODO: wire to WooCommerce Store API cart endpoints
+      // ATC — wired to WooCommerce Store API via ppCart
       var atcBtn = document.getElementById('atcBtn');
       var atcText = document.getElementById('atcText');
       var buyNowBtn = document.getElementById('buyNowBtn');
-      // TODO: selectedVariationId will be needed for the cart layer
       var selectedVariationId = null;
+
+      // Shared handler for both Add to Bag and Buy Now
+      async function handleAdd(btn, textEl) {
+        var itemId = p.type === 'variable' ? selectedVariationId : p.id;
+        if (!itemId) return;
+        var original = textEl.textContent;
+        textEl.textContent = 'Adding\u2026';
+        btn.disabled = true;
+        try {
+          await window.ppCart.addToCart(itemId, 1);
+          textEl.textContent = 'Added \u2713';
+          setTimeout(function() { textEl.textContent = original; btn.disabled = false; }, 1400);
+        } catch (err) {
+          textEl.textContent = 'Try again';
+          btn.disabled = false;
+          setTimeout(function() { textEl.textContent = original; }, 2000);
+        }
+      }
 
       if (p.is_purchasable && p.is_in_stock) {
         if (p.type === 'variable') {
-          // Variable products: start disabled until a variation is selected
           atcBtn.disabled = true;
           atcText.textContent = 'Select an option';
           buyNowBtn.disabled = true;
@@ -728,14 +745,11 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
           buyNowBtn.disabled = false;
         }
         atcBtn.addEventListener('click', function() {
-          // TODO: integrate with WC Store API cart endpoints
-          console.log('TODO: add to WC cart', { productId: p.id, slug: SLUG, type: p.type, variationId: selectedVariationId });
-          atcText.textContent = 'Coming soon';
-          setTimeout(function() { atcText.textContent = 'Add to bag'; }, 1200);
+          handleAdd(atcBtn, atcText);
         });
         buyNowBtn.addEventListener('click', function() {
-          // TODO: integrate with WC checkout flow
-          console.log('TODO: buy now via WC cart', { productId: p.id, variationId: selectedVariationId });
+          // TODO: replace with direct checkout jump once checkout hand-off is built
+          handleAdd(buyNowBtn, buyNowBtn.querySelector('span'));
         });
       } else {
         atcText.textContent = 'Sold out';
@@ -872,10 +886,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
     }
   }
 
-  // ── CART BUTTON — TODO: wire to WC cart page / drawer ─────────────────
-  document.getElementById('cartBtn')?.addEventListener('click', function() {
-    console.log('TODO: open WC cart');
-  });
+  // ── CART BUTTON → open drawer (handled by cart-drawer.js via #cartBtn binding)
 
   // ── ACCORDION ─────────────────────────────────────────────────────────
   window.toggleAccordion = function(btn) {

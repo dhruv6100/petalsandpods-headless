@@ -1762,6 +1762,7 @@ async function subscribeViaBackend(email, phoneNumber, listId) {
 </footer>
 
 <script src="/lib/wc-api.js"></script>
+<script src="/lib/cart-drawer.js"></script>
 <script>
 /* ==========================================================================
    main.js — Petals & Pods V2 interactions
@@ -2254,9 +2255,10 @@ async function subscribeViaBackend(email, phoneNumber, listId) {
           if (dots[0]) dots[0].classList.add('active');
         }
 
-        // 4. Quick add button — TODO: wire to WC Store API cart
+        // 4. Quick add button — stamp WC product id for cart-drawer.js
         var qa = card.querySelector('.product-quickadd');
         if (qa) {
+          qa.setAttribute('data-product-id', String(p.id));
           if (!p.is_purchasable || !p.is_in_stock) {
             qa.textContent = 'Sold Out';
             qa.disabled = true;
@@ -2284,28 +2286,28 @@ async function subscribeViaBackend(email, phoneNumber, listId) {
     }
   }
 
-  // ── QUICK ADD BUTTONS — TODO: wire to WC Store API cart ───────────────────
+  // ── QUICK ADD BUTTONS → ppCart.addToCart ────────────────────────────────
   document.querySelectorAll('.product-quickadd').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
+    btn.addEventListener('click', async function(e) {
       e.stopPropagation();
-      // TODO: integrate with WC Store API cart endpoints
-      console.log('TODO: quick add to WC cart', { slug: btn.closest('[data-handle]')?.getAttribute('data-handle') });
+      var productId = parseInt(btn.getAttribute('data-product-id'), 10);
+      if (!productId || btn.disabled) return;
       var original = btn.textContent;
-      btn.textContent = 'Coming soon';
+      btn.textContent = 'Adding\u2026';
       btn.disabled = true;
-      setTimeout(function() { btn.textContent = original; btn.disabled = false; }, 1200);
+      try {
+        await window.ppCart.addToCart(productId, 1);
+        btn.textContent = 'Added \u2713';
+        setTimeout(function() { btn.textContent = original; btn.disabled = false; }, 1400);
+      } catch (err) {
+        btn.textContent = 'Try again';
+        btn.disabled = false;
+        setTimeout(function() { btn.textContent = original; }, 2000);
+      }
     });
   });
 
-  // ── CART BUTTON — TODO: wire to WC cart page / drawer ─────────────────────
-  var cartBtn = document.getElementById('cartBtn');
-  if (cartBtn) {
-    cartBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      // TODO: wire to WC cart
-      console.log('TODO: open WC cart');
-    });
-  }
+  // ── CART BUTTON → open drawer (handled by cart-drawer.js via #cartBtn binding)
 
   // ── INIT ──────────────────────────────────────────────────────────────────
   hydrate();
