@@ -964,7 +964,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 })();
 </script>
 <script>
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   'use strict';
 
   // Real Amazon reviews, split by product handle
@@ -1141,7 +1141,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   } else {
     renderReviews();
   }
-})();
+});
 </script>
 
 <!-- REVIEW SUBMISSION MODAL — outside <main> to escape gallery sticky stacking context -->
