@@ -67,7 +67,7 @@
                 data: {
                   type: 'subscription',
                   attributes: {
-                    custom_source: 'Mother\'s Day Popup',
+                    custom_source: 'Welcome Popup',
                     profile: { data: { type: 'profile', attributes: { email: email } } }
                   },
                   relationships: { list: { data: { type: 'list', id: EMAIL_LIST_ID } } }

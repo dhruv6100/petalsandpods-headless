@@ -14,14 +14,19 @@ window.ppReviews = (function() {
     { rating: 5, headline: 'Great', name: 'Naveen K.', date: 'Jan 2025', body: 'My 14-year-old has been using this product for a year and likes it.' }
   ];
 
-  // ── CAROUSEL ─────────────────────────────────────────────────────────
+  // ── CAROUSEL (auto-advance only, no visible controls) ────────────────
   function initCarousel(reviews) {
     var carousel = document.getElementById('reviewCarousel');
     var track = document.getElementById('carouselTrack');
+    if (!track || !carousel) return;
+
+    // Remove control elements if present (clean DOM)
     var prevBtn = document.getElementById('carouselPrev');
     var nextBtn = document.getElementById('carouselNext');
     var dotsEl = document.getElementById('carouselDots');
-    if (!track || !carousel) return;
+    if (prevBtn) prevBtn.remove();
+    if (nextBtn) nextBtn.remove();
+    if (dotsEl) dotsEl.remove();
 
     track.innerHTML = reviews.map(function(r) {
       var stars = '\u2605'.repeat(r.rating) + '\u2606'.repeat(5 - r.rating);
@@ -46,6 +51,9 @@ window.ppReviews = (function() {
     var cards = Array.from(track.querySelectorAll('.review-card'));
     if (!cards.length) return;
 
+    // Smooth 600ms transition
+    track.style.transition = 'transform 600ms cubic-bezier(0.22,1,0.36,1)';
+
     function getPerPage() {
       return window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
     }
@@ -58,31 +66,6 @@ window.ppReviews = (function() {
     function totalPages() { return Math.ceil(cards.length / perPage); }
     function isStatic() { return cards.length <= perPage; }
 
-    function updateControls() {
-      var s = isStatic();
-      prevBtn.style.display = s ? 'none' : '';
-      nextBtn.style.display = s ? 'none' : '';
-      dotsEl.style.display = s ? 'none' : '';
-      if (s) {
-        clearInterval(autoTimer);
-        track.style.transform = 'translateX(0)';
-        current = 0;
-      }
-    }
-
-    function buildDots() {
-      dotsEl.innerHTML = '';
-      if (isStatic()) return;
-      var tp = totalPages();
-      for (var i = 0; i < tp; i++) {
-        var dot = document.createElement('button');
-        dot.className = 'carousel-dot' + (i === current ? ' active' : '');
-        dot.setAttribute('aria-label', 'Page ' + (i + 1));
-        (function(idx) { dot.addEventListener('click', function() { goTo(idx); }); })(i);
-        dotsEl.appendChild(dot);
-      }
-    }
-
     function goTo(page) {
       if (isStatic()) return;
       var pages = totalPages();
@@ -90,13 +73,8 @@ window.ppReviews = (function() {
       var idx = Math.min(current * perPage, cards.length - 1);
       var offset = cards[idx].offsetLeft - cards[0].offsetLeft;
       track.style.transform = 'translateX(-' + offset + 'px)';
-      var dots = dotsEl.querySelectorAll('.carousel-dot');
-      dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
       resetAuto();
     }
-
-    prevBtn.addEventListener('click', function() { goTo(current - 1); });
-    nextBtn.addEventListener('click', function() { goTo(current + 1); });
 
     function resetAuto() {
       clearInterval(autoTimer);
@@ -110,16 +88,19 @@ window.ppReviews = (function() {
       var np = getPerPage();
       if (np !== perPage) {
         perPage = np;
-        current = Math.min(current, totalPages() - 1);
-        buildDots();
-        updateControls();
-        if (!isStatic()) goTo(current);
+        if (isStatic()) {
+          clearInterval(autoTimer);
+          track.style.transform = 'translateX(0)';
+          current = 0;
+        } else {
+          current = Math.min(current, totalPages() - 1);
+          goTo(current);
+        }
       }
     });
 
-    buildDots();
-    updateControls();
-    resetAuto();
+    // Start auto-advance if not static
+    if (!isStatic()) resetAuto();
   }
 
   // ── REVIEW MODAL ─────────────────────────────────────────────────────
@@ -152,14 +133,12 @@ window.ppReviews = (function() {
       document.body.style.overflow = '';
     }
 
-    // Delegated click for "Write a review" button
     document.addEventListener('click', function(e) {
       if (e.target.closest && e.target.closest('#openReviewModal')) openModal();
     });
     document.getElementById('closeReviewModal').addEventListener('click', closeModal);
     modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
 
-    // Verify email
     document.getElementById('verifyEmailBtn').addEventListener('click', async function() {
       var email = document.getElementById('reviewEmail').value.trim();
       var errEl = document.getElementById('verifyError');
@@ -191,7 +170,6 @@ window.ppReviews = (function() {
       }
     });
 
-    // Rating stars
     document.querySelectorAll('#ratingStars span').forEach(function(s) {
       s.addEventListener('click', function() {
         selectedRating = parseInt(s.dataset.rating);
@@ -201,7 +179,6 @@ window.ppReviews = (function() {
       });
     });
 
-    // Submit review
     document.getElementById('submitReviewBtn').addEventListener('click', async function() {
       var errEl = document.getElementById('submitError');
       errEl.style.display = 'none';
@@ -244,8 +221,23 @@ window.ppReviews = (function() {
     });
   }
 
-  // ── VIDEO UPGRADE ────────────────────────────────────────────────────
+  // ── VIDEO UPGRADE (sound-on-click, single-play, IntersectionObserver) ─
   function initVideoUpgrade() {
+    var currentlyPlaying = null;
+
+    // Pause video when it scrolls out of view
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting && entry.target._ppVideo && !entry.target._ppVideo.paused) {
+          entry.target._ppVideo.pause();
+          entry.target._ppVideo.muted = true;
+          var muteBtn = entry.target.querySelector('.pp-mute-toggle');
+          if (muteBtn) muteBtn.remove();
+          if (currentlyPlaying === entry.target) currentlyPlaying = null;
+        }
+      });
+    }, { threshold: 0.3 });
+
     document.querySelectorAll('.video-card[data-video-src]').forEach(function(card) {
       var src = card.dataset.videoSrc;
       var video = document.createElement('video');
@@ -255,14 +247,52 @@ window.ppReviews = (function() {
       video.playsInline = true;
       video.preload = 'metadata';
       video.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:14px;cursor:pointer;';
+
       video.addEventListener('loadeddata', function() {
         card.querySelectorAll('.video-placeholder').forEach(function(el) { el.remove(); });
         card.appendChild(video);
+        card._ppVideo = video;
         card.style.background = '#000';
-        card.addEventListener('mouseenter', function() { video.play(); });
-        card.addEventListener('mouseleave', function() { video.pause(); });
-        card.addEventListener('click', function() {
-          if (video.paused) { video.play(); } else { video.pause(); }
+        observer.observe(card);
+
+        card.addEventListener('click', function(e) {
+          // Don't handle clicks on the mute button
+          if (e.target.closest('.pp-mute-toggle')) return;
+
+          // Pause previously playing video
+          if (currentlyPlaying && currentlyPlaying !== card) {
+            var prevVideo = currentlyPlaying._ppVideo;
+            if (prevVideo) { prevVideo.pause(); prevVideo.muted = true; }
+            var prevMute = currentlyPlaying.querySelector('.pp-mute-toggle');
+            if (prevMute) prevMute.remove();
+          }
+
+          if (video.paused) {
+            // Play unmuted
+            video.muted = false;
+            video.play();
+            currentlyPlaying = card;
+            // Add mute toggle
+            if (!card.querySelector('.pp-mute-toggle')) {
+              var muteBtn = document.createElement('button');
+              muteBtn.className = 'pp-mute-toggle';
+              muteBtn.style.cssText = 'position:absolute;top:.6rem;right:.6rem;z-index:5;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.55);border:none;cursor:pointer;display:grid;place-items:center;color:#fff;font-size:.85rem;backdrop-filter:blur(4px);';
+              muteBtn.textContent = '\uD83D\uDD0A';
+              muteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                video.muted = !video.muted;
+                muteBtn.textContent = video.muted ? '\uD83D\uDD07' : '\uD83D\uDD0A';
+              });
+              card.appendChild(muteBtn);
+            }
+          } else {
+            // Pause
+            video.pause();
+            video.muted = true;
+            var mb = card.querySelector('.pp-mute-toggle');
+            if (mb) mb.remove();
+            currentlyPlaying = null;
+          }
         });
       });
     });
