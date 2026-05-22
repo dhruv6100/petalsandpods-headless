@@ -476,8 +476,26 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 #emailSuccess,#smsSuccess{font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--copper-med);margin-top:.5rem;text-align:center}
 .sms-card p strong{font-style:normal;color:var(--forest)}
 .review-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-3);}
-@media (max-width:960px){.reviews-grid{grid-template-columns:repeat(2,1fr)!important;}}
-@media (max-width:640px){.reviews-grid{grid-template-columns:1fr!important;}.reviews-wall{padding:5rem var(--gutter)!important;}}
+/* CAROUSEL */
+.review-carousel{position:relative;overflow:hidden;padding-bottom:2.5rem;margin-bottom:2rem;}
+.carousel-track{display:flex;gap:.9rem;transition:transform 500ms var(--ease);will-change:transform;}
+.carousel-track .review-card{flex:0 0 calc((100% - 1.8rem) / 3);background:var(--white);border:1px solid var(--line-soft);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;gap:.7rem;box-sizing:border-box;}
+.carousel-prev,.carousel-next{position:absolute;top:calc(50% - 1.25rem);transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:var(--white);border:1px solid var(--line-soft);color:var(--forest);font-size:1.2rem;cursor:pointer;display:grid;place-items:center;z-index:2;transition:all 200ms var(--ease);box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.carousel-prev{left:-.25rem;}
+.carousel-next{right:-.25rem;}
+.carousel-prev:hover,.carousel-next:hover{background:var(--forest);color:var(--white);border-color:var(--forest);}
+.carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.2rem;}
+.carousel-dot{width:8px;height:8px;border-radius:50%;background:var(--line);border:none;cursor:pointer;transition:all 200ms var(--ease);padding:0;}
+.carousel-dot.active{background:var(--copper-med);transform:scale(1.25);}
+/* VIDEO RIBBON */
+.video-ribbon-wrap{overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:var(--copper-med) transparent;}
+.video-ribbon-wrap::-webkit-scrollbar{height:8px;}
+.video-ribbon-wrap::-webkit-scrollbar-track{background:transparent;}
+.video-ribbon-wrap::-webkit-scrollbar-thumb{background:var(--copper-med);border-radius:4px;}
+.video-ribbon-wrap::-webkit-scrollbar-thumb:hover{background:var(--copper-dark);}
+.video-ribbon-inner{display:inline-flex;gap:.9rem;}
+@media(max-width:900px){.carousel-track .review-card{flex:0 0 calc((100% - .9rem) / 2);}}
+@media(max-width:640px){.carousel-track .review-card{flex:0 0 100%;}.video-card{flex:0 0 60vw!important;}.carousel-prev{left:.25rem;}.carousel-next{right:.25rem;}}
 </style>
 </head>
 <body>
@@ -737,6 +755,73 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
         <p class="product-card-value" style="font-family:var(--font-body);font-size:12px;font-style:italic;color:var(--ink-muted);margin-top:6px;">Lasts 2 to 4 months, just $7 to $8 per month. 4 oz.</p>
       </div>
     </article>
+  </div>
+</section>
+
+<!-- === REVIEWS CAROUSEL + VIDEO RIBBON === -->
+<section class="pdp-reviews" style="padding:4rem var(--gutter) 5rem;background:var(--cream-soft);">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <!-- HEADER ROW -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin-bottom:2.2rem;flex-wrap:wrap;">
+      <div>
+        <div class="eyebrow" style="margin-bottom:.7rem;font-size:.62rem;">
+          <span style="width:24px;height:1px;background:var(--copper-med);"></span>
+          From real customers
+        </div>
+        <h2 style="font-family:var(--font-display);font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:300;line-height:1.1;letter-spacing:-.015em;color:var(--forest);margin:0;">
+          The ritual, <em style="font-style:italic;color:var(--copper-med);">reviewed.</em>
+        </h2>
+      </div>
+      <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;">
+          <div style="display:flex;align-items:baseline;gap:.5rem;">
+            <span style="font-family:var(--font-display);font-size:1.8rem;font-weight:500;color:var(--forest);line-height:1;">4.1</span>
+            <span style="color:var(--copper-med);font-size:1rem;letter-spacing:.08em;">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.3rem;margin-top:.3rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#00B67A" style="vertical-align:middle;flex-shrink:0;"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
+            <span style="font-family:system-ui,sans-serif;font-size:.72rem;font-weight:600;color:var(--ink);line-height:1;">Trustpilot</span>
+            <span style="font-family:var(--font-mono);font-size:.55rem;color:var(--ink-muted);letter-spacing:.08em;">&#183; 5 reviews</span>
+          </div>
+        </div>
+        <button id="openReviewModal" type="button" style="display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.4rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background 200ms;">
+          Write a review
+          <svg width="12" height="9" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- TEXT REVIEWS CAROUSEL -->
+    <div class="ribbon-label" style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;">
+      <span style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-med);">Written</span>
+      <span style="flex:1;height:1px;background:var(--line-soft);"></span>
+    </div>
+    <div class="review-carousel" id="reviewCarousel">
+      <div class="carousel-track" id="carouselTrack"></div>
+      <button class="carousel-prev" id="carouselPrev" aria-label="Previous reviews">&#8249;</button>
+      <button class="carousel-next" id="carouselNext" aria-label="Next reviews">&#8250;</button>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+
+    <!-- VIDEO REVIEWS RIBBON -->
+    <div class="ribbon-label" style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;">
+      <span style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-med);">Video clips</span>
+      <span style="flex:1;height:1px;background:var(--line-soft);"></span>
+    </div>
+    <div class="video-ribbon-wrap">
+      <div class="video-ribbon-inner">
+        <div class="video-card" data-video-src="/videos/review-1.mp4#t=1" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3B33,var(--forest));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+        <div class="video-card" data-video-src="/videos/review-2.mp4#t=2" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3D2A2A,var(--copper-med));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+        <div class="video-card" data-video-src="/videos/review-3.mp4#t=1.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3B342A,#7A6648);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+        <div class="video-card" data-video-src="/videos/review-4.mp4#t=2.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3530,#4A5C50);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+        <div class="video-card" data-video-src="/videos/review-5.mp4#t=1" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2B3640,#3A5060);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+        <div class="video-card" data-video-src="/videos/review-6.mp4#t=2" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3A2A35,#6B4A5A);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+        <div class="video-card" data-video-src="/videos/review-7.mp4#t=1.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#352A20,#5A4A38);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+        <div class="video-card" data-video-src="/videos/review-8.mp4#t=2.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3028,#405540);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);"><div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);"><svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg></div></div><div class="video-placeholder" style="position:relative;z-index:1;"><div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div><div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div></div></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1576,118 +1661,6 @@ async function subscribeViaBackend(email, phoneNumber, listId) {
 </script>
 </section>
 
-<!-- === REVIEW WALL === -->
-<section class="reviews-wall" style="padding:8rem var(--gutter);background:var(--cream-soft);">
-  <div style="max-width:1280px;margin:0 auto;">
-
-    <div class="reveal" style="text-align:center;margin-bottom:5rem;">
-      <div class="eyebrow" style="justify-content:center;margin-bottom:1.2rem;">
-        <span style="width:24px;height:1px;background:var(--copper-med);"></span>
-        Real customers · Verified purchases
-        <span style="width:24px;height:1px;background:var(--copper-med);"></span>
-      </div>
-      <h2 style="font-family:var(--font-display);font-size:clamp(2.4rem,5vw,4rem);font-weight:300;line-height:1.05;letter-spacing:-.02em;color:var(--forest);max-width:18ch;margin:0 auto 1.2rem;">
-        The ritual, in <em style="font-style:italic;color:var(--copper-med);">their</em> words.
-      </h2>
-      <p style="font-family:var(--font-body);font-size:1.05rem;color:var(--ink-muted);max-width:52ch;margin:0 auto;line-height:1.7;">
-        Hand-picked from Amazon verified purchases. Same skin, same scepticism, same surprise.
-      </p>
-    </div>
-
-    <div class="reviews-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
-
-      <!-- REVIEW 1 -->
-      <article class="review-card reveal" style="background:var(--white);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);box-shadow:var(--shadow-1);">
-        <div style="display:flex;gap:.25rem;color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">★★★★★</div>
-        <h3 style="font-family:var(--font-display);font-size:1.35rem;font-weight:500;color:var(--forest);line-height:1.3;margin:0;">Radiant results!</h3>
-        <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink);line-height:1.65;margin:0;flex:1;">I am delighted to share my experience with this incredible face wash. Within just two weeks of regular use, I noticed a significant improvement in the texture of my skin. Rough patches were smoothed out, and dark areas visibly lightened. The results were beyond my expectations.</p>
-        <div style="height:1px;background:var(--line-soft);margin:.4rem 0;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
-          <div>
-            <div style="font-family:var(--font-body);font-size:.95rem;font-weight:500;color:var(--ink);">Ranjith Y.</div>
-            <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-med);margin-top:.2rem;">Verified · Amazon</div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--ink-muted);text-align:right;">Nov 2023</div>
-        </div>
-      </article>
-
-      <!-- REVIEW 2 -->
-      <article class="review-card reveal" style="background:var(--white);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);box-shadow:var(--shadow-1);">
-        <div style="display:flex;gap:.25rem;color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">★★★★★</div>
-        <h3 style="font-family:var(--font-display);font-size:1.35rem;font-weight:500;color:var(--forest);line-height:1.3;margin:0;">In love with this cleanser</h3>
-        <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink);line-height:1.65;margin:0;flex:1;">I had my doubts looking at the ingredients. My mom used to tell me about fermented rice water for skin and hair — I could never do it on my own. Glad I found this. It works like a miracle. I use it in the morning and the glow is unbelievable.</p>
-        <div style="height:1px;background:var(--line-soft);margin:.4rem 0;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
-          <div>
-            <div style="font-family:var(--font-body);font-size:.95rem;font-weight:500;color:var(--ink);">Javier</div>
-            <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-med);margin-top:.2rem;">Verified · Amazon</div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--ink-muted);text-align:right;">Dec 2023</div>
-        </div>
-      </article>
-
-      <!-- REVIEW 3 -->
-      <article class="review-card reveal" style="background:var(--white);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);box-shadow:var(--shadow-1);">
-        <div style="display:flex;gap:.25rem;color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">★★★★★</div>
-        <h3 style="font-family:var(--font-display);font-size:1.35rem;font-weight:500;color:var(--forest);line-height:1.3;margin:0;">Just what I've been looking for</h3>
-        <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink);line-height:1.65;margin:0;flex:1;">So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The natural ingredients were a key factor in my decision to buy, and the scent is phenomenal. I can't stand the harsh chemical smells of most face products. The scent of these is divine.</p>
-        <div style="height:1px;background:var(--line-soft);margin:.4rem 0;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
-          <div>
-            <div style="font-family:var(--font-body);font-size:.95rem;font-weight:500;color:var(--ink);">Kate</div>
-            <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-med);margin-top:.2rem;">Verified · Amazon</div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--ink-muted);text-align:right;">Apr 2024</div>
-        </div>
-      </article>
-
-      <!-- REVIEW 4 -->
-      <article class="review-card reveal" style="background:var(--white);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);box-shadow:var(--shadow-1);">
-        <div style="display:flex;gap:.25rem;color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">★★★★★</div>
-        <h3 style="font-family:var(--font-display);font-size:1.35rem;font-weight:500;color:var(--forest);line-height:1.3;margin:0;">Best cleanser I could ask for</h3>
-        <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink);line-height:1.65;margin:0;flex:1;">I have sensitive skin and was very sceptical to order it. The ingredients are the reason and I am so glad I did. It changed the look of my skin right after a week's use. Glow for sure and skin feels so much more even.</p>
-        <div style="height:1px;background:var(--line-soft);margin:.4rem 0;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
-          <div>
-            <div style="font-family:var(--font-body);font-size:.95rem;font-weight:500;color:var(--ink);">Javier</div>
-            <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-med);margin-top:.2rem;">Verified · Amazon</div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--ink-muted);text-align:right;">Dec 2023</div>
-        </div>
-      </article>
-
-      <!-- REVIEW 5 -->
-      <article class="review-card reveal" style="background:var(--white);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);box-shadow:var(--shadow-1);">
-        <div style="display:flex;gap:.25rem;color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">★★★★★</div>
-        <h3 style="font-family:var(--font-display);font-size:1.35rem;font-weight:500;color:var(--forest);line-height:1.3;margin:0;">Great</h3>
-        <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink);line-height:1.65;margin:0;flex:1;">My 14-year-old has been using this product for a year and likes it.</p>
-        <div style="height:1px;background:var(--line-soft);margin:.4rem 0;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
-          <div>
-            <div style="font-family:var(--font-body);font-size:.95rem;font-weight:500;color:var(--ink);">Naveen K.</div>
-            <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper-med);margin-top:.2rem;">Verified · Amazon</div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;color:var(--ink-muted);text-align:right;">Jan 2025</div>
-        </div>
-      </article>
-
-      <!-- REVIEW 6 — Aggregate / submission card -->
-      <article class="review-card reveal" style="background:linear-gradient(145deg,var(--forest),#1F2A24);border:1px solid var(--line-soft);border-radius:16px;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;transition:transform 500ms var(--ease),box-shadow 500ms var(--ease);box-shadow:var(--shadow-1);color:var(--white);">
-        <div style="font-family:var(--font-display);font-size:3rem;font-weight:300;line-height:1;color:var(--copper-med);">5.0</div>
-        <div style="display:flex;gap:.25rem;color:var(--copper-med);font-size:1.1rem;letter-spacing:.1em;">★★★★★</div>
-        <p style="font-family:var(--font-body);font-size:.95rem;color:rgba(255,255,255,.85);line-height:1.65;margin:0;flex:1;">Every review on this wall is a real verified Amazon purchase. We're documenting our first 1,000 customers — every one matters.</p>
-        <div style="height:1px;background:rgba(255,255,255,.15);margin:.4rem 0;"></div>
-        <a href="https://www.amazon.com/Petals-Pods-Handmade-Cleanser-Exfoliator/dp/B0CK4NNRFR" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-med);">
-          Read all reviews on Amazon
-          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg>
-        </a>
-      </article>
-
-    </div>
-
-  </div>
-</section>
-
 </main>
 
 <!-- === STICKY BOTTOM BANNER === -->
@@ -1761,8 +1734,56 @@ async function subscribeViaBackend(email, phoneNumber, listId) {
   </div>
 </footer>
 
+<!-- REVIEW SUBMISSION MODAL -->
+<div id="reviewModal" style="position:fixed;inset:0;z-index:99999;background:rgba(20,8,9,.8);backdrop-filter:blur(8px);padding:1rem;display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--white);border-radius:20px;max-width:520px;width:100%;padding:3rem 2.5rem;position:relative;max-height:90vh;overflow-y:auto;">
+    <button id="closeReviewModal" style="position:absolute;top:1.2rem;right:1.2rem;background:var(--cream-soft);border:none;cursor:pointer;width:36px;height:36px;border-radius:50%;font-size:1.1rem;color:var(--ink-muted);">&#215;</button>
+    <div id="reviewStage1">
+      <div class="eyebrow" style="margin-bottom:1rem;">Step 1 of 2</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .6rem;">Confirm your email</h3>
+      <p style="font-family:var(--font-body);font-size:.92rem;color:var(--ink-muted);line-height:1.6;margin-bottom:1.5rem;">We verify reviews against our customer list. Enter the email you used when subscribing or purchasing.</p>
+      <input type="email" id="reviewEmail" placeholder="your@email.com" autocomplete="email" style="width:100%;padding:1rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:1rem;margin-bottom:1rem;box-sizing:border-box;" />
+      <button id="verifyEmailBtn" style="width:100%;padding:1.1rem;background:var(--copper-med);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Verify &amp; continue</button>
+      <div id="verifyError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
+    </div>
+    <div id="reviewStage2" style="display:none;">
+      <div class="eyebrow" style="margin-bottom:1rem;">Step 2 of 2</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 1.5rem;">Share your experience</h3>
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Rating</label>
+      <div id="ratingStars" style="display:flex;gap:.4rem;margin-bottom:1.3rem;font-size:1.8rem;color:var(--line-soft);cursor:pointer;">
+        <span data-rating="1">&#9733;</span><span data-rating="2">&#9733;</span><span data-rating="3">&#9733;</span><span data-rating="4">&#9733;</span><span data-rating="5">&#9733;</span>
+      </div>
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your name</label>
+      <input type="text" id="reviewName" placeholder="First name + last initial" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Headline</label>
+      <input type="text" id="reviewHeadline" placeholder="e.g. Game-changing for my routine" style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.2rem;box-sizing:border-box;" />
+      <label style="display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:.5rem;">Your review</label>
+      <textarea id="reviewBody" rows="5" placeholder="Tell us what you experienced..." style="width:100%;padding:.9rem 1.2rem;border:1px solid var(--line-soft);border-radius:12px;font-family:var(--font-body);font-size:.95rem;margin-bottom:1.5rem;box-sizing:border-box;resize:vertical;"></textarea>
+      <button id="submitReviewBtn" style="width:100%;padding:1.1rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;">Submit review</button>
+      <div id="submitError" style="display:none;margin-top:1rem;padding:1rem;background:#FBE9E7;border-radius:8px;font-family:var(--font-body);font-size:.88rem;color:#B5464A;line-height:1.5;"></div>
+    </div>
+    <div id="reviewStage3" style="display:none;text-align:center;padding:2rem 0;">
+      <div style="width:80px;height:80px;margin:0 auto 1.5rem;background:var(--cream-soft);border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-size:2rem;color:var(--copper-med);">&#10003;</div>
+      <h3 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:var(--forest);margin:0 0 .8rem;">Thank you</h3>
+      <p style="font-family:var(--font-body);font-size:.95rem;color:var(--ink-muted);line-height:1.7;">Your review has been submitted and will appear after we verify your order. We read every one.</p>
+    </div>
+  </div>
+</div>
+
 <script src="/lib/wc-api.js"></script>
 <script src="/lib/cart-drawer.js"></script>
+<script src="/lib/reviews-section.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  window.ppReviews.initCarousel(window.ppReviews.UNIVERSAL_REVIEWS);
+  window.ppReviews.initReviewModal({
+    getProductId: function() { return 14; },
+    getProductName: function() { return 'Glass Skin Miracle Cleanser'; },
+    getProductHandle: function() { return 'glass-skin-miracle'; }
+  });
+  window.ppReviews.initVideoUpgrade();
+});
+</script>
 <script>
 /* ==========================================================================
    main.js — Petals & Pods V2 interactions
