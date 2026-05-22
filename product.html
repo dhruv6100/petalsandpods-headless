@@ -306,6 +306,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
       <span class="price-note">Free shipping · US only</span>
     </div>
 
+    <div id="variantSelector" style="display:none;margin-bottom:2rem"></div>
 
     <div class="benefits" id="productBenefits">
       <div class="benefit"><span class="benefit-icon">✦</span><span>Gentle exfoliation + brightening for radiant skin</span></div>
@@ -320,7 +321,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
         <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M0 6h15M10 1l5 5-5 5"/></svg>
       </button>
       <button class="buy-now-btn" id="buyNowBtn" disabled>
-        <span>Buy now — Shopify checkout</span>
+        <span>Buy now</span>
       </button>
     </div>
 
@@ -594,226 +595,309 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   </div>
 </footer>
 
+<script src="/lib/wc-api.js"></script>
+<script src="/lib/cart-drawer.js"></script>
 <script>
 (function(){
   'use strict';
 
-  // ── CONFIG ────────────────────────────────────────────────────────────────
-  const SHOPIFY_DOMAIN   = 'petalsandpods.myshopify.com';
-  const STOREFRONT_TOKEN = 'ce505ca3842d26ea4023c53169225868';
-  const API_VERSION      = '2024-01';
-  const ENDPOINT         = `https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`;
-  const STORAGE_KEY      = 'pp_cart_id';
+  // ── SLUG MAP & HANDLE RESOLUTION ──────────────────────────────────────
+  var SLUG_MAP = {
+    'glass-skin-miracle-stick':                       'glass-skin-miracle',
+    'glass-skin-miracle-cleanser-stick':              'glass-skin-miracle',
+    'copy-of-brightening-one-step-glow-cleanser-bar': 'brightening-one-step-glow',
+    'brightening-one-step-glow-cleanser-stick':       'brightening-one-step-glow'
+  };
+  var params        = new URLSearchParams(window.location.search);
+  var rawHandle     = params.get('handle') || 'glass-skin-miracle';
+  var SLUG          = SLUG_MAP[rawHandle] || rawHandle;
+  var isBrightening = SLUG.includes('brightening');
+  var isBundle      = SLUG === 'the-ritual-bundle';
 
-  // Get handle from URL: /product?handle=glass-skin-miracle-stick
-  const params   = new URLSearchParams(window.location.search);
-  const HANDLE   = params.get('handle') || 'glass-skin-miracle-stick';
-  const isBrightening = HANDLE.includes('brightening');
-  const BADGE    = isBrightening ? 'No. 02 · New' : 'No. 01 · Best seller';
-  const SUBTITLE = isBrightening
-    ? 'Inspired by Ayurvedic cleansing practices from 2000 BC in the Indus Valley'
-    : '2000 year old Nuruk Balhyo fermentation recipe inspired face wash';
+  var BADGE = isBundle ? 'No. 03 · Bundle'
+            : isBrightening ? 'No. 02 · New'
+            : 'No. 01 · Best seller';
+  var SUBTITLE = isBundle
+    ? 'Curated ritual sets — choose your experience'
+    : isBrightening
+      ? 'Inspired by Ayurvedic cleansing practices from 2000 BC in the Indus Valley'
+      : '2000 year old Nuruk Balhyo fermentation recipe inspired face wash';
 
   document.getElementById('productBadge').textContent = BADGE;
   document.getElementById('productSubtitle').textContent = SUBTITLE;
 
-  let cartId = localStorage.getItem(STORAGE_KEY);
-  const countEl = document.getElementById('cartCount');
+  // ── FORMAT PRICE ──────────────────────────────────────────────────────
+  function formatPrice(minorUnitStr, minorUnitDigits, currencySymbol) {
+    if (minorUnitDigits === undefined) minorUnitDigits = 2;
+    if (!currencySymbol) currencySymbol = '$';
+    var cents = parseInt(minorUnitStr, 10);
+    if (isNaN(cents)) return currencySymbol + '0.00';
+    return currencySymbol + (cents / Math.pow(10, minorUnitDigits)).toFixed(minorUnitDigits);
+  }
 
-  function setCount(n){
-    if(!countEl) return;
+  // ── CART COUNT (display only — cart wiring is a separate step) ────────
+  var countEl = document.getElementById('cartCount');
+  function setCount(n) {
+    if (!countEl) return;
     countEl.textContent = n > 99 ? '99+' : String(n);
     countEl.style.display = n > 0 ? 'inline-block' : 'none';
   }
 
-  async function gql(query, variables){
-    const r = await fetch(ENDPOINT, {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
-      },
-      body: JSON.stringify({query, variables})
-    });
-    if(!r.ok) throw new Error(`API ${r.status}`);
-    const json = await r.json();
-    if(json.errors?.length) throw new Error(json.errors[0].message);
-    return json;
+  // ── ERROR STATE ───────────────────────────────────────────────────────
+  function showError() {
+    document.getElementById('productTitle').innerHTML = 'Unable to load product';
+    document.getElementById('breadcrumbName').textContent = 'Error';
+    var skeleton = document.querySelector('#galleryPrimary .loading-skeleton');
+    if (skeleton) skeleton.remove();
+    var atcText = document.getElementById('atcText');
+    if (atcText) atcText.textContent = 'Unavailable';
+    document.getElementById('atcBtn').disabled = true;
+    document.getElementById('buyNowBtn').disabled = true;
   }
 
-  // ── LOAD PRODUCT ──────────────────────────────────────────────────────────
-  async function loadProduct(){
-    const q = `query($handle:String!){
-      product(handle:$handle){
-        id title description
-        images(first:6){edges{node{url altText}}}
-        variants(first:5){edges{node{
-          id availableForSale
-          priceV2{amount currencyCode}
-        }}}
+  // ── LOAD PRODUCT (WooCommerce Store API via proxy) ────────────────────
+  async function loadProduct() {
+    try {
+      var data = await window.wcApi.wcGet('products', { slug: SLUG });
+      var p = Array.isArray(data) ? data[0] : data;
+      if (!p) { showError(); return; }
+
+      var minorDigits = p.prices.currency_minor_unit || 2;
+
+      // Title
+      document.getElementById('productTitle').innerHTML = p.name;
+      document.getElementById('breadcrumbName').textContent = p.name;
+      document.title = p.name + ' \u2014 Petals & Pods';
+
+      // Price
+      if (p.type === 'variable' && p.prices.price_range) {
+        var minP = formatPrice(p.prices.price_range.min_amount, minorDigits);
+        var maxP = formatPrice(p.prices.price_range.max_amount, minorDigits);
+        document.getElementById('productPrice').textContent = minP === maxP ? minP : minP + ' \u2013 ' + maxP;
+      } else {
+        document.getElementById('productPrice').textContent = formatPrice(p.prices.price, minorDigits);
       }
-    }`;
-    const d = await gql(q, {handle: HANDLE});
-    const p = d?.data?.product;
-    if(!p){ document.getElementById('productTitle').textContent = 'Product not found'; return; }
 
-    // Title
-    document.getElementById('productTitle').innerHTML = p.title;
-    document.getElementById('breadcrumbName').textContent = p.title;
-    document.title = `${p.title} — Petals & Pods`;
+      // Images
+      if (p.images && p.images.length) {
+        var primaryImg = document.getElementById('primaryImg');
+        primaryImg.src = p.images[0].src;
+        primaryImg.alt = p.images[0].alt || p.name;
+        primaryImg.style.opacity = '1';
+        var skel = document.querySelector('#galleryPrimary .loading-skeleton');
+        if (skel) skel.remove();
 
+        var thumbsEl = document.getElementById('galleryThumbs');
+        thumbsEl.innerHTML = p.images.map(function(img, i) {
+          return '<div class="gallery-thumb ' + (i === 0 ? 'active' : '') + '"'
+            + ' data-idx="' + i + '"'
+            + ' data-src="' + img.src + '"'
+            + ' data-alt="' + (img.alt || p.name).replace(/"/g, '&quot;') + '">'
+            + '<img src="' + (img.thumbnail || img.src) + '" alt="" loading="lazy" />'
+            + '</div>';
+        }).join('');
+        thumbsEl.querySelectorAll('.gallery-thumb').forEach(function(t) {
+          t.addEventListener('click', function() {
+            thumbsEl.querySelectorAll('.gallery-thumb').forEach(function(x) { x.classList.remove('active'); });
+            t.classList.add('active');
+            primaryImg.style.opacity = '0';
+            setTimeout(function() {
+              primaryImg.src = t.dataset.src;
+              primaryImg.alt = t.dataset.alt;
+              primaryImg.style.opacity = '1';
+            }, 150);
+          });
+        });
+      }
 
-    // Price
-    const v = p.variants.edges[0]?.node;
-    if(v) document.getElementById('productPrice').textContent = '$' + parseFloat(v.priceV2.amount).toFixed(2);
+      // ATC — wired to WooCommerce Store API via ppCart
+      var atcBtn = document.getElementById('atcBtn');
+      var atcText = document.getElementById('atcText');
+      var buyNowBtn = document.getElementById('buyNowBtn');
+      var selectedVariationId = null;
 
-    // Images
-    const imgs = p.images.edges;
-    if(imgs.length){
-      const primaryImg = document.getElementById('primaryImg');
-      primaryImg.src = imgs[0].node.url;
-      primaryImg.alt = imgs[0].node.altText || p.title;
-      primaryImg.style.opacity = '1';
-      // Remove skeleton
-      const skeleton = document.querySelector('#galleryPrimary .loading-skeleton');
-      if(skeleton) skeleton.remove();
+      // Shared handler for both Add to Bag and Buy Now
+      async function handleAdd(btn, textEl) {
+        var itemId = p.type === 'variable' ? selectedVariationId : p.id;
+        if (!itemId) return;
+        var original = textEl.textContent;
+        textEl.textContent = 'Adding\u2026';
+        btn.disabled = true;
+        try {
+          await window.ppCart.addToCart(itemId, 1);
+          textEl.textContent = 'Added \u2713';
+          setTimeout(function() { textEl.textContent = original; btn.disabled = false; }, 1400);
+        } catch (err) {
+          textEl.textContent = 'Try again';
+          btn.disabled = false;
+          setTimeout(function() { textEl.textContent = original; }, 2000);
+        }
+      }
 
-      // Thumbs
-      const thumbsEl = document.getElementById('galleryThumbs');
-      thumbsEl.innerHTML = imgs.map((img, i) => `
-        <div class="gallery-thumb ${i===0?'active':''}" data-idx="${i}" data-src="${img.node.url}" data-alt="${img.node.altText||p.title}">
-          <img src="${img.node.url}" alt="" loading="lazy" />
-        </div>
-      `).join('');
-      thumbsEl.querySelectorAll('.gallery-thumb').forEach(t => {
-        t.addEventListener('click', () => {
-          thumbsEl.querySelectorAll('.gallery-thumb').forEach(x => x.classList.remove('active'));
-          t.classList.add('active');
-          primaryImg.style.opacity = '0';
-          setTimeout(() => {
-            primaryImg.src = t.dataset.src;
-            primaryImg.alt = t.dataset.alt;
-            primaryImg.style.opacity = '1';
-          }, 150);
+      if (p.is_purchasable && p.is_in_stock) {
+        if (p.type === 'variable') {
+          atcBtn.disabled = true;
+          atcText.textContent = 'Select an option';
+          buyNowBtn.disabled = true;
+        } else {
+          atcBtn.disabled = false;
+          atcText.textContent = 'Add to bag';
+          buyNowBtn.disabled = false;
+        }
+        atcBtn.addEventListener('click', function() {
+          handleAdd(atcBtn, atcText);
+        });
+        buyNowBtn.addEventListener('click', function() {
+          // TODO: replace with direct checkout jump once checkout hand-off is built
+          handleAdd(buyNowBtn, buyNowBtn.querySelector('span'));
+        });
+      } else {
+        atcText.textContent = 'Sold out';
+        atcBtn.disabled = true;
+        buyNowBtn.disabled = true;
+      }
+
+      // Variant selector (variable products only — simple products skip this)
+      if (p.type === 'variable' && p.variations && p.variations.length) {
+        await renderVariations(p, function(variationId) {
+          selectedVariationId = variationId;
+          atcBtn.disabled = false;
+          atcText.textContent = 'Add to bag';
+          buyNowBtn.disabled = false;
+        });
+      }
+
+      // Related products
+      loadRelated(SLUG);
+
+    } catch (err) {
+      console.error('Product load failed:', err);
+      showError();
+    }
+  }
+
+  // ── VARIATIONS (bundle / variable products) ───────────────────────────
+  // Fetches each variation individually by ID (Store API has no bulk
+  // /products/{id}/variations endpoint). Labels come from the parent
+  // product's .variations[].attributes[]; prices from each fetched object.
+  async function renderVariations(product, onSelect) {
+    var container = document.getElementById('variantSelector');
+    try {
+      // Fetch each variation by its ID in parallel
+      var parentVars = product.variations; // [{id, attributes:[{name,value}]}]
+      var fetched = await Promise.all(parentVars.map(function(v) {
+        return window.wcApi.wcGet('products/' + v.id);
+      }));
+
+      if (!fetched || !fetched.length) return;
+
+      var minorDigits = product.prices.currency_minor_unit || 2;
+      container.style.display = 'block';
+
+      var attrName = product.attributes && product.attributes.length
+        ? product.attributes[0].name : 'Option';
+
+      // Build pill buttons — labels from parent .variations[], prices from fetched data
+      container.innerHTML =
+        '<label style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;'
+        + 'text-transform:uppercase;color:var(--ink-muted);display:block;margin-bottom:.6rem;">'
+        + 'Select ' + attrName + '</label>'
+        + '<div id="variantOptions" style="display:flex;flex-wrap:wrap;gap:.6rem;">'
+        + fetched.map(function(v, i) {
+            // Label from parent's variation stub (has the attribute value)
+            var optName = parentVars[i].attributes && parentVars[i].attributes.length
+              ? parentVars[i].attributes[0].value : 'Option ' + (i + 1);
+            var vMinor = v.prices.currency_minor_unit || minorDigits;
+            var price = formatPrice(v.prices.price, vMinor);
+            return '<button class="variant-opt"'
+              + ' data-variation-id="' + v.id + '"'
+              + ' data-price="' + v.prices.price + '"'
+              + ' data-minor="' + vMinor + '"'
+              + ' style="padding:.7rem 1.2rem;border-radius:99px;font-family:var(--font-mono);'
+              + 'font-size:.68rem;letter-spacing:.12em;cursor:pointer;'
+              + 'border:1px solid var(--line);background:var(--white);color:var(--forest);'
+              + 'transition:all 200ms var(--ease);">'
+              + optName + ' \u00b7 ' + price
+              + '</button>';
+          }).join('')
+        + '</div>';
+
+      // No variation pre-selected — price stays as range from loadProduct
+
+      // Click handlers for variant pills
+      container.querySelectorAll('.variant-opt').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          container.querySelectorAll('.variant-opt').forEach(function(b) {
+            b.classList.remove('active');
+            b.style.background = 'var(--white)';
+            b.style.color = 'var(--forest)';
+            b.style.borderColor = 'var(--line)';
+          });
+          btn.classList.add('active');
+          btn.style.background = 'var(--forest)';
+          btn.style.color = 'var(--white)';
+          btn.style.borderColor = 'var(--forest)';
+          document.getElementById('productPrice').textContent =
+            formatPrice(btn.dataset.price, parseInt(btn.dataset.minor, 10));
+          if (onSelect) onSelect(parseInt(btn.dataset.variationId, 10));
         });
       });
+    } catch (err) {
+      console.error('Failed to load variations:', err);
+      container.style.display = 'block';
+      container.innerHTML =
+        '<p style="font-family:var(--font-mono);font-size:.72rem;color:var(--copper-med);'
+        + 'padding:1rem;background:var(--cream-soft);border-radius:8px;">'
+        + 'Unable to load options \u2014 please refresh</p>';
     }
-
-    // ATC button
-    const atcBtn = document.getElementById('atcBtn');
-    const atcText = document.getElementById('atcText');
-    const buyNowBtn = document.getElementById('buyNowBtn');
-    if(v && v.availableForSale){
-      atcBtn.disabled = false;
-      atcText.textContent = 'Add to bag';
-      buyNowBtn.disabled = false;
-      atcBtn.addEventListener('click', () => handleATC(v.id, atcBtn, atcText));
-      buyNowBtn.addEventListener('click', () => handleBuyNow(v.id));
-    } else {
-      atcText.textContent = 'Sold out';
-      atcBtn.disabled = true;
-    }
-
-    // Related products
-    loadRelated(HANDLE);
-    restoreCartCount();
   }
 
-  // ── ADD TO CART ──────────────────────────────────────────────────────────
-  async function handleATC(variantId, btn, textEl){
-    textEl.textContent = 'Adding...';
-    btn.disabled = true;
+  // ── RELATED PRODUCTS (WooCommerce) ────────────────────────────────────
+  async function loadRelated(currentSlug) {
+    var allSlugs = ['glass-skin-miracle', 'brightening-one-step-glow', 'the-ritual-bundle'];
+    var otherSlugs = allSlugs.filter(function(s) { return s !== currentSlug; }).slice(0, 2);
+    var grid = document.getElementById('relatedGrid');
     try {
-      const cart = await addToCart(variantId);
-      if(cart){
-        setCount(cart.totalQuantity);
-        textEl.textContent = 'Added ✓';
-        setTimeout(() => { textEl.textContent = 'Add to bag'; btn.disabled = false; }, 1400);
-      }
-    } catch(e){
-      textEl.textContent = 'Try again';
-      btn.disabled = false;
+      var results = await Promise.all(otherSlugs.map(function(s) {
+        return window.wcApi.wcGet('products', { slug: s });
+      }));
+      grid.innerHTML = results.map(function(arr) {
+        var p = Array.isArray(arr) ? arr[0] : arr;
+        if (!p) return '';
+        var md = p.prices.currency_minor_unit || 2;
+        var price;
+        if (p.type === 'variable' && p.prices.price_range) {
+          price = 'From ' + formatPrice(p.prices.price_range.min_amount, md);
+        } else {
+          price = formatPrice(p.prices.price, md);
+        }
+        var imgSrc = p.images && p.images[0] ? p.images[0].src : '';
+        return '<div class="related-card" onclick="window.location.href=\'/product.html?handle='
+          + p.slug + '\'">'
+          + '<div class="related-img"><img src="' + imgSrc + '" alt="'
+          + p.name.replace(/"/g, '&quot;') + '" loading="lazy" /></div>'
+          + '<div class="related-body">'
+          + '<div class="related-name">' + p.name + '</div>'
+          + '<div class="related-price">' + price + '</div>'
+          + '</div></div>';
+      }).join('');
+    } catch (err) {
+      grid.innerHTML = '';
     }
   }
 
-  async function handleBuyNow(variantId){
-    const buyBtn = document.getElementById('buyNowBtn');
-    buyBtn.disabled = true;
-    buyBtn.querySelector('span').textContent = 'Loading checkout...';
-    try {
-      const cart = await addToCart(variantId);
-      if(cart) window.location.href = cart.checkoutUrl;
-    } catch(e){
-      buyBtn.disabled = false;
-      buyBtn.querySelector('span').textContent = 'Buy now — Shopify checkout';
-    }
-  }
+  // ── CART BUTTON → open drawer (handled by cart-drawer.js via #cartBtn binding)
 
-  async function addToCart(variantId){
-    if(!cartId){
-      const q = `mutation($lines:[CartLineInput!]!){cartCreate(input:{lines:$lines}){cart{id checkoutUrl totalQuantity}}}`;
-      const d = await gql(q, {lines:[{merchandiseId:variantId,quantity:1}]});
-      const c = d?.data?.cartCreate?.cart;
-      if(c){ cartId = c.id; localStorage.setItem(STORAGE_KEY, c.id); }
-      return c;
-    }
-    const q = `mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{id checkoutUrl totalQuantity}}}`;
-    const d = await gql(q, {cartId, lines:[{merchandiseId:variantId,quantity:1}]});
-    return d?.data?.cartLinesAdd?.cart;
-  }
-
-  async function restoreCartCount(){
-    if(!cartId) return;
-    try {
-      const d = await gql(`query($id:ID!){cart(id:$id){totalQuantity}}`, {id:cartId});
-      const n = d?.data?.cart?.totalQuantity;
-      if(n != null) setCount(n);
-    } catch(_){}
-  }
-
-  // ── RELATED PRODUCTS ──────────────────────────────────────────────────────
-  async function loadRelated(currentHandle){
-    const handles = ['glass-skin-miracle-stick','copy-of-brightening-one-step-glow-cleanser-bar']
-      .filter(h => h !== currentHandle);
-    const grid = document.getElementById('relatedGrid');
-    const products = await Promise.all(handles.map(async h => {
-      const q = `query($handle:String!){product(handle:$handle){title featuredImage{url} variants(first:1){edges{node{priceV2{amount}}}}}}`;
-      const d = await gql(q, {handle:h});
-      return {handle:h, ...d?.data?.product};
-    }));
-    grid.innerHTML = products.filter(Boolean).map(p => `
-      <div class="related-card" onclick="window.location.href='/product.html?handle=${p.handle}'">
-        <div class="related-img">
-          <img src="${p.featuredImage?.url || ''}" alt="${p.title}" loading="lazy" />
-        </div>
-        <div class="related-body">
-          <div class="related-name">${p.title}</div>
-          <div class="related-price">$${parseFloat(p.variants?.edges[0]?.node?.priceV2?.amount||0).toFixed(2)}</div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // ── CART BUTTON ────────────────────────────────────────────────────────
-  document.getElementById('cartBtn')?.addEventListener('click', async () => {
-    if(!cartId) return;
-    try {
-      const d = await gql(`query($id:ID!){cart(id:$id){checkoutUrl totalQuantity}}`, {id:cartId});
-      const cart = d?.data?.cart;
-      if(cart?.totalQuantity > 0) window.location.href = cart.checkoutUrl;
-    } catch(_){}
-  });
-
-  // ── ACCORDION ────────────────────────────────────────────────────────────
-  window.toggleAccordion = function(btn){
-    const item = btn.closest('.accordion-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.accordion-item.open').forEach(i => i.classList.remove('open'));
-    if(!isOpen) item.classList.add('open');
+  // ── ACCORDION ─────────────────────────────────────────────────────────
+  window.toggleAccordion = function(btn) {
+    var item = btn.closest('.accordion-item');
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.accordion-item.open').forEach(function(i) { i.classList.remove('open'); });
+    if (!isOpen) item.classList.add('open');
   };
 
-  // ── EDITORIAL CONTENT ────────────────────────────────────────────────────
-  const editorialContent = {
+  // ── EDITORIAL CONTENT ────────────────────────────────────────────────
+  var editorialContent = {
     brightening: {
       origin: {
         title: 'A 5,000-year blessing ceremony, pressed into a stick.',
@@ -858,22 +942,23 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
     }
   };
 
-  function populateEditorial(){
+  function populateEditorial() {
+    if (isBundle) return; // no editorial content for bundles yet
     var c = isBrightening ? editorialContent.brightening : editorialContent.glassSkin;
     var el;
-    el = document.querySelector('[data-origin-title]'); if(el) el.textContent = c.origin.title;
-    el = document.querySelector('[data-origin-body-1]'); if(el) el.textContent = c.origin.body1;
-    el = document.querySelector('[data-origin-body-2]'); if(el) el.textContent = c.origin.body2;
-    el = document.querySelector('[data-origin-quote]'); if(el) el.textContent = c.origin.quote;
+    el = document.querySelector('[data-origin-title]'); if (el) el.textContent = c.origin.title;
+    el = document.querySelector('[data-origin-body-1]'); if (el) el.textContent = c.origin.body1;
+    el = document.querySelector('[data-origin-body-2]'); if (el) el.textContent = c.origin.body2;
+    el = document.querySelector('[data-origin-quote]'); if (el) el.textContent = c.origin.quote;
     el = document.querySelector('[data-benefits-pills]');
-    if(el) el.innerHTML = c.benefits.map(function(b){ return '<li class="pdp-pill">'+b+'</li>'; }).join('');
+    if (el) el.innerHTML = c.benefits.map(function(b) { return '<li class="pdp-pill">' + b + '</li>'; }).join('');
     el = document.querySelector('[data-why-grid]');
-    if(el) el.innerHTML = c.why.map(function(w){ return '<li class="pdp-why-card"><h3>'+w.title+'</h3><p>'+w.body+'</p></li>'; }).join('');
-    el = document.querySelector('[data-scent-notes]'); if(el) el.textContent = c.scent.notes;
-    el = document.querySelector('[data-scent-desc]'); if(el) el.textContent = c.scent.desc;
+    if (el) el.innerHTML = c.why.map(function(w) { return '<li class="pdp-why-card"><h3>' + w.title + '</h3><p>' + w.body + '</p></li>'; }).join('');
+    el = document.querySelector('[data-scent-notes]'); if (el) el.textContent = c.scent.notes;
+    el = document.querySelector('[data-scent-desc]'); if (el) el.textContent = c.scent.desc;
   }
 
-  // ── INIT ─────────────────────────────────────────────────────────────────
+  // ── INIT ──────────────────────────────────────────────────────────────
   populateEditorial();
   loadProduct();
 })();
@@ -884,12 +969,12 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 
   // Real Amazon reviews, split by product handle
   const REVIEWS = {
-    'brightening-one-step-glow-cleanser-stick': [
+    'brightening-one-step-glow': [
       { rating: 5, headline: 'Radiant results!', name: 'Ranjith Y.', date: 'Nov 2023', body: 'I am delighted to share my experience with this incredible face wash. Within just two weeks of regular use, I noticed a significant improvement in the texture of my skin. Rough patches were smoothed out, and dark areas visibly lightened. The results were beyond my expectations.' },
       { rating: 5, headline: 'Best cleanser I could ask for', name: 'Javier', date: 'Dec 2023', body: 'I have sensitive skin and was very sceptical to order it. The ingredients are the reason and I am so glad I did. It changed the look of my skin right after a week\'s use. Glow for sure and skin feels so much more even.' },
       { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal — divine.' }
     ],
-    'glass-skin-miracle-cleanser-stick': [
+    'glass-skin-miracle': [
       { rating: 5, headline: 'In love with this cleanser', name: 'Javier', date: 'Dec 2023', body: 'I had my doubts looking at the ingredients. My mom used to tell me about fermented rice water for skin and hair — I could never do it on my own. Glad I found this. It works like a miracle. The glow is unbelievable.' },
       { rating: 5, headline: 'Great', name: 'Naveen K.', date: 'Jan 2025', body: 'My 14-year-old has been using this product for a year and likes it.' },
       { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal — divine.' }
@@ -897,15 +982,23 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
   };
 
   // Default fallback — show all 5 reviews if product handle doesn't match
-  const ALL_REVIEWS = [...REVIEWS['brightening-one-step-glow-cleanser-stick'], ...REVIEWS['glass-skin-miracle-cleanser-stick'].filter((_, i) => i < 2)];
+  const ALL_REVIEWS = [...REVIEWS['brightening-one-step-glow'], ...REVIEWS['glass-skin-miracle'].filter((_, i) => i < 2)];
+
+  // Shared slug map for legacy Shopify handles → WC slugs
+  const SLUG_MAP = {
+    'glass-skin-miracle-stick':                       'glass-skin-miracle',
+    'glass-skin-miracle-cleanser-stick':              'glass-skin-miracle',
+    'copy-of-brightening-one-step-glow-cleanser-bar': 'brightening-one-step-glow',
+    'brightening-one-step-glow-cleanser-stick':       'brightening-one-step-glow'
+  };
 
   function getProductHandle() {
-    // Try URL param first (e.g. ?handle=glass-skin-miracle-cleanser-stick)
     const params = new URLSearchParams(window.location.search);
-    if (params.get('handle')) return params.get('handle');
-    // Fallback: parse from URL path
+    const raw = params.get('handle');
+    if (raw) return SLUG_MAP[raw] || raw;
     const match = window.location.pathname.match(/\/products?\/([^\/]+)/);
-    return match ? match[1] : null;
+    if (match) return SLUG_MAP[match[1]] || match[1];
+    return null;
   }
 
   function getProductName() {
