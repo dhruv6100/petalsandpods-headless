@@ -412,7 +412,11 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
             <span style="font-family:var(--font-display);font-size:1.8rem;font-weight:500;color:var(--forest);line-height:1;">4.1</span>
             <span style="color:var(--copper-med);font-size:1rem;letter-spacing:.08em;">★★★★☆</span>
           </div>
-          <div style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);margin-top:.2rem;">Trustpilot · 5 reviews</div>
+          <div style="display:flex;align-items:center;gap:.3rem;margin-top:.3rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#00B67A" style="vertical-align:middle;flex-shrink:0;"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
+            <span style="font-family:system-ui,sans-serif;font-size:.72rem;font-weight:600;color:var(--ink);line-height:1;">Trustpilot</span>
+            <span style="font-family:var(--font-mono);font-size:.55rem;color:var(--ink-muted);letter-spacing:.08em;">· 5 reviews</span>
+          </div>
         </div>
         <button id="openReviewModal" type="button" style="display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.4rem;background:var(--forest);color:var(--white);border:none;border-radius:99px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background 200ms;">
           Write a review
@@ -440,46 +444,90 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
     </div>
     <div class="video-ribbon-wrap">
       <div id="pdpVideoRibbon" class="video-ribbon-inner">
-        <div class="video-card" data-video-src="/videos/review-1.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3B33,var(--forest));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+        <div class="video-card" data-video-src="/videos/review-1.mp4#t=1" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3B33,var(--forest));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
             <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
               <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
             </div>
           </div>
-          <div style="position:relative;z-index:1;">
+          <div class="video-placeholder" style="position:relative;z-index:1;">
             <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
             <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
           </div>
         </div>
-        <div class="video-card" data-video-src="/videos/review-2.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3D2A2A,var(--copper-med));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+        <div class="video-card" data-video-src="/videos/review-2.mp4#t=2" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3D2A2A,var(--copper-med));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
             <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
               <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
             </div>
           </div>
-          <div style="position:relative;z-index:1;">
+          <div class="video-placeholder" style="position:relative;z-index:1;">
             <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
             <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
           </div>
         </div>
-        <div class="video-card" data-video-src="/videos/review-3.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3B342A,#7A6648);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+        <div class="video-card" data-video-src="/videos/review-3.mp4#t=1.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3B342A,#7A6648);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
             <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
               <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
             </div>
           </div>
-          <div style="position:relative;z-index:1;">
+          <div class="video-placeholder" style="position:relative;z-index:1;">
             <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
             <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
           </div>
         </div>
-        <div class="video-card" data-video-src="/videos/review-4.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3530,#4A5C50);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+        <div class="video-card" data-video-src="/videos/review-4.mp4#t=2.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3530,#4A5C50);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
             <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
               <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
             </div>
           </div>
-          <div style="position:relative;z-index:1;">
+          <div class="video-placeholder" style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+          </div>
+        </div>
+        <div class="video-card" data-video-src="/videos/review-5.mp4#t=1" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2B3640,#3A5060);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
+          </div>
+          <div class="video-placeholder" style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+          </div>
+        </div>
+        <div class="video-card" data-video-src="/videos/review-6.mp4#t=2" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3A2A35,#6B4A5A);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
+          </div>
+          <div class="video-placeholder" style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+          </div>
+        </div>
+        <div class="video-card" data-video-src="/videos/review-7.mp4#t=1.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#352A20,#5A4A38);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
+          </div>
+          <div class="video-placeholder" style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+          </div>
+        </div>
+        <div class="video-card" data-video-src="/videos/review-8.mp4#t=2.5" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3028,#405540);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div class="video-placeholder" style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
+          </div>
+          <div class="video-placeholder" style="position:relative;z-index:1;">
             <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
             <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
           </div>
@@ -1099,8 +1147,23 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function totalPages() { return Math.ceil(cards.length / perPage); }
 
+    function isStatic() { return cards.length <= perPage; }
+
+    function updateControls() {
+      var s = isStatic();
+      prevBtn.style.display = s ? 'none' : '';
+      nextBtn.style.display = s ? 'none' : '';
+      dotsEl.style.display = s ? 'none' : '';
+      if (s) {
+        clearInterval(autoTimer);
+        track.style.transform = 'translateX(0)';
+        current = 0;
+      }
+    }
+
     function buildDots() {
       dotsEl.innerHTML = '';
+      if (isStatic()) return;
       var tp = totalPages();
       for (var i = 0; i < tp; i++) {
         var dot = document.createElement('button');
@@ -1112,6 +1175,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function goTo(page) {
+      if (isStatic()) return;
       var pages = totalPages();
       current = ((page % pages) + pages) % pages;
       var idx = Math.min(current * perPage, cards.length - 1);
@@ -1127,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function resetAuto() {
       clearInterval(autoTimer);
-      if (!paused) autoTimer = setInterval(function() { goTo(current + 1); }, 5000);
+      if (!paused && !isStatic()) autoTimer = setInterval(function() { goTo(current + 1); }, 5000);
     }
 
     carousel.addEventListener('mouseenter', function() { paused = true; clearInterval(autoTimer); });
@@ -1139,11 +1203,13 @@ document.addEventListener('DOMContentLoaded', function(){
         perPage = np;
         current = Math.min(current, totalPages() - 1);
         buildDots();
-        goTo(current);
+        updateControls();
+        if (!isStatic()) goTo(current);
       }
     });
 
     buildDots();
+    updateControls();
     resetAuto();
   }
 
@@ -1272,13 +1338,18 @@ document.addEventListener('DOMContentLoaded', function(){
     video.loop = true;
     video.playsInline = true;
     video.preload = 'metadata';
-    video.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:14px;';
+    video.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:14px;cursor:pointer;';
     video.addEventListener('loadeddata', function() {
-      while (card.firstChild) card.removeChild(card.firstChild);
+      card.querySelectorAll('.video-placeholder').forEach(function(el) { el.remove(); });
       card.appendChild(video);
       card.style.background = '#000';
+      // Play on hover
       card.addEventListener('mouseenter', function() { video.play(); });
       card.addEventListener('mouseleave', function() { video.pause(); });
+      // Click to play/pause
+      card.addEventListener('click', function() {
+        if (video.paused) { video.play(); } else { video.pause(); }
+      });
     });
   });
 });
