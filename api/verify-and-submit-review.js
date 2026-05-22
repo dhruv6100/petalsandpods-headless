@@ -1,6 +1,8 @@
 export const config = { runtime: 'edge' };
 
 const KLAVIYO_REVIEWS_KEY = process.env.KLAVIYO_REVIEWS_KEY;
+const WC_CONSUMER_KEY = process.env.WC_CONSUMER_KEY;
+const WC_CONSUMER_SECRET = process.env.WC_CONSUMER_SECRET;
 const REVISION = '2024-10-15';
 
 export default async function handler(req) {
@@ -48,44 +50,67 @@ export default async function handler(req) {
         return new Response(JSON.stringify({ error: 'Missing review fields' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
       }
 
-      const profileId = lookupData.data[0].id;
+      if (!review.product_id) {
+        return new Response(JSON.stringify({ error: 'Missing product ID' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      }
 
-      // Create a custom event "Submitted Review"
-      const eventPayload = {
-        data: {
-          type: 'event',
-          attributes: {
-            properties: {
-              product: review.product,
-              product_handle: review.productHandle || '',
-              rating: review.rating,
-              headline: review.headline,
-              body: review.body,
-              reviewer_name: review.name || 'Anonymous',
-              submitted_at: new Date().toISOString(),
-              moderation_status: 'pending'
-            },
-            metric: { data: { type: 'metric', attributes: { name: 'Submitted Review' } } },
-            profile: { data: { type: 'profile', id: profileId } }
-          }
-        }
-      };
-
-      const eventRes = await fetch('https://a.klaviyo.com/api/events/', {
+      // Persist review to WooCommerce moderation queue (status: hold)
+      const wcAuth = btoa(WC_CONSUMER_KEY + ':' + WC_CONSUMER_SECRET);
+      const wcRes = await fetch('https://shop.petalsandpods.com/wp-json/wc/v3/products/reviews', {
         method: 'POST',
         headers: {
-          'Authorization': `Klaviyo-API-Key ${KLAVIYO_REVIEWS_KEY}`,
-          'revision': REVISION,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Authorization': 'Basic ' + wcAuth,
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(eventPayload)
+        body: JSON.stringify({
+          product_id: review.product_id,
+          review: review.headline + '\n\n' + review.body,
+          reviewer: review.name || 'Anonymous',
+          reviewer_email: email,
+          rating: review.rating,
+          status: 'hold'
+        })
       });
 
-      if (!eventRes.ok) {
-        const errBody = await eventRes.text();
-        return new Response(JSON.stringify({ error: 'Submission failed', detail: errBody }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+      if (!wcRes.ok) {
+        const errBody = await wcRes.text();
+        return new Response(JSON.stringify({ error: 'Review submission failed', detail: errBody }), { status: 500, headers: { 'Content-Type': 'application/json' } });
       }
+
+      // Track in Klaviyo (best-effort — don't fail if this errors)
+      const profileId = lookupData.data[0].id;
+      try {
+        const eventPayload = {
+          data: {
+            type: 'event',
+            attributes: {
+              properties: {
+                product: review.product,
+                product_handle: review.productHandle || '',
+                rating: review.rating,
+                headline: review.headline,
+                body: review.body,
+                reviewer_name: review.name || 'Anonymous',
+                submitted_at: new Date().toISOString(),
+                moderation_status: 'pending'
+              },
+              metric: { data: { type: 'metric', attributes: { name: 'Submitted Review' } } },
+              profile: { data: { type: 'profile', id: profileId } }
+            }
+          }
+        };
+
+        await fetch('https://a.klaviyo.com/api/events/', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Klaviyo-API-Key ${KLAVIYO_REVIEWS_KEY}`,
+            'revision': REVISION,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(eventPayload)
+        });
+      } catch (_) { /* Klaviyo tracking is best-effort */ }
 
       return new Response(JSON.stringify({ success: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }

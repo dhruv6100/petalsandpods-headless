@@ -239,10 +239,24 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 .ribbon-scroll::-webkit-scrollbar{height:4px;}
 .ribbon-scroll::-webkit-scrollbar-track{background:transparent;}
 .ribbon-scroll::-webkit-scrollbar-thumb{background:var(--copper-med);border-radius:2px;}
-@media (max-width:640px){
-  #pdpReviewsRibbon article{flex:0 0 75vw!important;}
-  .video-card{flex:0 0 60vw!important;}
-}
+/* CAROUSEL */
+.review-carousel{position:relative;overflow:hidden;padding-bottom:2.5rem;margin-bottom:2rem;}
+.carousel-track{display:flex;gap:.9rem;transition:transform 500ms var(--ease);will-change:transform;}
+.carousel-track .review-card{flex:0 0 calc((100% - 1.8rem) / 3);background:var(--white);border:1px solid var(--line-soft);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;gap:.7rem;box-sizing:border-box;}
+.carousel-prev,.carousel-next{position:absolute;top:calc(50% - 1.25rem);transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:var(--white);border:1px solid var(--line-soft);color:var(--forest);font-size:1.2rem;cursor:pointer;display:grid;place-items:center;z-index:2;transition:all 200ms var(--ease);box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.carousel-prev{left:-.25rem;}
+.carousel-next{right:-.25rem;}
+.carousel-prev:hover,.carousel-next:hover{background:var(--forest);color:var(--white);border-color:var(--forest);}
+.carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.2rem;}
+.carousel-dot{width:8px;height:8px;border-radius:50%;background:var(--line);border:none;cursor:pointer;transition:all 200ms var(--ease);padding:0;}
+.carousel-dot.active{background:var(--copper-med);transform:scale(1.25);}
+/* VIDEO CENTER */
+.video-ribbon-wrap{text-align:center;overflow-x:auto;padding-bottom:.5rem;}
+.video-ribbon-wrap::-webkit-scrollbar{height:4px;}
+.video-ribbon-wrap::-webkit-scrollbar-thumb{background:var(--copper-med);border-radius:2px;}
+.video-ribbon-inner{display:inline-flex;gap:.9rem;}
+@media(max-width:900px){.carousel-track .review-card{flex:0 0 calc((100% - .9rem) / 2);}}
+@media(max-width:640px){.carousel-track .review-card{flex:0 0 100%;}.video-card{flex:0 0 60vw!important;}.carousel-prev{left:.25rem;}.carousel-next{right:.25rem;}}
 </style>
 </head>
 <body>
@@ -412,8 +426,11 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
       <span style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-med);">Written</span>
       <span style="flex:1;height:1px;background:var(--line-soft);"></span>
     </div>
-    <div id="pdpReviewsRibbon" class="ribbon-scroll" style="display:flex;gap:.9rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.5rem;margin-bottom:2rem;-webkit-overflow-scrolling:touch;">
-      <!-- Review cards injected by JS -->
+    <div class="review-carousel" id="reviewCarousel">
+      <div class="carousel-track" id="carouselTrack"></div>
+      <button class="carousel-prev" id="carouselPrev" aria-label="Previous reviews">&#8249;</button>
+      <button class="carousel-next" id="carouselNext" aria-label="Next reviews">&#8250;</button>
+      <div class="carousel-dots" id="carouselDots"></div>
     </div>
 
     <!-- VIDEO REVIEWS RIBBON -->
@@ -421,50 +438,51 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
       <span style="font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper-med);">Video clips</span>
       <span style="flex:1;height:1px;background:var(--line-soft);"></span>
     </div>
-    <div id="pdpVideoRibbon" class="ribbon-scroll" style="display:flex;gap:.9rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.5rem;-webkit-overflow-scrolling:touch;">
-      <!-- Video clip placeholders (4 cards) -->
-      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3B33,var(--forest));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-        <div style="position:absolute;inset:0;display:grid;place-items:center;">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+    <div class="video-ribbon-wrap">
+      <div id="pdpVideoRibbon" class="video-ribbon-inner">
+        <div class="video-card" data-video-src="/videos/review-1.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3B33,var(--forest));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
+          </div>
+          <div style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
           </div>
         </div>
-        <div style="position:relative;z-index:1;">
-          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
-          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
-        </div>
-      </div>
-      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3D2A2A,var(--copper-med));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-        <div style="position:absolute;inset:0;display:grid;place-items:center;">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+        <div class="video-card" data-video-src="/videos/review-2.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3D2A2A,var(--copper-med));border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
+          </div>
+          <div style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
           </div>
         </div>
-        <div style="position:relative;z-index:1;">
-          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
-          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
-        </div>
-      </div>
-      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3B342A,#7A6648);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-        <div style="position:absolute;inset:0;display:grid;place-items:center;">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+        <div class="video-card" data-video-src="/videos/review-3.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#3B342A,#7A6648);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
+          </div>
+          <div style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
           </div>
         </div>
-        <div style="position:relative;z-index:1;">
-          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
-          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
-        </div>
-      </div>
-      <div class="video-card" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3530,#4A5C50);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
-        <div style="position:absolute;inset:0;display:grid;place-items:center;">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+        <div class="video-card" data-video-src="/videos/review-4.mp4" style="flex:0 0 220px;scroll-snap-align:start;aspect-ratio:9/16;background:linear-gradient(145deg,#2A3530,#4A5C50);border-radius:14px;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;position:relative;overflow:hidden;border:1px solid var(--line-soft);">
+          <div style="position:absolute;inset:0;display:grid;place-items:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);">
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="white"><path d="M0 0v16l14-8z"/></svg>
+            </div>
           </div>
-        </div>
-        <div style="position:relative;z-index:1;">
-          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
-          <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+          <div style="position:relative;z-index:1;">
+            <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.3rem;">Coming soon</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:500;color:white;line-height:1.2;">Customer video</div>
+          </div>
         </div>
       </div>
     </div>
@@ -967,24 +985,29 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
 document.addEventListener('DOMContentLoaded', function(){
   'use strict';
 
-  // Real Amazon reviews, split by product handle
+  // ── SLUG → WC PRODUCT ID ────────────────────────────────────────────
+  const SLUG_TO_WC_ID = {
+    'glass-skin-miracle': 14,
+    'brightening-one-step-glow': 16,
+    'the-ritual-bundle': 18
+  };
+
+  // Hardcoded fallback reviews (from Amazon)
   const REVIEWS = {
     'brightening-one-step-glow': [
       { rating: 5, headline: 'Radiant results!', name: 'Ranjith Y.', date: 'Nov 2023', body: 'I am delighted to share my experience with this incredible face wash. Within just two weeks of regular use, I noticed a significant improvement in the texture of my skin. Rough patches were smoothed out, and dark areas visibly lightened. The results were beyond my expectations.' },
       { rating: 5, headline: 'Best cleanser I could ask for', name: 'Javier', date: 'Dec 2023', body: 'I have sensitive skin and was very sceptical to order it. The ingredients are the reason and I am so glad I did. It changed the look of my skin right after a week\'s use. Glow for sure and skin feels so much more even.' },
-      { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal — divine.' }
+      { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal \u2014 divine.' }
     ],
     'glass-skin-miracle': [
-      { rating: 5, headline: 'In love with this cleanser', name: 'Javier', date: 'Dec 2023', body: 'I had my doubts looking at the ingredients. My mom used to tell me about fermented rice water for skin and hair — I could never do it on my own. Glad I found this. It works like a miracle. The glow is unbelievable.' },
+      { rating: 5, headline: 'In love with this cleanser', name: 'Javier', date: 'Dec 2023', body: 'I had my doubts looking at the ingredients. My mom used to tell me about fermented rice water for skin and hair \u2014 I could never do it on my own. Glad I found this. It works like a miracle. The glow is unbelievable.' },
       { rating: 5, headline: 'Great', name: 'Naveen K.', date: 'Jan 2025', body: 'My 14-year-old has been using this product for a year and likes it.' },
-      { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal — divine.' }
+      { rating: 5, headline: "Just what I've been looking for", name: 'Kate', date: 'Apr 2024', body: 'So glad I found this wonderful product. I use it daily and alternate between the two formulas. My skin is brighter, softer, and more hydrated. The scent is phenomenal \u2014 divine.' }
     ]
   };
 
-  // Default fallback — show all 5 reviews if product handle doesn't match
   const ALL_REVIEWS = [...REVIEWS['brightening-one-step-glow'], ...REVIEWS['glass-skin-miracle'].filter((_, i) => i < 2)];
 
-  // Shared slug map for legacy Shopify handles → WC slugs
   const SLUG_MAP = {
     'glass-skin-miracle-stick':                       'glass-skin-miracle',
     'glass-skin-miracle-cleanser-stick':              'glass-skin-miracle',
@@ -1005,38 +1028,135 @@ document.addEventListener('DOMContentLoaded', function(){
     const handle = getProductHandle();
     if (handle && handle.includes('glass-skin')) return 'Glass Skin Miracle Cleanser';
     if (handle && handle.includes('brightening')) return 'Brightening 1-Step Glow Cleanser';
-    return document.title.split('—')[0].trim() || 'Petals & Pods Product';
+    return document.title.split('\u2014')[0].trim() || 'Petals & Pods Product';
   }
 
-  function renderReviews() {
-    const ribbon = document.getElementById('pdpReviewsRibbon');
-    if (!ribbon) return;
+  // ── DYNAMIC REVIEW FETCH (WC API with hardcoded fallback) ────────────
+  async function fetchReviews() {
     const handle = getProductHandle();
-    const reviews = (handle && REVIEWS[handle]) ? REVIEWS[handle] : ALL_REVIEWS;
-    ribbon.innerHTML = reviews.map(r => `
-      <article style="flex:0 0 280px;scroll-snap-align:start;background:var(--white);border:1px solid var(--line-soft);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;gap:.7rem;box-shadow:var(--shadow-1);">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div style="color:var(--copper-med);font-size:.85rem;letter-spacing:.08em;">${'★'.repeat(r.rating)}</div>
-          <div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.12em;color:var(--ink-muted);">${r.date}</div>
-        </div>
-        <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;color:var(--forest);line-height:1.25;margin:0;">${r.headline}</h3>
-        <p style="font-family:var(--font-body);font-size:.82rem;color:var(--ink);line-height:1.55;margin:0;flex:1;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;">${r.body}</p>
-        <div style="height:1px;background:var(--line-soft);margin:.1rem 0;"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div style="font-family:var(--font-body);font-size:.78rem;font-weight:500;color:var(--ink);">${r.name}</div>
-          <div style="font-family:var(--font-mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--copper-med);">Verified · Amazon</div>
-        </div>
-      </article>
-    `).join('');
+    const wcId = handle ? SLUG_TO_WC_ID[handle] : null;
+    if (wcId) {
+      try {
+        const data = await window.wcApi.wcGet('products/reviews', { product_id: wcId, per_page: 20 });
+        if (Array.isArray(data) && data.length > 0) {
+          return data.map(function(r) {
+            return {
+              rating: r.rating || 5,
+              headline: '',
+              name: r.reviewer || 'Customer',
+              date: r.date_created ? new Date(r.date_created).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '',
+              body: r.review ? r.review.replace(/<[^>]*>/g, '') : ''
+            };
+          });
+        }
+      } catch (e) {
+        console.warn('Review fetch failed, using fallback:', e);
+      }
+    }
+    return (handle && REVIEWS[handle]) ? REVIEWS[handle] : ALL_REVIEWS;
   }
 
-  // Modal logic
-  const modal = document.getElementById('reviewModal');
-  const stage1 = document.getElementById('reviewStage1');
-  const stage2 = document.getElementById('reviewStage2');
-  const stage3 = document.getElementById('reviewStage3');
-  let selectedRating = 0;
-  let verifiedEmail = '';
+  // ── CAROUSEL ─────────────────────────────────────────────────────────
+  function initCarousel(reviews) {
+    var carousel = document.getElementById('reviewCarousel');
+    var track = document.getElementById('carouselTrack');
+    var prevBtn = document.getElementById('carouselPrev');
+    var nextBtn = document.getElementById('carouselNext');
+    var dotsEl = document.getElementById('carouselDots');
+    if (!track || !carousel) return;
+
+    track.innerHTML = reviews.map(function(r) {
+      var stars = '\u2605'.repeat(r.rating) + '\u2606'.repeat(5 - r.rating);
+      var headlineHtml = r.headline
+        ? '<h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;color:var(--forest);line-height:1.25;margin:0;">' + r.headline + '</h3>'
+        : '';
+      return '<div class="review-card">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+        + '<div style="color:var(--copper-med);font-size:.85rem;letter-spacing:.08em;">' + stars + '</div>'
+        + '<div style="font-family:var(--font-mono);font-size:.55rem;letter-spacing:.12em;color:var(--ink-muted);">' + (r.date || '') + '</div>'
+        + '</div>'
+        + headlineHtml
+        + '<p style="font-family:var(--font-body);font-size:.82rem;color:var(--ink);line-height:1.55;margin:0;flex:1;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;">' + r.body + '</p>'
+        + '<div style="height:1px;background:var(--line-soft);margin:.1rem 0;"></div>'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+        + '<div style="font-family:var(--font-body);font-size:.78rem;font-weight:500;color:var(--ink);">' + r.name + '</div>'
+        + '<div style="font-family:var(--font-mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--copper-med);">Verified</div>'
+        + '</div>'
+        + '</div>';
+    }).join('');
+
+    var cards = Array.from(track.querySelectorAll('.review-card'));
+    if (!cards.length) return;
+
+    function getPerPage() {
+      return window.innerWidth <= 640 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+    }
+
+    var perPage = getPerPage();
+    var current = 0;
+    var autoTimer = null;
+    var paused = false;
+
+    function totalPages() { return Math.ceil(cards.length / perPage); }
+
+    function buildDots() {
+      dotsEl.innerHTML = '';
+      var tp = totalPages();
+      for (var i = 0; i < tp; i++) {
+        var dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === current ? ' active' : '');
+        dot.setAttribute('aria-label', 'Page ' + (i + 1));
+        (function(idx) { dot.addEventListener('click', function() { goTo(idx); }); })(i);
+        dotsEl.appendChild(dot);
+      }
+    }
+
+    function goTo(page) {
+      var pages = totalPages();
+      current = ((page % pages) + pages) % pages;
+      var idx = Math.min(current * perPage, cards.length - 1);
+      var offset = cards[idx].offsetLeft - cards[0].offsetLeft;
+      track.style.transform = 'translateX(-' + offset + 'px)';
+      var dots = dotsEl.querySelectorAll('.carousel-dot');
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+      resetAuto();
+    }
+
+    prevBtn.addEventListener('click', function() { goTo(current - 1); });
+    nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+    function resetAuto() {
+      clearInterval(autoTimer);
+      if (!paused) autoTimer = setInterval(function() { goTo(current + 1); }, 5000);
+    }
+
+    carousel.addEventListener('mouseenter', function() { paused = true; clearInterval(autoTimer); });
+    carousel.addEventListener('mouseleave', function() { paused = false; resetAuto(); });
+
+    window.addEventListener('resize', function() {
+      var np = getPerPage();
+      if (np !== perPage) {
+        perPage = np;
+        current = Math.min(current, totalPages() - 1);
+        buildDots();
+        goTo(current);
+      }
+    });
+
+    buildDots();
+    resetAuto();
+  }
+
+  // ── INIT REVIEWS ─────────────────────────────────────────────────────
+  fetchReviews().then(initCarousel);
+
+  // ── REVIEW MODAL ─────────────────────────────────────────────────────
+  var modal = document.getElementById('reviewModal');
+  var stage1 = document.getElementById('reviewStage1');
+  var stage2 = document.getElementById('reviewStage2');
+  var stage3 = document.getElementById('reviewStage3');
+  var selectedRating = 0;
+  var verifiedEmail = '';
 
   function openModal() {
     stage1.style.display = 'block'; stage2.style.display = 'none'; stage3.style.display = 'none';
@@ -1052,35 +1172,35 @@ document.addEventListener('DOMContentLoaded', function(){
     document.body.style.overflow = '';
   }
 
-  // Delegated click handler for "Write a review" button (resilient to DOM moves)
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', function(e) {
     if (e.target.closest && e.target.closest('#openReviewModal')) openModal();
   });
   document.getElementById('closeReviewModal').addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
 
-  document.getElementById('verifyEmailBtn').addEventListener('click', async () => {
-    const email = document.getElementById('reviewEmail').value.trim();
-    const errEl = document.getElementById('verifyError');
+  // ── VERIFY EMAIL ─────────────────────────────────────────────────────
+  document.getElementById('verifyEmailBtn').addEventListener('click', async function() {
+    var email = document.getElementById('reviewEmail').value.trim();
+    var errEl = document.getElementById('verifyError');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       errEl.textContent = 'Please enter a valid email address.';
       errEl.style.display = 'block'; return;
     }
-    const btn = document.getElementById('verifyEmailBtn');
+    var btn = document.getElementById('verifyEmailBtn');
     btn.disabled = true; btn.textContent = 'Verifying...';
     try {
-      const res = await fetch('/api/verify-and-submit-review', {
+      var res = await fetch('/api/verify-and-submit-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'verify', email })
+        body: JSON.stringify({ action: 'verify', email: email })
       });
-      const data = await res.json();
+      var data = await res.json();
       btn.disabled = false; btn.textContent = 'Verify & continue';
       if (data.verified) {
         verifiedEmail = email;
         stage1.style.display = 'none'; stage2.style.display = 'block';
       } else {
-        errEl.innerHTML = "We couldn't find that email in our customer list. <a href='/' style='color:var(--copper-med);text-decoration:underline;'>Subscribe first</a> to leave a verified review.";
+        errEl.innerHTML = '<strong>Become a customer to leave a review.</strong><br>We verify reviews against our subscriber list. <a href="/#subscribe" style="color:var(--copper-med);text-decoration:underline;font-weight:500;">Subscribe here</a> or purchase a product, then come back to share your experience.';
         errEl.style.display = 'block';
       }
     } catch (e) {
@@ -1090,38 +1210,45 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
-  // Rating star picker
-  document.querySelectorAll('#ratingStars span').forEach(s => {
-    s.addEventListener('click', () => {
+  // ── RATING STARS ─────────────────────────────────────────────────────
+  document.querySelectorAll('#ratingStars span').forEach(function(s) {
+    s.addEventListener('click', function() {
       selectedRating = parseInt(s.dataset.rating);
-      document.querySelectorAll('#ratingStars span').forEach((star, i) => {
+      document.querySelectorAll('#ratingStars span').forEach(function(star, i) {
         star.style.color = (i < selectedRating) ? 'var(--copper-med)' : 'var(--line-soft)';
       });
     });
   });
 
-  document.getElementById('submitReviewBtn').addEventListener('click', async () => {
-    const errEl = document.getElementById('submitError');
+  // ── SUBMIT REVIEW (→ WC moderation queue) ────────────────────────────
+  document.getElementById('submitReviewBtn').addEventListener('click', async function() {
+    var errEl = document.getElementById('submitError');
     errEl.style.display = 'none';
-    const name = document.getElementById('reviewName').value.trim();
-    const headline = document.getElementById('reviewHeadline').value.trim();
-    const body = document.getElementById('reviewBody').value.trim();
+    var name = document.getElementById('reviewName').value.trim();
+    var headline = document.getElementById('reviewHeadline').value.trim();
+    var body = document.getElementById('reviewBody').value.trim();
     if (!selectedRating || !name || !headline || !body) {
       errEl.textContent = 'Please fill in all fields and select a rating.';
       errEl.style.display = 'block'; return;
     }
-    const btn = document.getElementById('submitReviewBtn');
+    var btn = document.getElementById('submitReviewBtn');
     btn.disabled = true; btn.textContent = 'Submitting...';
     try {
-      const res = await fetch('/api/verify-and-submit-review', {
+      var handle = getProductHandle();
+      var res = await fetch('/api/verify-and-submit-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'submit', email: verifiedEmail,
-          review: { rating: selectedRating, headline, body, name, product: getProductName(), productHandle: getProductHandle() }
+          review: {
+            rating: selectedRating, headline: headline, body: body, name: name,
+            product: getProductName(),
+            productHandle: handle,
+            product_id: handle ? SLUG_TO_WC_ID[handle] : null
+          }
         })
       });
-      const data = await res.json();
+      var data = await res.json();
       btn.disabled = false; btn.textContent = 'Submit review';
       if (data.success) {
         stage2.style.display = 'none'; stage3.style.display = 'block';
@@ -1136,11 +1263,24 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderReviews);
-  } else {
-    renderReviews();
-  }
+  // ── VIDEO UPGRADE (replace placeholder when mp4 exists) ──────────────
+  document.querySelectorAll('.video-card[data-video-src]').forEach(function(card) {
+    var src = card.dataset.videoSrc;
+    var video = document.createElement('video');
+    video.src = src;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    video.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:14px;';
+    video.addEventListener('loadeddata', function() {
+      while (card.firstChild) card.removeChild(card.firstChild);
+      card.appendChild(video);
+      card.style.background = '#000';
+      card.addEventListener('mouseenter', function() { video.play(); });
+      card.addEventListener('mouseleave', function() { video.pause(); });
+    });
+  });
 });
 </script>
 
