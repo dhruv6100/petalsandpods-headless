@@ -170,7 +170,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
 
 <section class="cmp-hero">
   <div class="cmp-eyebrow">Wellness Bundles &middot; Gift Edition</div>
-  <h1 class="cmp-title">For the mum who <em>glows</em><br/>from within.</h1>
+  <h1 class="cmp-title">For the ones who <em>glow</em><br/>from within.</h1>
   <p class="cmp-sub">Four wellness sets, hand-pressed with ancient botanicals and gifted with intention. Cleanse, sip, breathe, return.</p>
 </section>
 
@@ -197,7 +197,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
     <p class="pdp-tagline" id="pdpTagline">A return to rest and quiet care.<br/>Cleanse &middot; Sip &middot; Unwind.</p>
 
     <div class="pdp-price-row">
-      <div class="pdp-price" id="pdpPrice"><span class="pdp-price-was" id="pdpPriceWas">$52</span> <span class="pdp-price-now">$42.00 USD · Save $10</span></div>
+      <div class="pdp-price" id="pdpPrice"><span class="pdp-price-now">&mdash;</span></div>
       <span class="pdp-stock" id="pdpStock"><span class="pdp-stock-dot"></span> In stock &middot; Free shipping included</span>
     </div>
 
@@ -211,20 +211,20 @@ button{font:inherit;cursor:pointer;border:none;background:none}
     <div class="pdp-picker" id="pdpPicker">
       <button type="button" class="pdp-option is-active" data-variant="quiet">
         <span class="pdp-option-name">The Quiet Care Set</span>
-        <span class="pdp-option-price"><s>$52</s> $42 USD</span>
+        <span class="pdp-option-price">&mdash;</span>
       </button>
       <button type="button" class="pdp-option" data-variant="grounding">
         <span class="pdp-option-name">The Grounding Care Set</span>
-        <span class="pdp-option-price"><s>$93</s> $69 USD</span>
+        <span class="pdp-option-price">&mdash;</span>
       </button>
       <button type="button" class="pdp-option" data-variant="calm">
         <span class="pdp-option-name">The Calm Within Set</span>
-        <span class="pdp-option-price"><s>$159</s> $89 USD</span>
+        <span class="pdp-option-price">&mdash;</span>
       </button>
       <button type="button" class="pdp-option" data-variant="complete">
         <span class="pdp-option-tag">Best value</span>
         <span class="pdp-option-name">The Complete Care Set</span>
-        <span class="pdp-option-price"><s>$227</s> $149 USD</span>
+        <span class="pdp-option-price">&mdash;</span>
       </button>
     </div>
 
@@ -284,33 +284,42 @@ button{font:inherit;cursor:pointer;border:none;background:none}
   <div class="cmp-all-grid">
     <button type="button" class="cmp-card is-selected" data-variant="quiet">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/7_81abdd03-5c18-4542-b618-5201a6dcded4.png?v=1777755120" alt="The Quiet Care Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Quiet</em> Care Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$52</s> From $42 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Quiet</em> Care Set</div><div class="cmp-card-price">&mdash;</div></div>
     </button>
     <button type="button" class="cmp-card" data-variant="grounding">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/8_1.png?v=1777755120" alt="The Grounding Care Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Grounding</em> Care Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$93</s> From $69 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Grounding</em> Care Set</div><div class="cmp-card-price">&mdash;</div></div>
     </button>
     <button type="button" class="cmp-card" data-variant="calm">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/9_2ec3083c-e20a-41ff-9507-036c4ca45cb4.png?v=1777755121" alt="The Calm Within Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Calm Within</em> Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$159</s> From $89 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Calm Within</em> Set</div><div class="cmp-card-price">&mdash;</div></div>
     </button>
     <button type="button" class="cmp-card" data-variant="complete">
       <div class="cmp-card-img"><img src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/10_ea08f81b-c9f7-4e11-89ff-f86d8524409d.png?v=1777755120" alt="The Complete Care Set" /></div>
-      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Complete</em> Care Set</div><div class="cmp-card-price"><s style="color:var(--ink-muted)">$227</s> From $149 USD</div></div>
+      <div class="cmp-card-body"><div class="cmp-card-name">The <em>Complete</em> Care Set</div><div class="cmp-card-price">&mdash;</div></div>
     </button>
   </div>
 </section>
 
 <div id="site-footer"></div>
 
-<div class="cmp-toast" id="cmpToast">Added to bag</div>
+<script src="/lib/wc-api.js"></script>
+<script src="/lib/cart-drawer.js"></script>
 
 <script>
 (function(){
   'use strict';
+
+  /*
+   * BUNDLE PRICING: prices are fetched live from WooCommerce on page load.
+   * WC variation IDs: 19 (Quiet), 20 (Grounding), 21 (Calm), 22 (Complete).
+   * If prices need to change, update them in WP admin (shop.petalsandpods.com)
+   * → Products → The Ritual Bundle → Variations. Page reflects automatically.
+   * Last reviewed: 2026-05-23
+   */
   const VARIANTS = {
     quiet: {
-      numericId:'52152437801243', name:'The <em>Quiet</em> Care Set', tagline:'A return to rest and quiet care.<br/>Cleanse \u00b7 Sip \u00b7 Unwind.', price:'<span class="pdp-price-was">$52</span> <span class="pdp-price-now">$42.00 USD · Save $10</span>', tag:'Limited Edition', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','1 Hand-poured Candle'],
+      wcVariationId:19, name:'The <em>Quiet</em> Care Set', tagline:'A return to rest and quiet care.<br/>Cleanse \u00b7 Sip \u00b7 Unwind.', priceFromWc:null, tag:'Limited Edition', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','1 Hand-poured Candle'],
       story:{title:'Glass-Skin Miracle Cleanser',meta:'pH-balanced \u00b7 Gentle exfoliation + brightening \u00b7 Travel-friendly stick',body:'Rooted in 2,000 years of Korean fermentation, this cleanser uses fermented rice enzymes and Damascus rose to boost absorption and feed your skin healthy bacteria, so it heals from the surface in. The result: firmer texture, deeper hydration, and a visible glow that builds with every use. pH-balanced, hand-pressed, and built for daily use.'},
       collab:null,
       detailedIncludes:[
@@ -323,7 +332,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
       closing:'For the one who gives everything. This is theirs alone.'
     },
     grounding: {
-      numericId:'52152437834011', name:'The <em>Grounding</em> Care Set', tagline:'A return to steadiness and presence.<br/>Move \u00b7 Cleanse \u00b7 Reconnect.', price:'<span class="pdp-price-was">$93</span> <span class="pdp-price-now">$69.00 USD · Save $24</span>', tag:'Earth & Ether collab', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Somatic / Pranic session'],
+      wcVariationId:20, name:'The <em>Grounding</em> Care Set', tagline:'A return to steadiness and presence.<br/>Move \u00b7 Cleanse \u00b7 Reconnect.', priceFromWc:null, tag:'Earth & Ether collab', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Somatic / Pranic session'],
       story:{title:'Glass-Skin Miracle Cleanser',meta:'Korean Fermented \u00b7 pH-balanced \u00b7 Gentle exfoliation + brightening',body:'Rooted in 2,000 years of Korean nuruk balhyo fermentation, this cleanser uses fermented rice enzymes and Damascus rose to boost absorption and feed your skin healthy bacteria, so it heals from the surface in. The result: firmer texture, deeper hydration, and a visible glow that builds with every use.'},
       collab:{eyebrow:'Exclusive Session \u00b7 Earth & Ether\u2122',title:'Somatic Movement or Pranic Healing Session',meta:'Movement \u00b7 Breath \u00b7 Healing \u00b7 Bay Area & Online',body:'A deeply restorative 1:1 session to release stored tension, regulate your nervous system, and come back home to your body. Choose somatic dance movement or pranic energy healing.',bullets:['Boost Vitality & Energy','Release Stored Tension','Foster Joyful Expression'],linkText:'earthandether.us',linkHref:'https://earthandether.us'},
       detailedIncludes:[
@@ -336,7 +345,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
       closing:'She tends to everything. This set tends to her.'
     },
     calm: {
-      numericId:'52152437866779', name:'The <em>Calm Within</em> Set', tagline:'A moment of stillness. A lifetime of wellbeing.<br/>Soothe \u00b7 Nourish \u00b7 Restore.', price:'<span class="pdp-price-was">$159</span> <span class="pdp-price-now">$89.00 USD · Save $70</span>', tag:'Meditate with Sarika', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Energy alignment OR Quantum healing'],
+      wcVariationId:21, name:'The <em>Calm Within</em> Set', tagline:'A moment of stillness. A lifetime of wellbeing.<br/>Soothe \u00b7 Nourish \u00b7 Restore.', priceFromWc:null, tag:'Meditate with Sarika', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Energy alignment OR Quantum healing'],
       story:{title:'Glass-Skin Miracle Cleanser',meta:'Korean Fermented \u00b7 pH-balanced \u00b7 Gentle exfoliation + brightening',body:'Rooted in 2,000 years of Korean nuruk balhyo fermentation, this cleanser uses fermented rice enzymes and Damascus rose to boost absorption and feed your skin healthy bacteria, so it heals from the surface in. The result: firmer texture, deeper hydration, and a visible glow that builds with every use.'},
       collab:{eyebrow:'Exclusive Session \u00b7 Meditate with Sarika',title:'Quantum Healing or Energy Center Alignment Session',meta:'Meditation \u00b7 Mindset \u00b7 Energy Healing \u00b7 Bay Area & Online',body:'A transformational 1:1 session to release old patterns, rewire unconscious blocks, and return to clarity, energy, and inner calm. Choose quantum healing or energy center alignment.',bullets:['Release Limiting Beliefs','Restore Mental Clarity','Align Mind, Body & Soul'],linkText:'meditatewithsarika.com',linkHref:'https://meditatewithsarika.com'},
       detailedIncludes:[
@@ -349,7 +358,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
       closing:'Clear skin. Clear mind. She deserves both.'
     },
     complete: {
-      numericId:'52152437899547', name:'The <em>Complete</em> Care Set', tagline:'The whole-body care experience for mind, skin and soul.', price:'<span class="pdp-price-was">$227</span> <span class="pdp-price-now">$149.00 USD · Save $78</span>', tag:'Best value \u00b7 2 collabs', includes:['2 Herbal Teas','2 Cleansers','Earth & Ether session','Meditate with Sarika session'],
+      wcVariationId:22, name:'The <em>Complete</em> Care Set', tagline:'The whole-body care experience for mind, skin and soul.', priceFromWc:null, tag:'Best value \u00b7 2 collabs', includes:['2 Herbal Teas','2 Cleansers','Earth & Ether session','Meditate with Sarika session'],
       story:{title:'Two Cleansers, Two Traditions',meta:'Korean Fermentation + Ayurvedic Ubtan',body:'No. 01: Glass-Skin Miracle Cleanser \u2014 fermented rice enzymes and Damascus rose, rooted in 2,000 years of Korean nuruk balhyo fermentation. No. 02: Brightening Glow Cleanser Bar \u2014 turmeric, saffron, ashwagandha, founded on a 5,000-year-old Nalupu/Ubtan recipe. Together they cover morning and evening, surface to barrier.'},
       collab:{eyebrow:'Two Healers \u00b7 In Collaboration',title:'Earth & Ether\u2122  +  Meditate with Sarika',meta:'Somatic, Pranic, Quantum, Energy Alignment \u00b7 Bay Area & Online',body:'Earth & Ether releases stored tension and regulates the nervous system. Meditate with Sarika rewires unconscious patterns and restores clarity. Together, they reach where skincare and tea can\'t.',bullets:['Boost Vitality & Energy','Restore Mental Clarity','Align Mind, Body & Soul'],linkText:'earthandether.us  \u00b7  meditatewithsarika.com',linkHref:'https://earthandether.us'},
       detailedIncludes:[
@@ -364,14 +373,11 @@ button{font:inherit;cursor:pointer;border:none;background:none}
       closing:'Two ancient traditions. Two facilitators. One set, working from outside in and inside out.'
     }
   };
-  const SHOPIFY_DOMAIN   = 'petalsandpods.myshopify.com';
-  const STOREFRONT_TOKEN = 'ce505ca3842d26ea4023c53169225868';
-  const ENDPOINT         = 'https://' + SHOPIFY_DOMAIN + '/api/2024-10/graphql.json';
-  const STORAGE_KEY      = 'pp_cart_id';
-  const TOKEN_OK         = STOREFRONT_TOKEN && STOREFRONT_TOKEN.length === 32;
-  let   currentVariant   = 'quiet';
 
-  function gidFor(k){ return 'gid://shopify/ProductVariant/' + VARIANTS[k].numericId; }
+  // WC variation ID → VARIANTS key lookup
+  var WC_ID_MAP = {19:'quiet', 20:'grounding', 21:'calm', 22:'complete'};
+
+  let   currentVariant   = 'quiet';
 
   const nameEl     = document.getElementById('pdpName');
   const taglineEl  = document.getElementById('pdpTagline');
@@ -389,7 +395,38 @@ button{font:inherit;cursor:pointer;border:none;background:none}
   const allCards   = document.querySelectorAll('.cmp-all-grid .cmp-card');
   const addBtn     = document.getElementById('pdpAddBtn');
   const buyBtn     = document.getElementById('pdpBuyBtn');
-  const toast      = document.getElementById('cmpToast');
+
+  function formatPrice(minorUnitStr) {
+    var cents = parseInt(minorUnitStr, 10);
+    if (isNaN(cents)) return null;
+    return '$' + (cents / 100).toFixed(2);
+  }
+
+  function displayPrice(key) {
+    var v = VARIANTS[key];
+    return v.priceFromWc ? v.priceFromWc + ' USD' : '\u2014';
+  }
+
+  function refreshAllPrices() {
+    // Update picker option prices
+    optionBtns.forEach(function(b) {
+      var key = b.dataset.variant;
+      var priceSpan = b.querySelector('.pdp-option-price');
+      if (priceSpan && VARIANTS[key]) {
+        priceSpan.textContent = VARIANTS[key].priceFromWc || '\u2014';
+      }
+    });
+    // Update bottom card prices
+    allCards.forEach(function(c) {
+      var key = c.dataset.variant;
+      var priceDiv = c.querySelector('.cmp-card-price');
+      if (priceDiv && VARIANTS[key]) {
+        priceDiv.textContent = VARIANTS[key].priceFromWc ? 'From ' + VARIANTS[key].priceFromWc + ' USD' : '\u2014';
+      }
+    });
+    // Update main PDP price for current variant
+    priceEl.innerHTML = '<span class="pdp-price-now">' + displayPrice(currentVariant) + '</span>';
+  }
 
   function selectVariant(key){
     if (!VARIANTS[key]) return;
@@ -397,7 +434,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
     const v = VARIANTS[key];
     nameEl.innerHTML     = v.name;
     taglineEl.innerHTML   = v.tagline;
-    priceEl.innerHTML  = v.price;
+    priceEl.innerHTML  = '<span class="pdp-price-now">' + displayPrice(key) + '</span>';
     stageTagEl.textContent = v.tag;
     includesEl.innerHTML = v.includes.map(function(x){ return '<span class="pdp-include">' + x + '</span>'; }).join('');
     Object.keys(stageImgs).forEach(function(k){ if (stageImgs[k]) stageImgs[k].classList.toggle('is-active', k === key); });
@@ -474,69 +511,45 @@ button{font:inherit;cursor:pointer;border:none;background:none}
   if (initialHash && VARIANTS[initialHash]) selectVariant(initialHash);
   else updateStory(VARIANTS.quiet);
 
-  function showToast(msg){
-    toast.textContent = msg;
-    toast.classList.add('is-show');
-    setTimeout(function(){ toast.classList.remove('is-show'); }, 2400);
-  }
-
-  async function gql(query, variables){
-    const r = await fetch(ENDPOINT, {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
-      body: JSON.stringify({ query: query, variables: variables })
-    });
-    if (!r.ok) throw new Error('Storefront API ' + r.status);
-    const j = await r.json();
-    if (j.errors && j.errors.length) throw new Error(j.errors[0].message);
-    return j;
-  }
-
-  async function ensureCart(){
-    let cartId = localStorage.getItem(STORAGE_KEY);
-    if (cartId) return cartId;
-    const d = await gql('mutation { cartCreate { cart { id checkoutUrl } userErrors { message } } }');
-    cartId = d.data.cartCreate.cart.id;
-    localStorage.setItem(STORAGE_KEY, cartId);
-    return cartId;
-  }
-
-  async function addToCart(variantKey, redirect){
-    if (!TOKEN_OK){
-      const num = VARIANTS[variantKey].numericId;
-      window.location.href = 'https://' + SHOPIFY_DOMAIN + '/cart/' + num + ':1';
-      return;
-    }
-    addBtn.disabled = true; buyBtn.disabled = true;
-    addBtn.textContent = 'Adding...';
+  // ── WC PRICE FETCH ──────────────────────────────────────────────────
+  (async function loadPrices(){
     try {
-      const cartId = await ensureCart();
-      const d = await gql(
-        'mutation($cartId:ID!,$lines:[CartLineInput!]!){cartLinesAdd(cartId:$cartId,lines:$lines){cart{id checkoutUrl totalQuantity}userErrors{message}}}',
-        { cartId: cartId, lines:[{ merchandiseId: gidFor(variantKey), quantity: 1 }] }
-      );
-      const cart = d.data.cartLinesAdd.cart;
-      if (!cart) throw new Error('No cart');
-      try { localStorage.setItem('pp_cart_count', String(cart.totalQuantity)); } catch(e){}
-      window.dispatchEvent(new CustomEvent('pp:cart-updated', { detail: cart.totalQuantity }));
-      if (redirect && cart.checkoutUrl){
-        showToast('Opening checkout...');
-        setTimeout(function(){ window.location.href = cart.checkoutUrl; }, 600);
-      } else {
-        showToast('Added to bag');
+      var product = await window.wcApi.wcGet('products/18');
+      if (product && product.variations) {
+        product.variations.forEach(function(variation) {
+          var key = WC_ID_MAP[variation.id];
+          if (key && variation.prices && variation.prices.price) {
+            VARIANTS[key].priceFromWc = formatPrice(variation.prices.price);
+          }
+        });
       }
     } catch (err) {
-      console.error(err);
-      const num = VARIANTS[variantKey].numericId;
-      window.location.href = 'https://' + SHOPIFY_DOMAIN + '/cart/' + num + ':1';
+      console.error('[bundle] Failed to fetch WC prices:', err);
+    }
+    refreshAllPrices();
+  })();
+
+  // ── ADD TO CART (WooCommerce via ppCart) ─────────────────────────────
+  async function addToCart(variantKey) {
+    var v = VARIANTS[variantKey];
+    if (!v || !v.wcVariationId) return;
+    addBtn.disabled = true; buyBtn.disabled = true;
+    var originalText = addBtn.textContent;
+    addBtn.textContent = 'Adding...';
+    try {
+      await window.ppCart.addToCart(v.wcVariationId, 1);
+    } catch (err) {
+      console.error('Add to bag failed:', err);
+      addBtn.textContent = 'Try again';
+      setTimeout(function() { addBtn.textContent = originalText; }, 2000);
     } finally {
       addBtn.disabled = false; buyBtn.disabled = false;
-      addBtn.textContent = 'Add to bag';
+      if (addBtn.textContent === 'Adding...') addBtn.textContent = originalText;
     }
   }
 
-  addBtn.addEventListener('click', function(){ addToCart(currentVariant, false); });
-  buyBtn.addEventListener('click', function(){ addToCart(currentVariant, true);  });
+  addBtn.addEventListener('click', function(){ addToCart(currentVariant); });
+  buyBtn.addEventListener('click', function(){ addToCart(currentVariant); });
 })();
 </script>
 
