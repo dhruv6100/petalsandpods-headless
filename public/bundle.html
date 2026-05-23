@@ -512,17 +512,20 @@ button{font:inherit;cursor:pointer;border:none;background:none}
   else updateStory(VARIANTS.quiet);
 
   // ── WC PRICE FETCH ──────────────────────────────────────────────────
+  // WC Store API: parent product's variations[] only has {id, attributes}.
+  // Prices live on individual variation endpoints: /products/{variationId}.
   (async function loadPrices(){
+    var ids = [19, 20, 21, 22];
     try {
-      var product = await window.wcApi.wcGet('products/18');
-      if (product && product.variations) {
-        product.variations.forEach(function(variation) {
-          var key = WC_ID_MAP[variation.id];
-          if (key && variation.prices && variation.prices.price) {
-            VARIANTS[key].priceFromWc = formatPrice(variation.prices.price);
-          }
-        });
-      }
+      var results = await Promise.all(ids.map(function(id) {
+        return window.wcApi.wcGet('products/' + id);
+      }));
+      results.forEach(function(variation) {
+        var key = WC_ID_MAP[variation.id];
+        if (key && variation.prices && variation.prices.price) {
+          VARIANTS[key].priceFromWc = formatPrice(variation.prices.price);
+        }
+      });
     } catch (err) {
       console.error('[bundle] Failed to fetch WC prices:', err);
     }
