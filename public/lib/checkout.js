@@ -480,6 +480,15 @@
   }
 
   function redirectToConfirmation(orderId, orderKey) {
+    // Store the customer email so the confirmation page can authenticate the order fetch.
+    // WC Store API guest-order endpoint requires email as a query param.
+    try {
+      if (state.addressData && state.addressData.email) {
+        sessionStorage.setItem('pp_last_order_email', state.addressData.email);
+      }
+    } catch (e) {
+      // sessionStorage may be unavailable in some private browsing modes — proceed anyway.
+    }
     var qs = '?order_id=' + encodeURIComponent(orderId) + '&order_key=' + encodeURIComponent(orderKey);
     window.location.href = '/order-confirmation.html' + qs;
   }
