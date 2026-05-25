@@ -101,9 +101,14 @@ export default async function handler(req, res) {
     }
 
     // Capture nonce from WooCommerce response and expose as X-PP-WC-Nonce
-    const wcNonce = upstream.headers.get('X-WC-Store-API-Nonce') || upstream.headers.get('x-wc-store-api-nonce');
+    // WC Store API returns nonce as 'Nonce' header; keep legacy fallbacks defensively
+    const wcNonce = upstream.headers.get('Nonce')
+                 || upstream.headers.get('nonce')
+                 || upstream.headers.get('X-WC-Store-API-Nonce')
+                 || upstream.headers.get('x-wc-store-api-nonce');
     if (wcNonce) {
       res.setHeader('X-PP-WC-Nonce', wcNonce);
+      res.setHeader('X-PP-Debug-Nonce-Captured', 'true');
     }
 
     // Read body as text first, then parse — WooCommerce may return non-JSON on errors
