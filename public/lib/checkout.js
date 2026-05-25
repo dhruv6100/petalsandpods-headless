@@ -177,6 +177,7 @@
         mode: 'payment',
         amount: amountCents,
         currency: 'usd',
+        paymentMethodCreation: 'manual',
         paymentMethodTypes: ['card'],
         appearance: {
           theme: 'flat',
