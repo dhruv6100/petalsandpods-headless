@@ -36,13 +36,21 @@ export default async function handler(req, res) {
 
     const data = await upstream.json();
 
+    console.log('WC stripe gateway response keys:', Object.keys(data));
+    console.log('WC stripe settings keys:', data.settings ? Object.keys(data.settings) : 'NO_SETTINGS');
+    console.log('WC stripe full response:', JSON.stringify(data, null, 2));
+
     // Extract publishable key from settings
     const pk = data.settings
       && data.settings.publishable_key
       && data.settings.publishable_key.value;
 
     if (!pk) {
-      return res.status(503).json({ error: 'stripe_config_unavailable' });
+      return res.status(503).json({
+        error: 'stripe_config_unavailable',
+        debug_settings_keys: data.settings ? Object.keys(data.settings) : null,
+        debug_data_keys: Object.keys(data),
+      });
     }
 
     const payload = { publishableKey: pk };
