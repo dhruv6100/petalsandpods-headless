@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Petals & Pods Wellness Bundles — Quiet, Grounding, Calm Within and Complete Care Sets. Ancient skincare pressed by hand, gifted with intention." />
+<meta name="description" content="Petals & Pods Wellness Bundles — Quiet, Grounding, Calm Within and Complete Care Sets. Ancient skincare pressed by hand, built around a single moment of care." />
 <title>Wellness Bundles — Petals & Pods</title>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPMFVGKWLD"></script>
@@ -169,15 +169,15 @@ button{font:inherit;cursor:pointer;border:none;background:none}
 <div id="site-header"></div>
 
 <section class="cmp-hero">
-  <div class="cmp-eyebrow">Wellness Bundles &middot; Gift Edition</div>
-  <h1 class="cmp-title">For the ones who <em>glow</em><br/>from within.</h1>
-  <p class="cmp-sub">Four wellness sets, hand-pressed with ancient botanicals and gifted with intention. Cleanse, sip, breathe, return.</p>
+  <div class="cmp-eyebrow">The Ritual Collection &middot; Four Sets</div>
+  <h1 class="cmp-title">Two traditions.<br/><em>Four</em> ways to begin.</h1>
+  <p class="cmp-sub">Korean fermentation and Ayurvedic ritual, pressed by hand into wellness sets built around a single moment of care. Cleanse, sip, return.</p>
 </section>
 
 <section class="pdp" id="pdp" aria-label="Wellness Bundle">
   <div class="pdp-gallery">
     <div class="pdp-stage" id="pdpStage">
-      <div class="pdp-stage-tag" id="pdpStageTag">Limited Edition</div>
+      <div class="pdp-stage-tag" id="pdpStageTag">Daily Ritual</div>
       <img class="pdp-stage-img is-active" id="img-quiet"     src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/7_81abdd03-5c18-4542-b618-5201a6dcded4.png?v=1777755120" alt="The Quiet Care Set" />
       <img class="pdp-stage-img"           id="img-grounding" src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/8_1.png?v=1777755120" alt="The Grounding Care Set" />
       <img class="pdp-stage-img"           id="img-calm"      src="https://cdn.shopify.com/s/files/1/0766/4084/6107/files/9_2ec3083c-e20a-41ff-9507-036c4ca45cb4.png?v=1777755121" alt="The Calm Within Set" />
@@ -311,15 +311,15 @@ button{font:inherit;cursor:pointer;border:none;background:none}
   'use strict';
 
   /*
-   * BUNDLE PRICING: prices are fetched live from WooCommerce on page load.
+   * BUNDLE PRICING & IMAGES: fetched live from WooCommerce on page load.
    * WC variation IDs: 19 (Quiet), 20 (Grounding), 21 (Calm), 22 (Complete).
-   * If prices need to change, update them in WP admin (shop.petalsandpods.com)
+   * To update prices or images, edit in WP admin (shop.petalsandpods.com)
    * → Products → The Ritual Bundle → Variations. Page reflects automatically.
-   * Last reviewed: 2026-05-23
+   * Last reviewed: 2026-05-25
    */
   const VARIANTS = {
     quiet: {
-      wcVariationId:19, name:'The <em>Quiet</em> Care Set', tagline:'A return to rest and quiet care.<br/>Cleanse \u00b7 Sip \u00b7 Unwind.', priceFromWc:null, tag:'Limited Edition', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','1 Hand-poured Candle'],
+      wcVariationId:19, name:'The <em>Quiet</em> Care Set', tagline:'A return to rest and quiet care.<br/>Cleanse \u00b7 Sip \u00b7 Unwind.', priceFromWc:null, tag:'Daily Ritual', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','1 Hand-poured Candle'],
       story:{title:'Glass-Skin Miracle Cleanser',meta:'pH-balanced \u00b7 Gentle exfoliation + brightening \u00b7 Travel-friendly stick',body:'Rooted in 2,000 years of Korean fermentation, this cleanser uses fermented rice enzymes and Damascus rose to boost absorption and feed your skin healthy bacteria, so it heals from the surface in. The result: firmer texture, deeper hydration, and a visible glow that builds with every use. pH-balanced, hand-pressed, and built for daily use.'},
       collab:null,
       detailedIncludes:[
@@ -329,7 +329,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
         {title:'Hand-poured Soothing Candle',meta:'To enrich the space'}
       ],
       why:['Fermented rice enzymes and ancient botanicals penetrate deeper than standard cleansers, firming, brightening, and building real skin health with every wash.','Kapha tea clears congestion and excess oil. What the cleanser clears on the surface, the tea balances within.','Vata/Pitta tea soothes inflammation and dryness, feeding the skin what the cleanser helps it absorb.','Together: an inside-out moment rooted in ancient systems. Real, lasting skin health, not just surface glow.'],
-      closing:'For the one who gives everything. This is theirs alone.'
+      closing:'The whole ritual, in its quietest form.'
     },
     grounding: {
       wcVariationId:20, name:'The <em>Grounding</em> Care Set', tagline:'A return to steadiness and presence.<br/>Move \u00b7 Cleanse \u00b7 Reconnect.', priceFromWc:null, tag:'Earth & Ether collab', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Somatic / Pranic session'],
@@ -342,7 +342,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
         {title:'Earth & Ether\u2122 Healing Session',meta:'Your choice: Somatic Movement or Pranic Healing \u00b7 1:1 \u00b7 In-person (Bay Area) or online'}
       ],
       why:['Fermented rice enzymes and ancient botanicals penetrate deeper than standard cleansers, firming, brightening, and building real skin health with every wash.','The Ayurvedic teas address the gut from the root, nourishing the body from within so what you put on the outside actually lands.','The Earth & Ether session releases what the body holds in silence, tension, stress, stored emotion, so healing can reach all the way through.'],
-      closing:'She tends to everything. This set tends to her.'
+      closing:'Where skincare meets somatic care.'
     },
     calm: {
       wcVariationId:21, name:'The <em>Calm Within</em> Set', tagline:'A moment of stillness. A lifetime of wellbeing.<br/>Soothe \u00b7 Nourish \u00b7 Restore.', priceFromWc:null, tag:'Meditate with Sarika', includes:['2 Herbal Teas','1 Glass-Skin Cleanser','Energy alignment OR Quantum healing'],
@@ -354,8 +354,8 @@ button{font:inherit;cursor:pointer;border:none;background:none}
         {title:'Vata / Pitta Dosha Tea',meta:'1 oz \u00b7 Ayurvedic \u00b7 Calming'},
         {title:'Meditate with Sarika Healing Session',meta:'Your choice: Quantum Healing or Energy Center Alignment \u00b7 1:1 \u00b7 In-person (Bay Area) or online'}
       ],
-      why:['Fermented rice enzymes and ancient botanicals penetrate deeper than standard cleansers, firming, brightening, and building real skin health with every wash.','The Ayurvedic teas work from the gut up, addressing the root so the skin has what it needs to truly respond.','Sarika\'s session goes where skin care can\'t. Clearing the mental and energetic blocks that stress leaves behind, so she can actually feel the shift, not just see it.'],
-      closing:'Clear skin. Clear mind. She deserves both.'
+      why:['Fermented rice enzymes and ancient botanicals penetrate deeper than standard cleansers, firming, brightening, and building real skin health with every wash.','The Ayurvedic teas work from the gut up, addressing the root so the skin has what it needs to truly respond.','Sarika\'s session goes where skin care can\'t. Clearing the mental and energetic blocks that stress leaves behind, so you actually feel the shift, not just see it.'],
+      closing:'Clear skin. Clear mind. The whole picture.'
     },
     complete: {
       wcVariationId:22, name:'The <em>Complete</em> Care Set', tagline:'The whole-body care experience for mind, skin and soul.', priceFromWc:null, tag:'Best value \u00b7 2 collabs', includes:['2 Herbal Teas','2 Cleansers','Earth & Ether session','Meditate with Sarika session'],
@@ -369,7 +369,7 @@ button{font:inherit;cursor:pointer;border:none;background:none}
         {title:'Earth & Ether\u2122 Session',meta:'Somatic or Pranic \u00b7 Bay Area & online'},
         {title:'Meditate with Sarika Session',meta:'Quantum or Energy Alignment \u00b7 Bay Area & online'}
       ],
-      why:['Two cleansers, two civilizations. Korean fermentation feeds the skin healthy bacteria while Ayurvedic Ubtan lifts, brightens, and restores the barrier. Morning and evening, covered.','The Ayurvedic teas work from the gut up, so the skin has what it needs to truly respond to what goes on it.','Earth & Ether and Sarika work where skin care can\'t reach, releasing the tension, rewiring the patterns, and restoring the energy that stress quietly takes away.','This is the only set that tends to her skin, her gut, her nervous system, and her mind, all at once.'],
+      why:['Two cleansers, two civilizations. Korean fermentation feeds the skin healthy bacteria while Ayurvedic Ubtan lifts, brightens, and restores the barrier. Morning and evening, covered.','The Ayurvedic teas work from the gut up, so the skin has what it needs to truly respond to what goes on it.','Earth & Ether and Sarika work where skin care can\'t reach, releasing the tension, rewiring the patterns, and restoring the energy that stress quietly takes away.','This is the only set that tends to skin, gut, nervous system, and mind, all at once.'],
       closing:'Two ancient traditions. Two facilitators. One set, working from outside in and inside out.'
     }
   };
@@ -511,10 +511,26 @@ button{font:inherit;cursor:pointer;border:none;background:none}
   if (initialHash && VARIANTS[initialHash]) selectVariant(initialHash);
   else updateStory(VARIANTS.quiet);
 
-  // ── WC PRICE FETCH ──────────────────────────────────────────────────
+  // ── WC PRICE + IMAGE FETCH ───────────────────────────────────────────
   // WC Store API: parent product's variations[] only has {id, attributes}.
-  // Prices live on individual variation endpoints: /products/{variationId}.
-  (async function loadPrices(){
+  // Prices and images live on individual variation endpoints: /products/{variationId}.
+  function refreshAllImages() {
+    Object.keys(VARIANTS).forEach(function(key) {
+      var imgUrl = VARIANTS[key].imageFromWc;
+      if (!imgUrl) return;
+      var altText = 'The ' + key.charAt(0).toUpperCase() + key.slice(1) + ' Care Set';
+      // Stage images
+      if (stageImgs[key]) { stageImgs[key].src = imgUrl; stageImgs[key].alt = altText; }
+      // Thumb images
+      var thumb = document.querySelector('.pdp-thumb[data-variant="' + key + '"] img');
+      if (thumb) thumb.src = imgUrl;
+      // Bottom collection grid cards
+      var card = document.querySelector('.cmp-card[data-variant="' + key + '"] .cmp-card-img img');
+      if (card) { card.src = imgUrl; card.alt = altText; }
+    });
+  }
+
+  (async function loadPricesAndImages(){
     var ids = [19, 20, 21, 22];
     try {
       var results = await Promise.all(ids.map(function(id) {
@@ -522,14 +538,19 @@ button{font:inherit;cursor:pointer;border:none;background:none}
       }));
       results.forEach(function(variation) {
         var key = WC_ID_MAP[variation.id];
-        if (key && variation.prices && variation.prices.price) {
+        if (!key) return;
+        if (variation.prices && variation.prices.price) {
           VARIANTS[key].priceFromWc = formatPrice(variation.prices.price);
+        }
+        if (variation.images && variation.images[0] && variation.images[0].src) {
+          VARIANTS[key].imageFromWc = variation.images[0].src;
         }
       });
     } catch (err) {
-      console.error('[bundle] Failed to fetch WC prices:', err);
+      console.error('[bundle] Failed to fetch WC prices/images:', err);
     }
     refreshAllPrices();
+    refreshAllImages();
   })();
 
   // ── ADD TO CART (WooCommerce via ppCart) ─────────────────────────────
