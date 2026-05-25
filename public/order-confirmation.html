@@ -225,20 +225,10 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
       return;
     }
 
-    // Read the billing email from sessionStorage (set by checkout.js before redirect).
-    // WC Store API requires email to authenticate a guest order fetch.
     let billingEmail = '';
     try {
       billingEmail = sessionStorage.getItem('pp_last_order_email') || '';
-    } catch (e) {
-      // sessionStorage may be unavailable.
-    }
-
-    if (!billingEmail) {
-      // Without the email we cannot authenticate the order fetch.
-      // This can happen if the customer opens the confirmation URL directly later.
-      console.warn('[confirmation] No billing email in sessionStorage; order fetch will likely fail.');
-    }
+    } catch (e) {}
 
     try {
       const url = 'order/' + encodeURIComponent(orderId)
