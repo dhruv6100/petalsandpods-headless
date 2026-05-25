@@ -19,6 +19,10 @@
       "destination": "/api/wc-healthcheck.js"
     },
     {
+      "source": "/api/wc/_stripe-config",
+      "destination": "/api/wc-stripe-config.js"
+    },
+    {
       "source": "/api/wc/:path*",
       "destination": "/api/wc/[...path].js"
     }
