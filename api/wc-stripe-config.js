@@ -12,7 +12,13 @@ export default async function handler(req, res) {
   }
 
   if (!WC_STORE_URL || !WC_CONSUMER_KEY || !WC_CONSUMER_SECRET) {
-    return res.status(503).json({ error: 'stripe_config_unavailable' });
+    return res.status(503).json({
+      error: 'stripe_config_unavailable',
+      debug_reason: 'missing_env_vars',
+      debug_has_url: !!WC_STORE_URL,
+      debug_has_key: !!WC_CONSUMER_KEY,
+      debug_has_secret: !!WC_CONSUMER_SECRET,
+    });
   }
 
   // Return cached value if still fresh
@@ -31,7 +37,11 @@ export default async function handler(req, res) {
     );
 
     if (!upstream.ok) {
-      return res.status(503).json({ error: 'stripe_config_unavailable' });
+      return res.status(503).json({
+        error: 'stripe_config_unavailable',
+        debug_reason: 'upstream_not_ok',
+        debug_status: upstream.status,
+      });
     }
 
     const data = await upstream.json();
@@ -59,6 +69,10 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'public, max-age=300');
     return res.status(200).json(payload);
   } catch (err) {
-    return res.status(503).json({ error: 'stripe_config_unavailable' });
+    return res.status(503).json({
+      error: 'stripe_config_unavailable',
+      debug_reason: 'catch_error',
+      debug_message: err.message,
+    });
   }
 }
