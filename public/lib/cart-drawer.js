@@ -188,9 +188,8 @@
       if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
     });
 
-    // TODO: wire to shop.petalsandpods.com checkout hand-off (next step)
     document.getElementById('cdCheckout').addEventListener('click', function () {
-      console.log('TODO: checkout hand-off to WooCommerce');
+      window.location.href = '/checkout.html';
     });
   }
 
