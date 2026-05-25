@@ -941,8 +941,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;color:var(--forest)}
           price = formatPrice(p.prices.price, md);
         }
         var imgSrc = p.images && p.images[0] ? p.images[0].src : '';
-        return '<div class="related-card" onclick="window.location.href=\'/product.html?handle='
-          + p.slug + '\'">'
+        return '<div class="related-card" onclick="window.location.href=\'' + window.getProductUrl(p) + '\'">'
           + '<div class="related-img"><img src="' + imgSrc + '" alt="'
           + p.name.replace(/"/g, '&quot;') + '" loading="lazy" /></div>'
           + '<div class="related-body">'

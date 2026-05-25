@@ -1905,7 +1905,7 @@ document.addEventListener('DOMContentLoaded', function(){
       const card = carousel.closest('[data-handle]');
       if (card) {
         const handle = card.getAttribute('data-handle');
-        window.location.href = `/product.html?handle=${handle}`;
+        window.location.href = window.getProductUrl(handle);
       }
     });
     carousel.style.cursor = 'pointer';
@@ -2119,7 +2119,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         // 5. Product page link — click card body to navigate
-        var productUrl = '/product.html?handle=' + slug;
+        var productUrl = window.getProductUrl(slug);
         var body = card.querySelector('.product-body');
         if (body) {
           body.style.cursor = 'pointer';

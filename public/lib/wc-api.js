@@ -58,5 +58,19 @@ function wcPost(path, body) {
   return _request('POST', path, body);
 }
 
+// ── Product URL helper (bundle-aware) ───────────────────────────────────
+var BUNDLE_SLUGS = ['the-ritual-bundle'];
+
+function getProductUrl(productOrSlug) {
+  var slug = typeof productOrSlug === 'string'
+    ? productOrSlug
+    : (productOrSlug.slug || productOrSlug.handle || '');
+  if (BUNDLE_SLUGS.indexOf(slug) !== -1) {
+    return '/bundle.html';
+  }
+  return '/product.html?handle=' + encodeURIComponent(slug);
+}
+
 // Expose for use in <script> tags (no module bundler)
 window.wcApi = { wcGet: wcGet, wcPost: wcPost, getStoredCartToken: getStoredCartToken };
+window.getProductUrl = getProductUrl;

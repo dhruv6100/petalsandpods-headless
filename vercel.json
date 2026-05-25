@@ -1,4 +1,14 @@
 {
+  "redirects": [
+    {
+      "source": "/product.html",
+      "has": [
+        { "type": "query", "key": "handle", "value": "the-ritual-bundle" }
+      ],
+      "destination": "/bundle.html",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/subscribe",
