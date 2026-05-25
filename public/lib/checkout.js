@@ -336,21 +336,201 @@
     });
   }
 
-  // ── PLACE ORDER (STUB FOR SUB-COMMIT 1) ────────────────
-  // Real submission flow lands in sub-commit 2:
-  // - stripe.createPaymentMethod() to tokenize the card
-  // - POST /api/wc/checkout with billing_address + payment_method + payment_data
-  // - Handle 3DS redirect if needed
-  // - Redirect to /order-confirmation.html on success
-  function handlePlaceOrder() {
-    console.log('[checkout] Place Order clicked');
-    console.log('[checkout] Address data:', state.addressData);
-    console.log('[checkout] Cart total:', state.cart && state.cart.totals.total_price);
-    console.log('[checkout] Stripe element ready:', state.paymentReady);
+  // ── PLACE ORDER — REAL SUBMISSION FLOW ─────────────────
+  async function handlePlaceOrder() {
+    if (state.submitting) return;
+
+    if (!state.addressData) {
+      showOrderError('Please complete the address step.');
+      return;
+    }
+    if (!state.paymentReady || !state.paymentElement) {
+      showOrderError('Please complete the payment step.');
+      return;
+    }
+
+    setSubmittingState(true);
+
+    try {
+      // Step 1: Validate Stripe Element before creating PaymentMethod
+      const { error: submitError } = await state.elements.submit();
+      if (submitError) {
+        showOrderError(submitError.message || 'Please check your card details.');
+        setSubmittingState(false);
+        return;
+      }
+
+      // Step 2: Create PaymentMethod from the Element
+      const a = state.addressData;
+      const { error: pmError, paymentMethod } = await state.stripe.createPaymentMethod({
+        elements: state.elements,
+        params: {
+          billing_details: {
+            name: (a.first_name + ' ' + a.last_name).trim(),
+            email: a.email,
+            phone: a.phone || undefined,
+            address: {
+              line1: a.address_1,
+              line2: a.address_2 || undefined,
+              city: a.city,
+              state: a.state,
+              postal_code: a.postcode,
+              country: a.country,
+            },
+          },
+        },
+      });
+
+      if (pmError) {
+        showOrderError(pmError.message || 'We could not validate your card. Please try again.');
+        setSubmittingState(false);
+        return;
+      }
+
+      // Step 3: POST to WC checkout with proper payment_data shape
+      const checkoutBody = {
+        billing_address: {
+          first_name: a.first_name,
+          last_name: a.last_name,
+          company: a.company || '',
+          address_1: a.address_1,
+          address_2: a.address_2 || '',
+          city: a.city,
+          state: a.state,
+          postcode: a.postcode,
+          country: a.country,
+          email: a.email,
+          phone: a.phone || '',
+        },
+        shipping_address: {
+          first_name: a.first_name,
+          last_name: a.last_name,
+          company: a.company || '',
+          address_1: a.address_1,
+          address_2: a.address_2 || '',
+          city: a.city,
+          state: a.state,
+          postcode: a.postcode,
+          country: a.country,
+          phone: a.phone || '',
+        },
+        payment_method: 'stripe',
+        payment_data: [
+          { key: 'wc-stripe-payment-method', value: paymentMethod.id },
+          { key: 'wc_payment_intent_id', value: '' },
+          { key: 'save_payment_method', value: 'no' },
+          { key: 'billing_email', value: a.email },
+          { key: 'billing_first_name', value: a.first_name },
+          { key: 'billing_last_name', value: a.last_name },
+        ],
+        customer_note: '',
+      };
+
+      const wcResponse = await window.wcApi.wcPost('checkout', checkoutBody);
+
+      if (!wcResponse || !wcResponse.order_id) {
+        showOrderError('Order could not be created. Please try again.');
+        setSubmittingState(false);
+        return;
+      }
+
+      // Step 4: Handle response — success, 3DS challenge, or failure
+      const result = wcResponse.payment_result;
+      if (result && result.payment_status === 'success') {
+        // Check for 3DS redirect (hash-based intercept)
+        if (result.redirect_url && result.redirect_url.indexOf('#wc-stripe-confirm-pi') !== -1) {
+          await handle3DSChallenge(result.redirect_url, wcResponse.order_id, wcResponse.order_key);
+          return;
+        }
+        // Clean success — redirect to confirmation
+        redirectToConfirmation(wcResponse.order_id, wcResponse.order_key);
+        return;
+      }
+
+      // Payment_status not success — treat as failure
+      var failMsg = 'Payment could not be completed.';
+      if (result && result.payment_details) {
+        var errDetail = result.payment_details.find(function(d) { return d.key === 'error_message' || d.key === 'message'; });
+        if (errDetail) failMsg = errDetail.value;
+      }
+      showOrderError(failMsg);
+      setSubmittingState(false);
+
+    } catch (err) {
+      console.error('[checkout] Submission failed:', err);
+      showOrderError('Something went wrong. Please try again or contact support.');
+      setSubmittingState(false);
+    }
+  }
+
+  function setSubmittingState(submitting) {
+    state.submitting = submitting;
+    dom.btnPlaceOrder.disabled = submitting;
+    dom.btnPlaceOrder.textContent = submitting ? 'Placing order…' : 'Place Order';
+    if (submitting) dom.placeOrderError.hidden = true;
+  }
+
+  function showOrderError(msg) {
+    dom.placeOrderError.classList.remove('is-info');
+    dom.placeOrderError.classList.add('is-error');
+    dom.placeOrderError.textContent = msg;
     dom.placeOrderError.hidden = false;
-    dom.placeOrderError.classList.remove('is-error');
-    dom.placeOrderError.classList.add('is-info');
-    dom.placeOrderError.textContent = 'Submission flow lands in the next deploy. Form data captured to console.';
+    dom.placeOrderError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function redirectToConfirmation(orderId, orderKey) {
+    var qs = '?order_id=' + encodeURIComponent(orderId) + '&order_key=' + encodeURIComponent(orderKey);
+    window.location.href = '/order-confirmation.html' + qs;
+  }
+
+  // ── 3DS CHALLENGE HANDLER ──────────────────────────────
+  // WC Stripe plugin returns a redirect_url with hash pattern:
+  //   #wc-stripe-confirm-pi:{order_id}:{client_secret}:{nonce}
+  // We parse it, call stripe.confirmCardPayment() to handle 3DS,
+  // then redirect to confirmation on success.
+  async function handle3DSChallenge(redirectUrl, orderId, orderKey) {
+    try {
+      const hashIdx = redirectUrl.indexOf('#wc-stripe-confirm-pi:');
+      if (hashIdx === -1) {
+        showOrderError('Verification step could not be initiated. Please try again.');
+        setSubmittingState(false);
+        return;
+      }
+
+      const hashContent = redirectUrl.substring(hashIdx + '#wc-stripe-confirm-pi:'.length);
+      const parts = hashContent.split(':');
+      if (parts.length < 2) {
+        showOrderError('Verification step could not be parsed. Please try again.');
+        setSubmittingState(false);
+        return;
+      }
+
+      const clientSecret = parts[1];
+
+      dom.btnPlaceOrder.textContent = 'Verifying…';
+
+      const { error, paymentIntent } = await state.stripe.confirmCardPayment(clientSecret);
+
+      if (error) {
+        var msg = error.message || 'Verification failed. Please try a different card.';
+        showOrderError(msg);
+        setSubmittingState(false);
+        return;
+      }
+
+      if (paymentIntent && (paymentIntent.status === 'succeeded' || paymentIntent.status === 'requires_capture')) {
+        redirectToConfirmation(orderId, orderKey);
+        return;
+      }
+
+      showOrderError('Payment verification did not complete. Please try again.');
+      setSubmittingState(false);
+
+    } catch (err) {
+      console.error('[checkout] 3DS challenge failed:', err);
+      showOrderError('Could not complete verification. Please refresh and try again.');
+      setSubmittingState(false);
+    }
   }
 
   // ── PROMO STUB (DEFERRED) ──────────────────────────────
