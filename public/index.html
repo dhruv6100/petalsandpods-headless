@@ -1456,23 +1456,15 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   }
 
 async function subscribeViaBackend(email, phoneNumber, listId) {
-    // Klaviyo public client-side subscriptions endpoint (same as popup.js)
-    // No private key required, uses public company_id
+    // Klaviyo public client-side subscriptions endpoint
+    // Uses the same proven pattern as popup.js — subscriptions field omitted
+    // (Klaviyo infers consent from the endpoint + custom_source)
     var KLAVIYO_COMPANY_ID = 'QXgzpX';
     
     // Build profile attributes based on what was provided
     var profileAttrs = {};
     if (email) profileAttrs.email = email;
     if (phoneNumber) profileAttrs.phone_number = phoneNumber;
-    
-    // Build subscription channels based on what was provided
-    var subscriptions = {};
-    if (email) {
-      subscriptions.email = { marketing: { consent: 'SUBSCRIBED' } };
-    }
-    if (phoneNumber) {
-      subscriptions.sms = { marketing: { consent: 'SUBSCRIBED' } };
-    }
     
     try {
       var resp = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KLAVIYO_COMPANY_ID, {
@@ -1489,7 +1481,7 @@ async function subscribeViaBackend(email, phoneNumber, listId) {
               profile: {
                 data: {
                   type: 'profile',
-                  attributes: Object.assign({}, profileAttrs, { subscriptions: subscriptions })
+                  attributes: profileAttrs
                 }
               }
             },
@@ -1500,7 +1492,6 @@ async function subscribeViaBackend(email, phoneNumber, listId) {
         })
       });
       
-      // Klaviyo returns 202 (accepted) on success
       return resp.ok || resp.status === 202;
     } catch (error) {
       console.error('Klaviyo subscription error:', error);
