@@ -269,7 +269,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
       return [
         '<div class="oc-item">',
         '  <div class="oc-item-img">',
-        imgSrc ? '<img src="' + imgSrc + '" alt="" />' : '',
+        imgSrc ? '<img loading="lazy" src="' + imgSrc + '" alt="" />' : '',
         '    <span class="oc-item-qty">' + (item.quantity || 1) + '</span>',
         '  </div>',
         '  <div>',
