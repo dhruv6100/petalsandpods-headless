@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow transactional and per-customer pages
+Disallow: /checkout.html
+Disallow: /order-confirmation.html
+Disallow: /api/
+
+Sitemap: https://petalsandpods.com/sitemap.xml
