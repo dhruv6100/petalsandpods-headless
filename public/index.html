@@ -1456,31 +1456,57 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
   }
 
 async function subscribeViaBackend(email, phoneNumber, listId) {
-  try {
-    var response = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        phoneNumber: phoneNumber,
-        listId: listId
-      })
-    });
-
-    // 200, 201, 202, 405, 409 sabko success treat karo
-    if (response.status === 405) {
-      console.log('API working but method issue');
-      return true;
+    // Klaviyo public client-side subscriptions endpoint (same as popup.js)
+    // No private key required, uses public company_id
+    var KLAVIYO_COMPANY_ID = 'QXgzpX';
+    
+    // Build profile attributes based on what was provided
+    var profileAttrs = {};
+    if (email) profileAttrs.email = email;
+    if (phoneNumber) profileAttrs.phone_number = phoneNumber;
+    
+    // Build subscription channels based on what was provided
+    var subscriptions = {};
+    if (email) {
+      subscriptions.email = { marketing: { consent: 'SUBSCRIBED' } };
+    }
+    if (phoneNumber) {
+      subscriptions.sms = { marketing: { consent: 'SUBSCRIBED' } };
     }
     
-    return response.ok;
-  } catch (error) {
-    console.error('Fetch error:', error);
-    return false;
+    try {
+      var resp = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KLAVIYO_COMPANY_ID, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'revision': '2024-10-15'
+        },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: {
+              custom_source: email ? 'Homepage Email Signup' : 'Homepage SMS Signup',
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: Object.assign({}, profileAttrs, { subscriptions: subscriptions })
+                }
+              }
+            },
+            relationships: {
+              list: { data: { type: 'list', id: listId } }
+            }
+          }
+        })
+      });
+      
+      // Klaviyo returns 202 (accepted) on success
+      return resp.ok || resp.status === 202;
+    } catch (error) {
+      console.error('Klaviyo subscription error:', error);
+      return false;
+    }
   }
-}
   // EMAIL FORM
   var emailForm = document.getElementById('emailForm');
   var emailInput = document.getElementById('emailInput');
