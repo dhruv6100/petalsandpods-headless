@@ -7,6 +7,66 @@
       ],
       "destination": "/bundle.html",
       "permanent": true
+    },
+    {
+      "source": "/products/the-ritual-bundle",
+      "destination": "/bundle.html",
+      "permanent": true
+    },
+    {
+      "source": "/products/glass-skin-miracle",
+      "destination": "/product.html?handle=glass-skin-miracle",
+      "permanent": true
+    },
+    {
+      "source": "/products/brightening-one-step-glow",
+      "destination": "/product.html?handle=brightening-one-step-glow",
+      "permanent": true
+    },
+    {
+      "source": "/products/:slug",
+      "destination": "/product.html?handle=:slug",
+      "permanent": true
+    },
+    {
+      "source": "/collections/all",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/collections/:slug",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/pages/about",
+      "destination": "/about.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/:slug",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cart",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/account",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/account/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blogs/:path*",
+      "destination": "/",
+      "permanent": true
     }
   ],
   "rewrites": [
