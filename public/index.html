@@ -1413,16 +1413,16 @@ h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:400;color:var(--fores
 
     <div style="display:flex;flex-direction:column;gap:1rem;">
       <!-- Email — 10% off -->
-<form class="sms-form" id="emailForm" novalidate style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;">
-  <input type="email" class="sms-input" id="emailInput" name="email" placeholder="Your email — 10% off" aria-label="Email address" autocomplete="email" style="flex:1;min-width:200px;" />
+<form class="sms-form" id="emailForm" novalidate>
+  <input type="email" class="sms-input" id="emailInput" name="email" placeholder="Your email — 10% off" aria-label="Email address" autocomplete="email" style="flex:1;min-width:200px;">
   <button type="submit" class="sms-submit"><span>Get 10% off</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></button>
 </form>
       <div id="emailSuccess" style="display:none; margin-top:0.5rem;">You're in. Check your inbox for your 10% discount code.</div>
 
       
     <!-- Phone — 20% off -->
-<form class="sms-form" id="smsForm" novalidate style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;">
-  <input type="tel" class="sms-input" id="smsInput" name="phone" placeholder="Your number — 20% off" aria-label="Phone number" autocomplete="tel" style="flex:1;min-width:200px;" />
+<form class="sms-form" id="smsForm" novalidate>
+  <input type="tel" class="sms-input" id="smsInput" name="phone" placeholder="Your number — 20% off" aria-label="Phone number" autocomplete="tel" style="flex:1;min-width:200px;">
   <button type="submit" class="sms-submit"><span>Get 20% off</span><svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h13M9 1l4 4-4 4"/></svg></button>
 </form>
       <div id="smsSuccess" style="display:none; margin-top:0.5rem;">You're in. Your 20% discount code is on its way.</div>
@@ -2216,6 +2216,132 @@ document.addEventListener('DOMContentLoaded', function(){
         btn.textContent='Send';
       });
   });
+})();
+</script>
+<script>
+(function() {
+  const EMAIL_LIST_ID = 'YknngE';
+  const SMS_LIST_ID = 'RiXYR2';
+  const EMAIL_CODE = 'WELCOME10';
+  const SMS_CODE = 'WELCOME20';
+
+  async function subscribeToKlaviyo(email, phoneNumber, listId, type) {
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email || undefined,
+          phoneNumber: phoneNumber || undefined,
+          listId: listId
+        })
+      });
+      
+      const data = await response.json();
+      return { success: response.ok || data.success, data };
+    } catch (error) {
+      console.error('Fetch error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  function showSuccess(successEl, formEl, discountCode, type) {
+    formEl.style.display = 'none';
+    successEl.style.display = 'block';
+    const percent = type === 'email' ? '10%' : '20%';
+    successEl.innerHTML = `✓ You're in! Use code <strong>${discountCode}</strong> at checkout for ${percent} off your first order.`;
+    successEl.style.cssText = 'background:#e8f5e9; color:#2e7d32; padding:0.75rem 1rem; border-radius:99px; margin-top:0.75rem; font-family:monospace; font-size:0.85rem; text-align:center;';
+  }
+
+  function showError(formEl, message) {
+    let err = formEl.querySelector('.sms-error');
+    if (!err) {
+      err = document.createElement('div');
+      err.className = 'sms-error';
+      formEl.appendChild(err);
+    }
+    err.textContent = message;
+    err.style.cssText = 'color:#c62828; font-size:0.75rem; margin-top:0.5rem; width:100%;';
+    setTimeout(() => { if(err) err.remove(); }, 4000);
+  }
+
+  // EMAIL FORM SUBMIT
+  const emailForm = document.getElementById('emailForm');
+  const emailInput = document.getElementById('emailInput');
+  const emailSuccess = document.getElementById('emailSuccess');
+
+  if (emailForm && emailInput) {
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+      
+      if (!email || !emailRegex.test(email)) {
+        showError(emailForm, 'Please enter a valid email address');
+        return;
+      }
+
+      const submitBtn = emailForm.querySelector('button');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = 'Submitting...';
+      submitBtn.disabled = true;
+
+      const result = await subscribeToKlaviyo(email, null, EMAIL_LIST_ID, 'email');
+      
+      if (result.success) {
+        showSuccess(emailSuccess, emailForm, EMAIL_CODE, 'email');
+      } else {
+        showError(emailForm, result.data?.error || 'Something went wrong. Please try again.');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  // SMS/PHONE FORM SUBMIT
+  const smsForm = document.getElementById('smsForm');
+  const smsInput = document.getElementById('smsInput');
+  const smsSuccess = document.getElementById('smsSuccess');
+
+  if (smsForm && smsInput) {
+    smsForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let phoneRaw = smsInput.value.trim();
+      let phoneDigits = phoneRaw.replace(/[\s\-\(\)\+]/g, '');
+      
+      if (!phoneDigits || phoneDigits.length < 10) {
+        showError(smsForm, 'Please enter a valid phone number (10+ digits)');
+        return;
+      }
+      
+      let phoneNumber = phoneDigits;
+      if (!phoneNumber.startsWith('+')) {
+        if (phoneNumber.length === 10) phoneNumber = '+1' + phoneNumber;
+        else if (phoneNumber.length === 11 && phoneNumber.startsWith('1')) phoneNumber = '+' + phoneNumber;
+        else {
+          showError(smsForm, 'Please enter a valid US phone number');
+          return;
+        }
+      }
+
+      const submitBtn = smsForm.querySelector('button');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = 'Submitting...';
+      submitBtn.disabled = true;
+
+      const result = await subscribeToKlaviyo(null, phoneNumber, SMS_LIST_ID, 'sms');
+      
+      if (result.success) {
+        showSuccess(smsSuccess, smsForm, SMS_CODE, 'sms');
+      } else {
+        showError(smsForm, result.data?.error || 'Something went wrong. Please try again.');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
 })();
 </script>
 <div id="site-popup"></div>

@@ -1,41 +1,43 @@
+// pages/api/subscribe.js (ya /api/subscribe.js)
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
-  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
   
-  // Only POST allowed
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { email, phoneNumber, listId } = req.body;
   
-  // Get Klaviyo API key from environment variable
   const KLAVIYO_PRIVATE_KEY = process.env.KLAVIYO_PRIVATE_KEY;
 
   if (!KLAVIYO_PRIVATE_KEY) {
+    console.error('Missing Klaviyo API key');
     return res.status(500).json({ error: 'Klaviyo API key not configured' });
   }
 
   try {
-    // Prepare profile data
+    // Profile attributes
     const profileData = {};
     if (email) profileData.email = email;
     if (phoneNumber) {
       profileData.phone_number = phoneNumber;
-      profileData.properties = { sms_consent: true };
+      profileData.properties = { 
+        sms_consent: true,
+        source: 'website_form'
+      };
     }
 
-    console.log('Subscribing to list:', listId, 'with data:', profileData);
+    console.log('Subscribing to list:', listId, profileData);
 
-    // Direct subscription to list
-    const response = await fetch(`https://a.klaviyo.com/api/lists/${listId}/profiles/`, {
+    // Klaviyo API call - Subscribe profile to list
+    const response = await fetch(`https://a.klaviyo.com/api/lists/${listId}/relationships/profiles/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -43,18 +45,19 @@ export default async function handler(req, res) {
         'revision': '2025-01-15'
       },
       body: JSON.stringify({
-        data: {
-          type: 'profile',
-          attributes: profileData
-        }
+        data: [
+          {
+            type: 'profile',
+            attributes: profileData
+          }
+        ]
       })
     });
 
     const responseText = await response.text();
-    console.log('Klaviyo response status:', response.status);
-    console.log('Klaviyo response body:', responseText);
+    console.log('Klaviyo response:', response.status, responseText);
 
-    // 200, 201, 202, 409 all mean success
+    // 201, 202, 409 all mean success/already exists
     if (response.ok || response.status === 202 || response.status === 409) {
       return res.status(200).json({ 
         success: true, 
@@ -62,7 +65,29 @@ export default async function handler(req, res) {
       });
     }
 
-    // If we get here, something went wrong
+    // Alternative method: create profile first then add to list
+    if (response.status === 404 || response.status === 400) {
+      // Try create profile endpoint
+      const createRes = await fetch('https://a.klaviyo.com/api/profiles/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Klaviyo-API-Key ${KLAVIYO_PRIVATE_KEY}`,
+          'revision': '2025-01-15'
+        },
+        body: JSON.stringify({
+          data: {
+            type: 'profile',
+            attributes: profileData
+          }
+        })
+      });
+      
+      if (createRes.ok || createRes.status === 202) {
+        return res.status(200).json({ success: true, message: 'Subscribed' });
+      }
+    }
+
     return res.status(response.status).json({ 
       error: 'Subscription failed', 
       details: responseText 
