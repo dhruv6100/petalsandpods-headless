@@ -2050,78 +2050,96 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 <script>
 (function() {
-  const EMAIL_LIST_ID = 'YknngE';
-  const SMS_LIST_ID = 'RiXYR2';
+  const COMPANY_ID = 'QXgzpX';
+  const EMAIL_LIST_ID = 'RZFG9A';  // Working list ID
+  const SMS_LIST_ID = 'RZFG9A';     // Same list for SMS (or create separate SMS list)
   const EMAIL_CODE = 'WELCOME10';
   const SMS_CODE = 'WELCOME20';
 
-  async function subscribeToBackend(email, phoneNumber, listId) {
-    try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, phoneNumber, listId })
-      });
-      const data = await response.json();
-      console.log('Backend response:', response.status, data);
-      return { ok: response.ok, data };
-    } catch (err) {
-      console.error('Network error:', err);
-      return { ok: false, error: err.message };
-    }
+  async function subscribeToKlaviyo(email, phoneNumber, listId, source) {
+    const profileAttrs = {};
+    if (email) profileAttrs.email = email;
+    if (phoneNumber) profileAttrs.phone_number = phoneNumber;
+    
+    const payload = {
+      data: {
+        type: 'subscription',
+        attributes: {
+          custom_source: source,
+          profile: {
+            data: {
+              type: 'profile',
+              attributes: profileAttrs
+            }
+          }
+        },
+        relationships: {
+          list: {
+            data: { type: 'list', id: listId }
+          }
+        }
+      }
+    };
+    
+    const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${COMPANY_ID}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'revision': '2025-01-15'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    return response.ok || response.status === 202;
   }
 
   // Email form handler
   const emailForm = document.getElementById('emailForm');
   const emailInput = document.getElementById('emailInput');
-  const emailSuccessDiv = document.getElementById('emailSuccess');
+  const emailSuccess = document.getElementById('emailSuccess');
 
-  if (emailForm && emailInput && emailSuccessDiv) {
-    // Remove any existing listeners
-    const newEmailForm = emailForm.cloneNode(true);
-    emailForm.parentNode.replaceChild(newEmailForm, emailForm);
-    const newEmailInput = newEmailForm.querySelector('#emailInput');
+  if (emailForm && emailInput) {
+    const newForm = emailForm.cloneNode(true);
+    emailForm.parentNode.replaceChild(newForm, emailForm);
+    const newEmailInput = newForm.querySelector('#emailInput');
     const newEmailSuccess = document.getElementById('emailSuccess');
     
-    newEmailForm.addEventListener('submit', async (e) => {
+    newForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      e.stopPropagation();
-      
       const email = newEmailInput.value.trim();
-      if (!email || !/^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email)) {
+      if (!email || !email.includes('@')) {
         alert('Please enter a valid email address');
         return;
       }
       
-      const btn = newEmailForm.querySelector('button');
+      const btn = newForm.querySelector('button');
       const originalHTML = btn.innerHTML;
       btn.innerHTML = 'Submitting...';
       btn.disabled = true;
       
-      const result = await subscribeToBackend(email, null, EMAIL_LIST_ID);
+      const success = await subscribeToKlaviyo(email, null, EMAIL_LIST_ID, 'Website Email Signup');
       
-      if (result.ok) {
-        newEmailForm.style.display = 'none';
+      if (success) {
+        newForm.style.display = 'none';
         if (newEmailSuccess) {
           newEmailSuccess.style.display = 'block';
           newEmailSuccess.innerHTML = `✓ You're in! Use code <strong>${EMAIL_CODE}</strong> at checkout for 10% off.`;
           newEmailSuccess.style.cssText = 'background:#e8f5e9; color:#2e7d32; padding:0.75rem; border-radius:8px; margin-top:0.75rem; text-align:center;';
         }
       } else {
-        alert(result.data?.error || 'Something went wrong. Please try again.');
+        alert('Something went wrong. Please try again.');
         btn.innerHTML = originalHTML;
         btn.disabled = false;
       }
     });
   }
 
-  // SMS/Phone form handler
+  // SMS form handler (optional - same list)
   const smsForm = document.getElementById('smsForm');
   const smsInput = document.getElementById('smsInput');
-  const smsSuccessDiv = document.getElementById('smsSuccess');
+  const smsSuccess = document.getElementById('smsSuccess');
 
-  if (smsForm && smsInput && smsSuccessDiv) {
-    // Remove any existing listeners
+  if (smsForm && smsInput) {
     const newSmsForm = smsForm.cloneNode(true);
     smsForm.parentNode.replaceChild(newSmsForm, smsForm);
     const newSmsInput = newSmsForm.querySelector('#smsInput');
@@ -2129,8 +2147,6 @@ document.addEventListener('DOMContentLoaded', function(){
     
     newSmsForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      e.stopPropagation();
-      
       let phoneRaw = newSmsInput.value.trim();
       let phoneDigits = phoneRaw.replace(/[\s\-\(\)\+]/g, '');
       
@@ -2154,9 +2170,9 @@ document.addEventListener('DOMContentLoaded', function(){
       btn.innerHTML = 'Submitting...';
       btn.disabled = true;
       
-      const result = await subscribeToBackend(null, phoneNumber, SMS_LIST_ID);
+      const success = await subscribeToKlaviyo(null, phoneNumber, SMS_LIST_ID, 'Website SMS Signup');
       
-      if (result.ok) {
+      if (success) {
         newSmsForm.style.display = 'none';
         if (newSmsSuccess) {
           newSmsSuccess.style.display = 'block';
@@ -2164,7 +2180,7 @@ document.addEventListener('DOMContentLoaded', function(){
           newSmsSuccess.style.cssText = 'background:#e8f5e9; color:#2e7d32; padding:0.75rem; border-radius:8px; margin-top:0.75rem; text-align:center;';
         }
       } else {
-        alert(result.data?.error || 'Something went wrong. Please try again.');
+        alert('Something went wrong. Please try again.');
         btn.innerHTML = originalHTML;
         btn.disabled = false;
       }
