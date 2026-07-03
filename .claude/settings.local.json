@@ -19,7 +19,23 @@
       "Bash(awk NR>=876 && NR<=913 *)",
       "Bash(awk 'NR>=320 && NR<=360' /c/Projects/petalsandpods-headless/about.html)",
       "Bash(awk 'NR>=220 && NR<=235' /c/Projects/petalsandpods-headless/about.html)",
-      "Bash(awk 'NR>=108 && NR<=115' /c/Projects/petalsandpods-headless/about.html)"
+      "Bash(awk 'NR>=108 && NR<=115' /c/Projects/petalsandpods-headless/about.html)",
+      "Bash(\"/c/Program Files/nodejs/node.exe\" -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('vercel.json','utf8'\\)\\); console.log\\('vercel.json is valid JSON'\\)\")",
+      "Bash(curl -sI \"https://petalsandpods.com/product.html?handle=the-ritual-bundle\")",
+      "Bash(curl -sI \"https://petalsandpods.com/api/wc/cart\")",
+      "Bash(curl -s -D - \"https://petalsandpods.com/api/wc/cart\" -o /dev/null)",
+      "Bash(curl *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:docs.stripe.com)",
+      "Bash(gh api *)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(gh search *)",
+      "Read(//c/Users/DHRUV PARASHAR/Downloads/**)",
+      "Bash(ls stairway-vercel.zip)",
+      "Bash(grep -rn \"cdn.shopify.com\" public/ --include=\"*.html\")",
+      "Read(//tmp/**)",
+      "Bash(find public *)",
+      "Bash(find *)"
     ]
   }
 }
