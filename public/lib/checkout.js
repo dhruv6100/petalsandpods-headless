@@ -598,7 +598,7 @@
     clearPromoMsg();
     try {
       var cart = await window.wcApi.wcPost('wc/store/v1/cart/apply-coupon', { code: code });
-      console.log('[checkout] Coupon response — cart.totals:', cart.totals);
+      console.log('[checkout] Coupon response - cart.totals:', cart.totals);
       state.cart = cart;
       renderCart();
       showPromoMsg('Code applied!', true);
@@ -607,7 +607,7 @@
       dom.btnApplyPromo.disabled = false;
       dom.btnApplyPromo.onclick = handleRemovePromo;
     } catch (err) {
-      console.log('[checkout] Coupon error — full err object:', err);
+      console.log('[checkout] Coupon error - full err object:', err);
       dom.btnApplyPromo.disabled = false;
       dom.btnApplyPromo.textContent = 'Apply';
       var msg;
