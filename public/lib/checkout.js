@@ -40,6 +40,9 @@
     totalGrand: $('totalGrand'),
     promoInput: $('promoInput'),
     btnApplyPromo: $('btnApplyPromo'),
+    promoMsg: $('promoMsg'),
+    totalDiscountRow: $('totalDiscountRow'),
+    totalDiscount: $('totalDiscount'),
     editButtons: document.querySelectorAll('[data-edit-step]'),
   };
 
@@ -133,6 +136,14 @@
 
     var shippingCents = parseInt(cart.totals.total_shipping || '0', 10);
     dom.totalShipping.textContent = shippingCents > 0 ? formatPrice(cart.totals.total_shipping) : 'Free';
+
+    var discountCents = parseInt(cart.totals.total_discount || '0', 10);
+    if (discountCents > 0) {
+      dom.totalDiscountRow.hidden = false;
+      dom.totalDiscount.textContent = '−' + formatPrice(cart.totals.total_discount);
+    } else {
+      dom.totalDiscountRow.hidden = true;
+    }
 
     var taxCents = parseInt(cart.totals.total_tax || '0', 10);
     if (taxCents > 0) {
@@ -539,9 +550,76 @@
     }
   }
 
-  // ── PROMO STUB (DEFERRED) ──────────────────────────────
-  function handleApplyPromo() {
-    console.log('[checkout] Promo apply clicked:', dom.promoInput.value);
+  // ── PROMO ──────────────────────────────────────────────
+  function clearPromoMsg() {
+    dom.promoMsg.style.display = 'none';
+    dom.promoMsg.textContent = '';
+  }
+
+  function showPromoMsg(text, isSuccess) {
+    dom.promoMsg.textContent = text;
+    dom.promoMsg.style.color = isSuccess ? 'var(--forest, #3a5c3a)' : 'var(--error, #c0392b)';
+    dom.promoMsg.style.display = 'block';
+  }
+
+  async function handleRemovePromo() {
+    dom.btnApplyPromo.disabled = true;
+    dom.btnApplyPromo.textContent = 'Removing…';
+    try {
+      var currentCart = state.cart;
+      var appliedCode = currentCart.coupons && currentCart.coupons[0] ? currentCart.coupons[0].code : null;
+      if (appliedCode) {
+        var cart = await window.wcApi.wcPost('wc/store/v1/cart/remove-coupon', { code: appliedCode });
+        state.cart = cart;
+        renderCart();
+      }
+      dom.promoInput.value = '';
+      dom.promoInput.disabled = false;
+      dom.btnApplyPromo.textContent = 'Apply';
+      dom.btnApplyPromo.disabled = false;
+      dom.btnApplyPromo.onclick = null;
+      dom.btnApplyPromo.addEventListener('click', handleApplyPromo);
+      clearPromoMsg();
+    } catch (err) {
+      dom.btnApplyPromo.disabled = false;
+      dom.btnApplyPromo.textContent = 'Remove';
+      showPromoMsg('Could not remove code. Please refresh.', false);
+    }
+  }
+
+  async function handleApplyPromo() {
+    var code = (dom.promoInput.value || '').trim().toUpperCase();
+    if (!code) {
+      showPromoMsg('Please enter a promo code.', false);
+      return;
+    }
+    dom.btnApplyPromo.disabled = true;
+    dom.btnApplyPromo.textContent = 'Applying…';
+    clearPromoMsg();
+    try {
+      var cart = await window.wcApi.wcPost('wc/store/v1/cart/apply-coupon', { code: code });
+      console.log('[checkout] Coupon response — cart.totals:', cart.totals);
+      state.cart = cart;
+      renderCart();
+      showPromoMsg('Code applied!', true);
+      dom.promoInput.disabled = true;
+      dom.btnApplyPromo.textContent = 'Remove';
+      dom.btnApplyPromo.disabled = false;
+      dom.btnApplyPromo.onclick = handleRemovePromo;
+    } catch (err) {
+      console.log('[checkout] Coupon error — full err object:', err);
+      dom.btnApplyPromo.disabled = false;
+      dom.btnApplyPromo.textContent = 'Apply';
+      var msg;
+      if (err && err.message) {
+        msg = err.message;
+      } else if (err && err.details && err.details[0] && err.details[0].message) {
+        msg = err.details[0].message;
+      } else {
+        msg = 'Could not apply code. Please try again.';
+      }
+      showPromoMsg(msg, false);
+    }
   }
 
   // ── INIT ───────────────────────────────────────────────

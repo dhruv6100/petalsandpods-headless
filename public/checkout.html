@@ -307,6 +307,7 @@ input,select,textarea{font:inherit;color:inherit}
       <input type="text" id="promoInput" placeholder="Promo code" autocomplete="off" />
       <button type="button" id="btnApplyPromo">Apply</button>
     </div>
+    <div id="promoMsg" style="display:none;font-size:.78rem;margin:.4rem 0 0;padding:0 .25rem"></div>
 
     <div class="co-totals">
       <div class="co-total-row">
@@ -316,6 +317,10 @@ input,select,textarea{font:inherit;color:inherit}
       <div class="co-total-row">
         <span class="co-total-label">Shipping</span>
         <span id="totalShipping">Free</span>
+      </div>
+      <div class="co-total-row" id="totalDiscountRow" hidden>
+        <span class="co-total-label">Discount</span>
+        <span id="totalDiscount">&mdash;</span>
       </div>
       <div class="co-total-row" id="totalTaxRow" hidden>
         <span class="co-total-label">Tax</span>
