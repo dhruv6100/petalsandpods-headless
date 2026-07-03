@@ -569,7 +569,7 @@
       var currentCart = state.cart;
       var appliedCode = currentCart.coupons && currentCart.coupons[0] ? currentCart.coupons[0].code : null;
       if (appliedCode) {
-        var cart = await window.wcApi.wcPost('wc/store/v1/cart/remove-coupon', { code: appliedCode });
+        var cart = await window.wcApi.wcPost('cart/remove-coupon', { code: appliedCode });
         state.cart = cart;
         renderCart();
       }
@@ -597,7 +597,7 @@
     dom.btnApplyPromo.textContent = 'Applying…';
     clearPromoMsg();
     try {
-      var cart = await window.wcApi.wcPost('wc/store/v1/cart/apply-coupon', { code: code });
+      var cart = await window.wcApi.wcPost('cart/apply-coupon', { code: code });
       console.log('[checkout] Coupon response - cart.totals:', cart.totals);
       state.cart = cart;
       renderCart();
